@@ -1,0 +1,55 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9354, 50.0540] },
+      "properties": { "name": "Zamek Wawelski", "category": "zabytek" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9372, 50.0617] },
+      "properties": { "name": "Rynek Glowny", "category": "plac" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9393, 50.0618] },
+      "properties": { "name": "Bazylika Mariacka", "category": "kosciol" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9481, 50.0495] },
+      "properties": { "name": "Kazimierz", "category": "dzielnica" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9230, 50.0656] },
+      "properties": { "name": "Kampus AGH", "category": "uczelnia" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9371, 50.0616] },
+      "properties": { "name": "Sukiennice", "category": "zabytek" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [20.0525, 50.0690] },
+      "properties": { "name": "Nowa Huta", "category": "dzielnica" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.8889, 50.0523] },
+      "properties": { "name": "Kopiec Kosciuszki", "category": "zabytek" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9262, 50.0591] },
+      "properties": { "name": "Muzeum Narodowe", "category": "muzeum" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.9416, 50.0490] },
+      "properties": { "name": "Kosciol na Skalce", "category": "kosciol" }
+    }
+  ]
+}
