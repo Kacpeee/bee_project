@@ -7,4 +7,6 @@ dependencies = [
     "uvicorn[standard]",
     "asyncpg",
     "pydantic-settings",
+    "httpx",
+    "cogeo-mosaic>=9.1.0",
 ]

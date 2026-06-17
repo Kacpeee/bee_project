@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .database import Database
-from .routers import health, locations
+from .routers import blooming, cells, health, mosaic, plants
 
 
 @asynccontextmanager
@@ -27,4 +27,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
-app.include_router(locations.router, prefix="/locations", tags=["locations"])
+app.include_router(cells.router, prefix="/cells", tags=["cells"])
+app.include_router(blooming.router, prefix="/blooming", tags=["blooming"])
+app.include_router(plants.router, prefix="/blooming", tags=["blooming"])
+app.include_router(mosaic.router)

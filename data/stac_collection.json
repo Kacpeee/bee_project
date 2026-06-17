@@ -1,16 +1,16 @@
 {
   "type": "Collection",
-  "id": "sample-imagery",
+  "id": "lubelskie-dem",
   "stac_version": "1.0.0",
-  "title": "Sample Imagery",
-  "description": "Przykladowa kolekcja danych rastrowych - Copernicus DEM GLO-30 dla obszaru Krakowa.",
+  "title": "Copernicus DEM - woj. lubelskie",
+  "description": "Numeryczny Model Terenu Copernicus DEM GLO-30 (30 m) dla obszaru wojewodztwa lubelskiego.",
   "license": "proprietary",
   "extent": {
     "spatial": {
-      "bbox": [[-180, -90, 180, 90]]
+      "bbox": [[21.0, 50.0, 24.5, 52.0]]
     },
     "temporal": {
-      "interval": [["2020-01-01T00:00:00Z", null]]
+      "interval": [["2021-01-01T00:00:00Z", null]]
     }
   },
   "links": []

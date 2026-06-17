@@ -43,7 +43,13 @@ services:
     environment:
       GDAL_HTTP_MERGE_CONSECUTIVE_RANGES: YES
       GDAL_DISABLE_READDIR_ON_OPEN: EMPTY_DIR
-      CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .tif,.TIF,.tiff
+      CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .tif,.TIF,.tiff,.vrt
+      TITILER_API_CORS_ORIGIN: "*"
+      GDAL_CACHEMAX: "512"
+      VSI_CACHE: "TRUE"
+      VSI_CACHE_SIZE: "5000000"
+    volumes:
+      - ./data:/data:ro
 
   # --- Serwer kafli wektorowych (MVT) ---
   tipg:
@@ -70,6 +76,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     volumes:
       - ./backend/src:/app/src
+      - ./data:/data
     depends_on:
       db:
         condition: service_healthy
@@ -84,8 +91,11 @@ services:
       BACKEND_URL: http://backend:8000
       PUBLIC_TITILER_URL: http://localhost:8082
       PUBLIC_TIPG_URL: http://localhost:8083
+      PUBLIC_BACKEND_URL: http://localhost:8000
+      BOUNDARY_GEOJSON: /data/lubelskie_boundary.geojson
     volumes:
       - ./frontend/src:/app/src
+      - ./data:/data
     depends_on:
       - backend
       - stac-api

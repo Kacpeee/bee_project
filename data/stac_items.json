@@ -2,27 +2,23 @@
   {
     "type": "Feature",
     "stac_version": "1.0.0",
-    "id": "copernicus-dem-N50-E019",
-    "collection": "sample-imagery",
+    "id": "copernicus-dem-N50-E021",
+    "collection": "lubelskie-dem",
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[
-        [19.0, 50.0], [20.0, 50.0], [20.0, 51.0], [19.0, 51.0], [19.0, 50.0]
-      ]]
+      "coordinates": [[[21.0, 50.0], [22.0, 50.0], [22.0, 51.0], [21.0, 51.0], [21.0, 50.0]]]
     },
-    "bbox": [19.0, 50.0, 20.0, 51.0],
+    "bbox": [21.0, 50.0, 22.0, 51.0],
     "properties": {
       "datetime": "2021-01-01T00:00:00Z",
-      "platform": "TanDEM-X",
-      "description": "Copernicus DEM GLO-30 N50 E019 - Krakow polnocno-zachodni",
-      "gsd": 30
+      "description": "Copernicus DEM GLO-30 N50 E021 - Lubelskie zachod"
     },
     "links": [],
     "assets": {
       "visual": {
-        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N50_00_E019_00_DEM/Copernicus_DSM_COG_10_N50_00_E019_00_DEM.tif",
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N50_00_E021_00_DEM/Copernicus_DSM_COG_10_N50_00_E021_00_DEM.tif",
         "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-        "title": "NMT N50 E019 (COG)",
+        "title": "NMT N50 E021 (COG)",
         "roles": ["visual", "data"]
       }
     }
@@ -30,27 +26,23 @@
   {
     "type": "Feature",
     "stac_version": "1.0.0",
-    "id": "copernicus-dem-N50-E020",
-    "collection": "sample-imagery",
+    "id": "copernicus-dem-N50-E022",
+    "collection": "lubelskie-dem",
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[
-        [20.0, 50.0], [21.0, 50.0], [21.0, 51.0], [20.0, 51.0], [20.0, 50.0]
-      ]]
+      "coordinates": [[[22.0, 50.0], [23.0, 50.0], [23.0, 51.0], [22.0, 51.0], [22.0, 50.0]]]
     },
-    "bbox": [20.0, 50.0, 21.0, 51.0],
+    "bbox": [22.0, 50.0, 23.0, 51.0],
     "properties": {
       "datetime": "2021-01-01T00:00:00Z",
-      "platform": "TanDEM-X",
-      "description": "Copernicus DEM GLO-30 N50 E020 - Krakow polnocno-wschodni",
-      "gsd": 30
+      "description": "Copernicus DEM GLO-30 N50 E022 - Lubelskie srodek"
     },
     "links": [],
     "assets": {
       "visual": {
-        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N50_00_E020_00_DEM/Copernicus_DSM_COG_10_N50_00_E020_00_DEM.tif",
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N50_00_E022_00_DEM/Copernicus_DSM_COG_10_N50_00_E022_00_DEM.tif",
         "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-        "title": "NMT N50 E020 (COG)",
+        "title": "NMT N50 E022 (COG)",
         "roles": ["visual", "data"]
       }
     }
@@ -58,27 +50,23 @@
   {
     "type": "Feature",
     "stac_version": "1.0.0",
-    "id": "copernicus-dem-N49-E019",
-    "collection": "sample-imagery",
+    "id": "copernicus-dem-N50-E023",
+    "collection": "lubelskie-dem",
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[
-        [19.0, 49.0], [20.0, 49.0], [20.0, 50.0], [19.0, 50.0], [19.0, 49.0]
-      ]]
+      "coordinates": [[[23.0, 50.0], [24.0, 50.0], [24.0, 51.0], [23.0, 51.0], [23.0, 50.0]]]
     },
-    "bbox": [19.0, 49.0, 20.0, 50.0],
+    "bbox": [23.0, 50.0, 24.0, 51.0],
     "properties": {
       "datetime": "2021-01-01T00:00:00Z",
-      "platform": "TanDEM-X",
-      "description": "Copernicus DEM GLO-30 N49 E019 - Beskidy polnocno-zachodni",
-      "gsd": 30
+      "description": "Copernicus DEM GLO-30 N50 E023 - Lubelskie wschod"
     },
     "links": [],
     "assets": {
       "visual": {
-        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N49_00_E019_00_DEM/Copernicus_DSM_COG_10_N49_00_E019_00_DEM.tif",
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N50_00_E023_00_DEM/Copernicus_DSM_COG_10_N50_00_E023_00_DEM.tif",
         "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-        "title": "NMT N49 E019 (COG)",
+        "title": "NMT N50 E023 (COG)",
         "roles": ["visual", "data"]
       }
     }
@@ -86,27 +74,71 @@
   {
     "type": "Feature",
     "stac_version": "1.0.0",
-    "id": "copernicus-dem-N49-E020",
-    "collection": "sample-imagery",
+    "id": "copernicus-dem-N51-E021",
+    "collection": "lubelskie-dem",
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[
-        [20.0, 49.0], [21.0, 49.0], [21.0, 50.0], [20.0, 50.0], [20.0, 49.0]
-      ]]
+      "coordinates": [[[21.0, 51.0], [22.0, 51.0], [22.0, 52.0], [21.0, 52.0], [21.0, 51.0]]]
     },
-    "bbox": [20.0, 49.0, 21.0, 50.0],
+    "bbox": [21.0, 51.0, 22.0, 52.0],
     "properties": {
       "datetime": "2021-01-01T00:00:00Z",
-      "platform": "TanDEM-X",
-      "description": "Copernicus DEM GLO-30 N49 E020 - Beskidy polnocno-wschodni",
-      "gsd": 30
+      "description": "Copernicus DEM GLO-30 N51 E021 - Lubelskie polnocny zachod"
     },
     "links": [],
     "assets": {
       "visual": {
-        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N49_00_E020_00_DEM/Copernicus_DSM_COG_10_N49_00_E020_00_DEM.tif",
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N51_00_E021_00_DEM/Copernicus_DSM_COG_10_N51_00_E021_00_DEM.tif",
         "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-        "title": "NMT N49 E020 (COG)",
+        "title": "NMT N51 E021 (COG)",
+        "roles": ["visual", "data"]
+      }
+    }
+  },
+  {
+    "type": "Feature",
+    "stac_version": "1.0.0",
+    "id": "copernicus-dem-N51-E022",
+    "collection": "lubelskie-dem",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[22.0, 51.0], [23.0, 51.0], [23.0, 52.0], [22.0, 52.0], [22.0, 51.0]]]
+    },
+    "bbox": [22.0, 51.0, 23.0, 52.0],
+    "properties": {
+      "datetime": "2021-01-01T00:00:00Z",
+      "description": "Copernicus DEM GLO-30 N51 E022 - Lubelskie polnocny srodek"
+    },
+    "links": [],
+    "assets": {
+      "visual": {
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N51_00_E022_00_DEM/Copernicus_DSM_COG_10_N51_00_E022_00_DEM.tif",
+        "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+        "title": "NMT N51 E022 (COG)",
+        "roles": ["visual", "data"]
+      }
+    }
+  },
+  {
+    "type": "Feature",
+    "stac_version": "1.0.0",
+    "id": "copernicus-dem-N51-E023",
+    "collection": "lubelskie-dem",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[23.0, 51.0], [24.0, 51.0], [24.0, 52.0], [23.0, 52.0], [23.0, 51.0]]]
+    },
+    "bbox": [23.0, 51.0, 24.0, 52.0],
+    "properties": {
+      "datetime": "2021-01-01T00:00:00Z",
+      "description": "Copernicus DEM GLO-30 N51 E023 - Lubelskie polnocny wschod"
+    },
+    "links": [],
+    "assets": {
+      "visual": {
+        "href": "https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_N51_00_E023_00_DEM/Copernicus_DSM_COG_10_N51_00_E023_00_DEM.tif",
+        "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+        "title": "NMT N51 E023 (COG)",
         "roles": ["visual", "data"]
       }
     }

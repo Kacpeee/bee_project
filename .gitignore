@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Wygenerowane artefakty (duze pliki HTML / cache rastrow)
+info_pszczoly/mapa_kwitnienia_wierzba.html
+data/composites/*.tmp.tif
+~$*.xlsx

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "salix_caprea",
+    "name_pl": "Wierzba iwa",
+    "name_latin": "Salix caprea",
+    "base_temp_c": 5.0,
+    "gdd_min": 100,
+    "gdd_max": 200,
+    "season": "wiosna"
+  }
+]

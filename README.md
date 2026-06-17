@@ -84,7 +84,7 @@ python1-project/
 |- Makefile                    # Skroty do czesto uzywanych komend
 |
 |- data/                       # Dane przykladowe (zastap swoimi!)
-|   |- sample_features.geojson # Punkty Krakowa -> PostGIS
+|   |- lubelskie_edwin_voronoi.geojson # Strefy Voronoi stacji -> PostGIS
 |   |- stac_collection.json    # Definicja kolekcji STAC
 |   +- stac_items.json         # Itemy STAC z linkami do COG
 |
@@ -128,7 +128,7 @@ python1-project/
 ### 1. Podmien dane
 
 Edytuj lub zastap pliki w `data/`:
-- `sample_features.geojson` - twoje dane wektorowe (GeoJSON)
+- `lubelskie_edwin_voronoi.geojson` - strefy stacji pogodowych (GeoJSON)
 - `stac_collection.json` - definicja kolekcji STAC
 - `stac_items.json` - linki do twoich plikow COG
 
@@ -244,8 +244,11 @@ roslin miododajnych. Aplikacja pokazuje:
 |------|------|
 | `data/lubelskie_edwin_voronoi.geojson` | 42 stref wokol stacji pogodowych (polygon) |
 | `data/honey_plants.json` | Slownik roslin miododajnych (na razie: wierzba iwa) |
-| `data/station_temperatures_2025.csv` | Temperatury dzienne stacji (01.01-28.06.2025) |
-| `data/station_gdd_cache.csv` | Obliczone GDD i fazy kwitnienia wierzby iwy |
+| `info_pszczoly/historia_meteo_2024_2025.csv` | Wejscie: temperatury dzienne stacji (2024-2025) |
+| `info_pszczoly/pobieranie.py` | Pobieranie danych z API Edwin (na przyszlosc) |
+| `info_pszczoly/pszczoly.py` | Obrobka GDD wierzby iwy → pliki w `data/` |
+| `data/station_temperatures.csv` | Wyjscie z `pszczoly.py` → PostGIS |
+| `data/station_gdd_cache.csv` | Wyjscie z `pszczoly.py` → PostGIS |
 | `data/stac_collection.json` | Kolekcja STAC: `lubelskie-dem` |
 | `data/stac_items.json` | Kafle Copernicus DEM GLO-30 (N50/N51, E021-E023) |
 
@@ -269,6 +272,13 @@ Zrodlo temperatur: API Edwin (dane zapisane lokalnie w CSV).
 ### Przeladowanie danych po zmianach
 
 ```bash
+# 0. (opcjonalnie) pobierz swieze dane z API Edwin — edytuj daty w pliku
+python info_pszczoly/pobieranie.py
+
+# 1. Obrobka meteo i GDD (lokalnie, wymaga pandas)
+python info_pszczoly/pszczoly.py
+
+# 2. Zaladuj wygenerowane pliki do PostGIS
 docker compose run --rm db-init
 ```
 
