@@ -1,7 +1,4 @@
-# Programowanie Aplikacji Geoinformatycznych - Szablon Projektu
-
-Gotowy do uruchomienia szablon aplikacji geoinformatycznej oparty na otwartych technologiach.
-Studenci rozwijaja projekt, podmieniajac dane przykladowe na wlasne i rozszerzajac kod.
+#PROJEKT JEST NA WCZESNYM ETAPIE
 
 ## Technologie
 
@@ -30,10 +27,6 @@ Streamlit :8502
     +-- httpx --> STAC API :8088 --> PostGIS (pgSTAC)
 ```
 
-## Wymagania
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [Make](https://www.gnu.org/software/make/) (Windows: `choco install make` lub Git Bash)
 
 ## Szybki start
 
@@ -93,7 +86,7 @@ python1-project/
 |   |- Dockerfile
 |   +- pyproject.toml
 |
-|- backend/                    # FastAPI - tu piszesz logike biznesowa
+|- backend/                    # FastAPI 
 |   |- src/app/
 |   |   |- main.py             # Konfiguracja aplikacji
 |   |   |- config.py           # Zmienne srodowiskowe (pydantic-settings)
