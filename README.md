@@ -1,282 +1,272 @@
-#PROJEKT JEST NA WCZESNYM ETAPIE
 
-## Technologie
+# bee_project
 
-| Technologia | Rola |
-|-------------|------|
-| **FastAPI** | REST API backendu |
-| **PostGIS** | Baza danych przestrzennych (dane wektorowe) |
-| **pgSTAC** | Rozszerzenie PostgreSQL do katalogu STAC |
-| **stac-fastapi** | Serwer STAC API (OGC STAC 1.0) |
-| **TiTiler** | Serwowanie kafli rastrowych z plikow COG |
-| **tipg** | Serwowanie kafli wektorowych MVT z PostGIS |
-| **Streamlit** | Interfejs uzytkownika z mapa MapLibre GL |
-| **Docker + UV** | Konteneryzacja i zarzadzanie srodowiskiem Python |
+A geospatial data platform that combines meteorological and remote-sensing data
+to support **mobile beekeeping** — helping decide where and when to place beehives
+based on the flowering of melliferous (honey) plants.
 
-## Architektura
+The application ingests heterogeneous geospatial and weather data, runs it through
+an ETL pipeline, stores it in a spatial database with a STAC metadata catalog, and
+serves it through REST / OGC APIs to an interactive web map.
+
+> **Status:** early development. Core pipeline, APIs and map are working; data
+> coverage and additional plant species are still being expanded.
+
+---
+
+## Table of contents
+
+- [Overview](#overview)
+- [Data pipeline & lineage](#data-pipeline--lineage)
+- [Architecture](#architecture)
+- [Tech stack](#tech-stack)
+- [Project structure](#project-structure)
+- [Quick start](#quick-start)
+- [Data sources](#data-sources)
+- [API endpoints](#api-endpoints)
+- [Roadmap](#roadmap)
+
+---
+
+## Overview
+
+A mobile beekeeper moves hives between apiaries depending on which honey plants are
+in bloom. This platform supports that decision by combining three data layers:
+
+- **Weather-station influence zones** — Voronoi cells around meteorological stations.
+- **Bloom phase** — flowering stage of goat willow (*Salix caprea*), derived from
+  Growing Degree Days (GDD) accumulated from January 1st.
+- **Terrain** — Copernicus DEM (30 m) served as a raster layer.
+
+The current implementation covers the Lubelskie region (Poland), but the pipeline
+is data-driven: swapping the input datasets retargets it to any area or plant.
+
+---
+
+## Data pipeline & lineage
+
+Every value shown on the map can be traced back to its source through an explicit
+chain of transformations — raw weather observations become station temperatures,
+which become GDD values, which become a bloom phase. Each step is a discrete,
+reproducible operation with versioned inputs and outputs.
+
+```mermaid
+flowchart LR
+    subgraph Sources
+        A["Edwin API<br/>station temperatures"]
+        V["Voronoi GeoJSON<br/>station zones"]
+        D["Copernicus DEM<br/>STAC items"]
+    end
+
+    A --> P["pszczoly.py<br/>GDD computation"]
+    P --> C[("station_gdd_cache.csv<br/>bloom-phase dataset")]
+
+    C --> I["ingest_data.py<br/>load & validate"]
+    V --> I
+    D --> I
+
+    I --> DB[("PostGIS + pgSTAC<br/>spatial store + catalog")]
+    DB --> S["FastAPI · STAC API<br/>tipg · TiTiler"]
+    S --> UI["Streamlit + MapLibre<br/>web map"]
+```
+
+| Stage | Role | Artifact |
+| --- | --- | --- |
+| **Source** | Origin data | Edwin weather API, Voronoi GeoJSON, Copernicus DEM |
+| **Operation** | Transformation | `pszczoly.py` (GDD), `ingest_data.py` (load) |
+| **Dataset** | Derived data | `station_temperatures.csv`, `station_gdd_cache.csv` |
+| **Store** | Persistence + metadata | PostGIS (vector), pgSTAC (STAC catalog) |
+| **Serve** | Access layer | FastAPI, STAC API, tipg (MVT), TiTiler (COG) |
+| **Consume** | Presentation | Streamlit + MapLibre map |
+
+The STAC catalog (SpatioTemporal Asset Catalog, OGC STAC 1.0) acts as the
+**metadata layer**: it describes each raster asset — extent, time, links — so the
+serving and presentation layers can discover data without hard-coded paths.
+
+---
+
+## Architecture
 
 ```
-Przegladarka
-    |
-    +-- MapLibre JS (kafle MVT) --> tipg :8083 --> PostGIS
-    +-- MapLibre JS (kafle XYZ) --> TiTiler :8082 --> COG (URL)
-    |
+Browser
+   |
+   +-- MapLibre JS (MVT tiles) --> tipg     :8083 --> PostGIS
+   +-- MapLibre JS (XYZ tiles) --> TiTiler  :8082 --> COG (URL)
+   |
 Streamlit :8502
-    |
-    +-- httpx --> FastAPI :8000 --> PostGIS
-    +-- httpx --> STAC API :8088 --> PostGIS (pgSTAC)
-```
-
-
-## Szybki start
-
-```bash
-# 1. Sklonuj repozytorium
-git clone <url>
-cd python1-project
-
-# 2. Skopiuj plik konfiguracyjny
-cp .env.example .env
-
-# 3. Zbuduj i uruchom serwisy
-make build
-make up
-
-# 4. Poczekaj ~30 sekund, sprawdz status
-make ps
-
-# 5. Otworz aplikacje
-# Streamlit:  http://localhost:8502
-# FastAPI:    http://localhost:8000/docs
-# STAC API:   http://localhost:8088
-# TiTiler:    http://localhost:8082/docs
-# tipg:       http://localhost:8083
-```
-
-> **Uwaga:** Serwis `db-init` zaladuje dane przykladowe przy pierwszym uruchomieniu i zakonczy sie automatycznie (status `Exited 0`).
-
-## Dostepne komendy Make
-
-```bash
-make up        # Uruchom serwisy w tle
-make down      # Zatrzymaj serwisy
-make build     # Zbuduj obrazy Dockera
-make logs      # Sledz logi (Ctrl+C aby wyjsc)
-make ps        # Status serwisow
-make reset     # Zatrzymaj i usun dane (volumes) - UWAGA: kasuje baze
-make shell-db  # Otworz powloke psql
-```
-
-## Struktura projektu
-
-```
-python1-project/
-|
-|- docker-compose.yml          # Definicja wszystkich serwisow
-|- .env.example                # Przykladowe zmienne srodowiskowe
-|- Makefile                    # Skroty do czesto uzywanych komend
-|
-|- data/                       # Dane przykladowe (zastap swoimi!)
-|   |- lubelskie_edwin_voronoi.geojson # Strefy Voronoi stacji -> PostGIS
-|   |- stac_collection.json    # Definicja kolekcji STAC
-|   +- stac_items.json         # Itemy STAC z linkami do COG
-|
-|- scripts/                    # Jednorazowe ladowanie danych (db-init)
-|   |- ingest_data.py          # Glowny skrypt ingestion
-|   |- Dockerfile
-|   +- pyproject.toml
-|
-|- backend/                    # FastAPI 
-|   |- src/app/
-|   |   |- main.py             # Konfiguracja aplikacji
-|   |   |- config.py           # Zmienne srodowiskowe (pydantic-settings)
-|   |   |- database.py         # Klasa Database (asyncpg)
-|   |   |- models.py           # Modele danych (Pydantic)
-|   |   |- dependencies.py     # Dependency injection (get_db)
-|   |   +- routers/
-|   |       |- health.py       # GET /health
-|   |       +- locations.py    # CRUD dla lokalizacji
-|   |- Dockerfile
-|   +- pyproject.toml
-|
-|- frontend/                   # Streamlit - tu piszesz UI
-|   |- src/
-|   |   |- app.py              # Glowna aplikacja Streamlit
-|   |   +- config.py           # Adresy serwisow
-|   |- Dockerfile
-|   +- pyproject.toml
-|
-|- stac-api/                   # stac-fastapi-pgstac (minimalna konfiguracja)
-|   |- main.py
-|   |- Dockerfile
-|   +- pyproject.toml
-|
-+- tipg/                       # tipg - serwer kafli wektorowych
-    |- Dockerfile
-    +- pyproject.toml
-```
-
-## Jak rozszerzyc projekt
-
-### 1. Podmien dane
-
-Edytuj lub zastap pliki w `data/`:
-- `lubelskie_edwin_voronoi.geojson` - strefy stacji pogodowych (GeoJSON)
-- `stac_collection.json` - definicja kolekcji STAC
-- `stac_items.json` - linki do twoich plikow COG
-
-Zmodyfikuj `scripts/ingest_data.py` - klasa `DataIngester`:
-- `_setup_tables()` - schemat tabel
-- `_load_vector_data()` - ladowanie danych wektorowych
-- `_load_stac_catalog()` - ladowanie katalogu STAC
-
-Przeladuj dane:
-```bash
-make reset   # usuwa baze
-make up      # uruchamia ponownie z nowa baza i odswiezonym db-init
-```
-
-### 2. Dodaj nowy endpoint w FastAPI
-
-Stwórz plik `backend/src/app/routers/moj_router.py`:
-
-```python
-from fastapi import APIRouter, Depends
-from ..database import Database
-from ..dependencies import get_db
-
-router = APIRouter()
-
-@router.get("/moje-dane")
-async def get_moje_dane(db: Database = Depends(get_db)) -> list:
-    rows = await db.fetch("SELECT * FROM app.moja_tabela")
-    return [dict(row) for row in rows]
-```
-
-Zarejestruj router w `backend/src/app/main.py`:
-```python
-from .routers import moj_router
-app.include_router(moj_router.router, prefix="/moje-dane", tags=["moje-dane"])
-```
-
-Dzieki `--reload` zmiany sa widoczne natychmiast (bez przebudowy obrazu).
-
-### 3. Rozszerz mape w Streamlit
-
-Edytuj `frontend/src/app.py`. Przyklad dodania nowej warstwy wektorowej:
-
-```python
-m.add_source("moja-warstwa", VectorTileSource(
-    tiles=[f"{settings.public_tipg_url}/collections/app.moja_tabela/tiles/WebMercatorQuad/{{z}}/{{x}}/{{y}}"]
-))
-m.add_layer(Layer(
-    type=LayerType.FILL,
-    id="moja-warstwa-fill",
-    source="moja-warstwa",
-    source_layer="default",  # tipg zawsze uzywa nazwy "default" w MVT
-    paint={"fill-color": "#4264fb", "fill-opacity": 0.5},
-))
-```
-
-## Serwisy - szczegoly
-
-### PostGIS + pgSTAC (`:5432`)
-Baza danych PostgreSQL z rozszerzeniami PostGIS (dane przestrzenne) i pgSTAC (katalog STAC).
-Schemat `app` przechowuje dane aplikacji. Schemat `pgstac` - dane katalogu STAC.
-
-### STAC API (`:8088`)
-Implementacja OGC STAC API 1.0. Endpointy:
-- `GET /collections` - lista kolekcji
-- `GET /collections/{id}/items` - lista itemow
-- `POST /search` - wyszukiwanie przestrzenne i temporalne
-
-### TiTiler (`:8082`)
-Dynamiczny serwer kafli rastrowych dla plikow Cloud Optimized GeoTIFF (COG).
-Przyklady: `/cog/info?url=...`, `/cog/tiles/{z}/{x}/{y}?url=...`
-
-### tipg (`:8083`)
-Serwer kafli wektorowych MVT bezposrednio z tabel PostGIS (schemat `app`).
-Endpointy OGC API Features + Tiles. Tabele sa odkrywane automatycznie.
-
-### FastAPI (`:8000`)
-Backend REST API z automatyczna dokumentacja Swagger UI pod `/docs`.
-
-### Streamlit (`:8502`)
-Frontend z mapa MapLibre GL, przegladarka STAC i informacje o projekcie.
-
-## Zmienne srodowiskowe
-
-Plik `.env` (skopiowany z `.env.example`):
-
-```
-POSTGRES_USER=geoapp      # uzytkownik bazy danych
-POSTGRES_PASSWORD=geoapp  # haslo
-POSTGRES_DB=geoapp        # nazwa bazy
+   |
+   +-- httpx --> FastAPI  :8000 --> PostGIS
+   +-- httpx --> STAC API :8088 --> PostGIS (pgSTAC)
 ```
 
 ---
 
-## Opis mojego projektu - optymalizacja mobilnego pszczelarstwa (woj. lubelskie)
+## Tech stack
 
-Projekt zaliczeniowy oparty na powyzszym szablonie. Aplikacja wspiera mobilne
-pszczelarstwo poprzez analize kwitnienia wierzby iwy w oparciu o dane stacji
-pogodowych i obszary Voronoi w wojewodztwie lubelskim.
+| Technology | Role |
+| --- | --- |
+| **FastAPI** | Backend REST API |
+| **PostGIS** | Spatial database (vector data) |
+| **pgSTAC** | PostgreSQL extension for the STAC catalog |
+| **stac-fastapi** | STAC API server (OGC STAC 1.0) |
+| **TiTiler** | Raster tile serving from Cloud Optimized GeoTIFF (COG) |
+| **tipg** | Vector (MVT) tile serving directly from PostGIS |
+| **Streamlit** | Web UI with a MapLibre GL map |
+| **Docker + uv** | Containerization and Python environment management |
 
-### Temat
+---
 
-Pszczelarz mobilny przemieszcza ule miedzy pasiekami w zaleznosci od kwitnienia
-roslin miododajnych. Aplikacja pokazuje:
+## Project structure
 
-- strefy wplywu stacji pogodowych (komorki Voronoi PME/IUNG),
-- faze kwitnienia wierzby iwy (GDD od 1 stycznia, zakres 100-200),
-- model terenu (Copernicus DEM 30 m) jako warstwe rastrowa.
+```
+bee_project/
+|
+|- docker-compose.yml          # Service definitions
+|- .env.example                # Example environment variables
+|- Makefile                    # Common command shortcuts
+|
+|- data/                       # Input & derived datasets
+|   |- lubelskie_edwin_voronoi.geojson   # Station Voronoi zones -> PostGIS
+|   |- honey_plants.json                 # Melliferous-plant dictionary
+|   |- station_temperatures.csv          # Output of pszczoly.py -> PostGIS
+|   |- station_gdd_cache.csv             # Output of pszczoly.py -> PostGIS
+|   |- stac_collection.json              # STAC collection definition
+|   +- stac_items.json                   # STAC items (links to COGs)
+|
+|- info_pszczoly/              # Source data acquisition & processing
+|   |- pobieranie.py                     # Fetch data from the Edwin API
+|   |- pszczoly.py                       # GDD processing -> data/
+|   +- historia_meteo_2024_2025.csv      # Raw daily station temperatures
+|
+|- scripts/                    # One-off data loading (db-init)
+|   |- ingest_data.py                    # Main ingestion script
+|   |- Dockerfile
+|   +- pyproject.toml
+|
+|- backend/                    # FastAPI service
+|   |- src/app/
+|   |   |- main.py                       # App configuration
+|   |   |- config.py                     # Env settings (pydantic-settings)
+|   |   |- database.py                   # Database class (asyncpg)
+|   |   |- models.py                     # Pydantic data models
+|   |   |- dependencies.py               # Dependency injection (get_db)
+|   |   +- routers/
+|   |       |- health.py                 # GET /health
+|   |       |- cells.py                  # Weather-station zones, ST_Contains
+|   |       +- blooming.py               # Bloom-phase endpoint
+|   |- Dockerfile
+|   +- pyproject.toml
+|
+|- frontend/                   # Streamlit UI
+|   |- src/
+|   |   |- app.py                        # Main Streamlit app
+|   |   +- config.py                     # Service addresses
+|   |- Dockerfile
+|   +- pyproject.toml
+|
+|- stac-api/                   # stac-fastapi-pgstac
+|   |- main.py
+|   |- Dockerfile
+|   +- pyproject.toml
+|
++- tipg/                       # Vector tile server
+    |- Dockerfile
+    +- pyproject.toml
+```
 
-### Uzyte dane
+---
 
-| Plik | Opis |
-|------|------|
-| `data/lubelskie_edwin_voronoi.geojson` | 42 stref wokol stacji pogodowych (polygon) |
-| `data/honey_plants.json` | Slownik roslin miododajnych (na razie: wierzba iwa) |
-| `info_pszczoly/historia_meteo_2024_2025.csv` | Wejscie: temperatury dzienne stacji (2024-2025) |
-| `info_pszczoly/pobieranie.py` | Pobieranie danych z API Edwin (na przyszlosc) |
-| `info_pszczoly/pszczoly.py` | Obrobka GDD wierzby iwy → pliki w `data/` |
-| `data/station_temperatures.csv` | Wyjscie z `pszczoly.py` → PostGIS |
-| `data/station_gdd_cache.csv` | Wyjscie z `pszczoly.py` → PostGIS |
-| `data/stac_collection.json` | Kolekcja STAC: `lubelskie-dem` |
-| `data/stac_items.json` | Kafle Copernicus DEM GLO-30 (N50/N51, E021-E023) |
-
-Zrodlo temperatur: API Edwin (dane zapisane lokalnie w CSV).
-
-### Zmiany w kodzie (wzgledem szablonu)
-
-| Plik | Co zostalo zmienione |
-|------|----------------------|
-| `scripts/ingest_data.py` | Ladowanie Voronoi, roslin, temperatur i GDD do PostGIS |
-| `backend/src/app/routers/cells.py` | Endpointy stacji i `ST_Contains` |
-| `backend/src/app/routers/blooming.py` | Endpoint fazy kwitnienia |
-| `frontend/src/app.py` | Mapa Lubelskiego, zakladka Kwitnienie |
-
-### Endpointy FastAPI (moj projekt)
-
-- `GET /cells/stations` - lista stacji pogodowych
-- `GET /cells/at-point?lon=&lat=` - znajdz strefe dla punktu (`ST_Contains`)
-- `GET /blooming/?station_id=&date=&plant_id=salix_caprea` - faza kwitnienia
-
-### Przeladowanie danych po zmianach
+## Quick start
 
 ```bash
-# 0. (opcjonalnie) pobierz swieze dane z API Edwin — edytuj daty w pliku
+# 1. Clone the repository
+git clone https://github.com/Kacpeee/bee_project.git
+cd bee_project
+
+# 2. Copy the configuration file
+cp .env.example .env
+
+# 3. Build and start the services
+make build
+make up
+
+# 4. Wait ~30 seconds, then check status
+make ps
+```
+
+Once running, the services are available at:
+
+| Service | URL |
+| --- | --- |
+| Streamlit (web map) | http://localhost:8502 |
+| FastAPI (Swagger UI) | http://localhost:8000/docs |
+| STAC API | http://localhost:8088 |
+| TiTiler | http://localhost:8082/docs |
+| tipg | http://localhost:8083 |
+
+> On the first run, the `db-init` service loads sample data and then exits
+> automatically (status `Exited 0`).
+
+**Available `make` commands**
+
+```bash
+make up        # Start services in the background
+make down      # Stop services
+make build     # Build Docker images
+make logs      # Follow logs (Ctrl+C to exit)
+make ps        # Service status
+make reset     # Stop and remove data (volumes) — WARNING: drops the database
+make shell-db  # Open a psql shell
+```
+
+---
+
+## Data sources
+
+| File | Description |
+| --- | --- |
+| `data/lubelskie_edwin_voronoi.geojson` | 42 zones around weather stations (polygons) |
+| `data/honey_plants.json` | Melliferous-plant dictionary (currently goat willow) |
+| `info_pszczoly/historia_meteo_2024_2025.csv` | Raw daily station temperatures (2024–2025) |
+| `info_pszczoly/pobieranie.py` | Fetches data from the Edwin API |
+| `info_pszczoly/pszczoly.py` | GDD processing → outputs in `data/` |
+| `data/station_temperatures.csv` | GDD pipeline output → PostGIS |
+| `data/station_gdd_cache.csv` | GDD pipeline output → PostGIS |
+| `data/stac_collection.json` | STAC collection: `lubelskie-dem` |
+| `data/stac_items.json` | Copernicus DEM GLO-30 tiles (N50/N51, E021–E023) |
+
+Temperature source: the Edwin API (responses cached locally as CSV).
+
+**Reloading data after changes**
+
+```bash
+# 0. (optional) fetch fresh data from the Edwin API — edit the date range first
 python info_pszczoly/pobieranie.py
 
-# 1. Obrobka meteo i GDD (lokalnie, wymaga pandas)
+# 1. Process temperatures and GDD locally (requires pandas)
 python info_pszczoly/pszczoly.py
 
-# 2. Zaladuj wygenerowane pliki do PostGIS
+# 2. Load the generated files into PostGIS
 docker compose run --rm db-init
 ```
 
-### Dalszy rozwoj
+---
 
-- Dodanie kolejnych roslin miododajnych (rzepak, gryka, facelia)
-- Pobranie temperatur dla 14 brakujacych stacji z API Edwin
-- Kolorowanie mapy wg fazy kwitnienia na wybrana date
+## API endpoints
+
+```
+GET /cells/stations                 # List weather stations
+GET /cells/at-point?lon=&lat=       # Find the zone containing a point (ST_Contains)
+GET /blooming/?station_id=&date=&plant_id=salix_caprea   # Bloom phase
+```
+
+The STAC API additionally exposes the standard catalog endpoints
+(`/collections`, `/collections/{id}/items`, `POST /search`).
+
+---
+
+## Roadmap
+
+- Add more melliferous plants (rapeseed, buckwheat, phacelia).
+- Backfill temperatures for the 14 remaining stations via the Edwin API.
+- Colour the map by bloom phase for a selected date.
