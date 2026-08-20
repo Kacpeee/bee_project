@@ -1,0 +1,13 @@
+# Gotowe strony to WYNIK BUDOWANIA (skrypty/serwis/eksport_paczka.py), nie kod
+# zrodlowy. Waza 12 MB, bo maja wtopione mapy i wykresy w base64 - przez to
+# GitHub raportowal projekt jako "94,5% HTML, 5,4% Python", choc caly kod
+# to Python. linguist-generated wylacza je ze statystyk jezykow i zwija
+# w podgladzie zmian.
+/index.html      linguist-generated=true
+/kalendarz.html  linguist-generated=true
+/mechanika.html  linguist-generated=true
+/prognoza.html   linguist-generated=true
+/raport.html     linguist-generated=true
+
+# Konce linii: repozytorium trzyma LF, Windows dostaje CRLF przy pobraniu.
+* text=auto
