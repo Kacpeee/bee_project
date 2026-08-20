@@ -1,0 +1,48 @@
+{
+ "cel": "pomiar wplywu nieuzrodlowionej wydajnosci TUZ na mape",
+ "zakres_zrodlo": "laka kosna ok. 40 kg miodu/ha, pastwisko 6 - rozpietosc skladu runi, nie niepewnosc pomiaru",
+ "bazowa_laczna_kg_ha": 32,
+ "klasy_skalowane_razem": [
+  "TUZ",
+  "TUZ odrost"
+ ],
+ "wyniki": [
+  {
+   "tuz_kg_ha": 6,
+   "udzial_tuz_proc": 4.84913957542368,
+   "korelacja": 0.9661697231622832,
+   "top10_wspolne_proc": 92.54835134849169
+  },
+  {
+   "tuz_kg_ha": 12,
+   "udzial_tuz_proc": 9.24974606669658,
+   "korelacja": 0.9801347793783414,
+   "top10_wspolne_proc": 93.61283280707909
+  },
+  {
+   "tuz_kg_ha": 20,
+   "udzial_tuz_proc": 14.52081763193464,
+   "korelacja": 0.9929817713574621,
+   "top10_wspolne_proc": 95.27290041265016
+  },
+  {
+   "tuz_kg_ha": 26,
+   "udzial_tuz_proc": 18.089058137600436,
+   "korelacja": 0.9982807430695958,
+   "top10_wspolne_proc": 97.24482238223321
+  },
+  {
+   "tuz_kg_ha": 32,
+   "udzial_tuz_proc": 21.37133289952415,
+   "korelacja": 1.0,
+   "top10_wspolne_proc": 100.0
+  },
+  {
+   "tuz_kg_ha": 40,
+   "udzial_tuz_proc": 25.359263032776376,
+   "korelacja": 0.9971395088273717,
+   "top10_wspolne_proc": 94.94294735786958
+  }
+ ],
+ "wniosek": "korelacja >= 0.97 i >= 93% wspolnych top-10% w calym zakresie - ranking miejsc odporny na te niepewnosc"
+}

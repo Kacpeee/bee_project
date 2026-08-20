@@ -1,0 +1,118 @@
+{
+ "hipoteza": "zmiana rewizyty S1 (awaria 1B w XII 2021, start 1C w XII 2024) tlumaczy czesc niestabilnosci szeregu",
+ "sceny_wg_sezonu": {
+  "2019": {
+   "scen": 552,
+   "na_okno": 21.2,
+   "platformy": [
+    "A",
+    "B"
+   ]
+  },
+  "2020": {
+   "scen": 437,
+   "na_okno": 16.8,
+   "platformy": [
+    "A",
+    "B"
+   ]
+  },
+  "2021": {
+   "scen": 456,
+   "na_okno": 17.5,
+   "platformy": [
+    "A",
+    "B"
+   ]
+  },
+  "2022": {
+   "scen": 305,
+   "na_okno": 11.7,
+   "platformy": [
+    "A",
+    "B"
+   ]
+  },
+  "2023": {
+   "scen": 237,
+   "na_okno": 9.1,
+   "platformy": [
+    "A"
+   ]
+  },
+  "2024": {
+   "scen": 245,
+   "na_okno": 9.4,
+   "platformy": [
+    "A"
+   ]
+  },
+  "2025": {
+   "scen": 334,
+   "na_okno": 12.8,
+   "platformy": [
+    "A",
+    "C"
+   ]
+  },
+  "2026": {
+   "scen": 463,
+   "na_okno": 17.8,
+   "platformy": [
+    "A",
+    "C",
+    "D"
+   ]
+  }
+ },
+ "odchylenie_arealowe_pct": {
+  "2019": [
+   4.7,
+   -85.5,
+   -44.1,
+   -59.4
+  ],
+  "2020": [
+   -7.1,
+   -75.4,
+   -56.6,
+   -31.6
+  ],
+  "2021": [
+   -0.3,
+   52.7,
+   207.7,
+   34.7
+  ],
+  "2022": [
+   -3.4,
+   46.0,
+   -14.8,
+   -32.5
+  ],
+  "2023": [
+   5.0,
+   78.7,
+   -70.4,
+   48.5
+  ],
+  "2024": [
+   -4.0,
+   1.5,
+   -79.7,
+   20.2
+  ],
+  "2025": [
+   5.1,
+   -17.9,
+   57.9,
+   20.0
+  ]
+ },
+ "gatunki": [
+  "rzepak ozimy",
+  "gryka zwyczajna",
+  "malina",
+  "słonecznik"
+ ]
+}

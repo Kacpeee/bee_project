@@ -1,0 +1,73 @@
+{
+ "rok_wzorcowy": 2025,
+ "areal_gsa": {
+  "rzepak ozimy": 150648.66,
+  "gryka zwyczajna": 13204.05,
+  "malina": 11932.36,
+  "słonecznik": 7131.51
+ },
+ "areal_wykryty": {
+  "rzepak ozimy": 160321.28125,
+  "gryka zwyczajna": 4460.0400390625,
+  "malina": 15370.3203125,
+  "słonecznik": 64437.0
+ },
+ "wspolczynniki": {
+  "rzepak ozimy": 0.939667265789145,
+  "gryka zwyczajna": 2.960522749651254,
+  "malina": 0.7763247451841288,
+  "słonecznik": 0.1106741468411006
+ },
+ "areal_po_korekcie": {
+  "2019": {
+   "rzepak ozimy": 150064.671875,
+   "gryka zwyczajna": 2332.7734375,
+   "malina": 4224.79052734375,
+   "słonecznik": 2415.9501953125
+  },
+  "2020": {
+   "rzepak ozimy": 133177.578125,
+   "gryka zwyczajna": 3952.653076171875,
+   "malina": 3278.63671875,
+   "słonecznik": 4066.203857421875
+  },
+  "2021": {
+   "rzepak ozimy": 142848.625,
+   "gryka zwyczajna": 24574.3515625,
+   "malina": 23251.857421875,
+   "słonecznik": 8009.369140625
+  },
+  "2022": {
+   "rzepak ozimy": 138517.8125,
+   "gryka zwyczajna": 23492.576171875,
+   "malina": 6442.8125,
+   "słonecznik": 4011.03466796875
+  },
+  "2023": {
+   "rzepak ozimy": 150481.953125,
+   "gryka zwyczajna": 28756.9765625,
+   "malina": 2236.15673828125,
+   "słonecznik": 8829.3623046875
+  },
+  "2024": {
+   "rzepak ozimy": 137532.21875,
+   "gryka zwyczajna": 16326.216796875,
+   "malina": 1537.2781982421875,
+   "słonecznik": 7147.9697265625
+  },
+  "2025": {
+   "rzepak ozimy": 150648.65625,
+   "gryka zwyczajna": 13204.0498046875,
+   "malina": 11932.359375,
+   "słonecznik": 7131.51025390625
+  }
+ },
+ "kontrola_eucropmap": {
+  "2022": {
+   "eucropmap_ha": 147700.78125,
+   "model_ha": 138517.8125,
+   "odchylenie_pct": -6.217278386941505
+  }
+ },
+ "zalozenie": "blad modelu jest rownomierny w przestrzeni; uzasadnienie: korelacja ukladu 0.85-0.96 w tescie przenoszenia, wiec myli sie poziom a nie wzor"
+}

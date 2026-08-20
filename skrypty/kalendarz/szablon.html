@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pożytek lubelski — gdzie stawiać ule</title>
+<style>
+  /* PALETA WSPOLNA dla wszystkich stron projektu (serwis, kalendarz,
+     raport, mechanika). Kolory k0-k4 to skala danych na mapie i zostaja
+     bez zmian - koduja wartosc, nie wyglad. */
+  :root {
+    --tlo: #f4f6f5;
+    --atrament: #16201c;
+    --muted: #5f6b66;
+    --linia: #dbe3df;
+    --panel: #ffffff;
+    --akcent: #1d6f42;
+    --akcent2: #b3801a;
+    --k0: #fee0d2; --k1: #fcae91; --k2: #fb6a4a; --k3: #de2d26; --k4: #a50f15;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --tlo: #101613;
+      --atrament: #e3eae6;
+      --muted: #8d9a94;
+      --linia: #27332d;
+      --panel: #18211d;
+      --akcent: #54b37c;
+      --akcent2: #d6a53f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; height: 100dvh; overflow: hidden;
+    background: var(--tlo); color: var(--atrament);
+    font: 15px/1.45 "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  header { padding: 12px 24px 0; border-bottom: 1px solid var(--linia); background: var(--tlo); flex-shrink: 0; }
+  .kicker { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 22px; font-weight: 700; margin: 2px 0; letter-spacing: -.02em; }
+  .lead { color: var(--muted); margin: 0 0 8px; max-width: 62rem; font-size: 14px; }
+  nav { display: flex; gap: 0; }
+  nav.zrodla { gap: 8px; margin-bottom: 4px; }
+  nav.zrodla button { appearance: none; border: 1px solid var(--linia); background: var(--panel);
+    padding: 8px 16px; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; color: var(--atrament); }
+  nav.zrodla button[aria-selected="true"] { background: var(--akcent); color: var(--panel); border-color: var(--akcent); }
+  nav button { appearance: none; background: none; border: none; border-bottom: 2px solid transparent;
+    padding: 10px 18px 12px; margin-bottom: -1px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
+  nav button[aria-selected="true"] { color: var(--atrament); border-bottom-color: var(--akcent); }
+  .work { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; overflow: hidden; }
+  .work.place { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 340px; }
+  .mapa-wrap { position: relative; min-height: 0; min-width: 0; overflow: hidden; background: var(--tlo); }
+  .mapa-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  .mapa-napis { position: absolute; top: 14px; left: 16px; z-index: 2; pointer-events: none; }
+  .mapa-napis strong { display: block; font-size: 15px; }
+  .mapa-napis span { font-size: 12px; color: var(--muted); }
+  .hover { position: absolute; left: 16px; bottom: 14px; z-index: 2; font-size: 12px; color: var(--muted);
+    background: color-mix(in srgb, var(--tlo) 88%, transparent); padding: 4px 8px; pointer-events: none; }
+  aside { background: var(--panel); border-left: 1px solid var(--linia); padding: 16px 18px 20px;
+    overflow: auto; min-height: 0; display: flex; flex-direction: column; gap: 14px; }
+  h2 { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 8px; font-weight: 600; }
+  .duza-data { font-size: 26px; font-weight: 600; margin: 2px 0 2px; }
+ .pm { font-size: 14px; font-weight: 400; color: var(--muted, #777); }
+ .mini { font-size: 12.5px; color: var(--muted, #777); margin: 2px 0 6px; }
+ .mini-tab { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+ .mini-tab td { padding: 4px 0; border-bottom: 1px solid rgba(128,128,128,.2); }
+ .mini-tab td:last-child { text-align: right; }
+ .ostrzez-mini { background: rgba(179,128,26,.14); border-left: 3px solid var(--akcent2);
+   padding: 8px 10px; border-radius: 0 6px 6px 0; color: var(--atrament); }
+ .lata { display: flex; flex-wrap: wrap; gap: 4px; }
+  .lata button { appearance: none; border: 1px solid var(--linia); background: var(--panel); color: var(--atrament);
+    padding: 5px 8px; font: inherit; font-size: 13px; cursor: pointer; border-radius: 2px; }
+  .lata button[aria-pressed="true"] { background: var(--akcent); color: var(--panel); border-color: var(--akcent); }
+  .lata button.sr { font-weight: 700; }
+  .dekada-duza { font-size: 26px; font-weight: 700; letter-spacing: -.03em; line-height: 1.15; margin: 0 0 4px; }
+  .dekada-opis { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+  .sila { margin-top: 12px; }
+  .sila-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .sila-tor { height: 8px; background: var(--linia); border-radius: 2px; overflow: hidden; }
+  .sila-wyp { height: 100%; background: var(--akcent); width: 0; }
+  .gatunki { list-style: none; margin: 8px 0 0; padding: 0; font-size: 13px; }
+  .gatunki li { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px;
+    padding: 5px 0; border-bottom: 1px solid var(--linia); align-items: baseline; }
+  .gatunki b { font-weight: 600; }
+  .gatunki .okno { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+  .gatunki .liczby { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--atrament); white-space: nowrap; }
+  .gatunki .slad { color: var(--muted); }
+  input[type=range] { width: 100%; accent-color: var(--akcent); }
+  .ticki { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .zrodlo { font-size: 12px; color: var(--muted); }
+  .zrodlo.stala { color: var(--akcent2); }
+  .odczyt { background: var(--panel); border: 1px solid var(--linia); padding: 12px 14px; }
+  .odczyt .puste { color: var(--muted); font-size: 13px; }
+  .odczyt .wartosc { font-size: 26px; font-weight: 700; letter-spacing: -.03em; }
+  .odczyt .jedn { font-size: 12px; color: var(--muted); }
+  .wykres { width: 100%; height: 118px; display: block; }
+  .legenda { display: flex; flex-direction: column; gap: 4px; }
+  .legenda i { display: inline-block; width: 14px; height: 12px; margin-right: 8px; vertical-align: middle; }
+  .uwaga { font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: auto; }
+  .ukryty { display: none !important; }
+  @media (max-width: 980px) {
+    .work, .work.place { grid-template-columns: 1fr; grid-template-rows: minmax(52vh, 1fr) auto; }
+    aside { border-left: none; border-top: 1px solid var(--linia); max-height: 48vh; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">województwo lubelskie · model pożytkowy</div>
+  <h1>Gdzie stawiać ule</h1>
+  <p class="lead" id="lead">Dwa źródła, osobno: deklaracje rolników (pełne uprawy, dwa sezony) albo satelita (Twój rzepak, bez łąk).</p>
+  <nav class="zrodla" role="tablist" aria-label="Źródło danych">
+    <button type="button" id="tab-rol" aria-selected="true">Rolnicy (ARiMR)</button>
+    <button type="button" id="tab-sat" aria-selected="false">Satelita (3 gatunki)</button>
+    <button type="button" id="tab-kon" aria-selected="false">Produkt końcowy</button>
+  </nav>
+  <nav role="tablist">
+    <button type="button" role="tab" id="tab-kal" aria-selected="true">Kalendarz</button>
+    <button type="button" role="tab" id="tab-gdzie" aria-selected="false">Gdzie stawiać</button>
+  </nav>
+</header>
+<div class="work" id="work">
+  <div class="mapa-wrap" id="wrap-a">
+    <div class="mapa-napis" id="napis-a"><strong>Pożytek w ciągu 5 dni</strong><span>tony cukrów w zasięgu lotu</span></div>
+    <canvas id="cv-a"></canvas>
+    <div class="hover" id="hover-a"></div>
+  </div>
+  <div class="mapa-wrap ukryty" id="wrap-b">
+    <div class="mapa-napis" id="napis-b"><strong>Niezawodność rejonu</strong><span>ile sezonów w najlepszych 20% rzepaku</span></div>
+    <canvas id="cv-b"></canvas>
+    <div class="hover" id="hover-b"></div>
+  </div>
+  <aside>
+    <section id="sec-rok">
+      <h2>Sezon</h2>
+      <div class="lata" id="lata"></div>
+      <p class="zrodlo" id="zrodlo"></p>
+    </section>
+    <section id="sec-jedn">
+      <h2>Jednostka</h2>
+      <div class="lata">
+        <button type="button" id="jedn-t" class="sr">tony cukrów</button>
+        <button type="button" id="jedn-r">rodziny</button>
+      </div>
+      <p class="zrodlo">Rodzina zjada 72&nbsp;kg cukrów rocznie (90&nbsp;kg miodu
+        &divide;&nbsp;1,25). Tony mówią, ile pożytku jest; rodziny — ile uli to
+        miejsce utrzyma.</p>
+    </section>
+    <section id="sec-dek">
+      <h2>Termin</h2>
+      <p class="dekada-duza" id="dek-nazwa">10 V</p>
+      <p class="dekada-opis" id="dek-opis"></p>
+      <input type="range" id="suwak" min="0" max="30" value="6" step="1">
+      <div class="ticki"><span>10 IV</span><span>30 IV</span><span>20 V</span><span>9 VI</span><span>29 VI</span><span>19 VII</span><span>8 VIII</span></div>
+      <div class="sila">
+        <div class="sila-meta"><span>siła tego okresu wobec szczytu rzepaku</span><span id="sila-pct">—</span></div>
+        <div class="sila-tor"><div class="sila-wyp" id="sila-wyp"></div></div>
+      </div>
+      <h2 style="margin-top:16px">Gatunki w tym okresie</h2>
+      <div id="lista-gatunkow"></div>
+    </section>
+    <section>
+      <h2>To miejsce</h2>
+      <div class="odczyt" id="odczyt">
+        <p class="puste">Kliknij mapę — pokaże się kalendarz tego punktu: co 5 dni od kwietnia do sierpnia.</p>
+      </div>
+    </section>
+    <section id="sec-prog" hidden>
+      <h2>Prognoza na ten sezon</h2>
+      <div class="odczyt" id="prognoza"></div>
+    </section>
+    <section>
+      <h2>Legenda</h2>
+      <div class="legenda" id="legenda"></div>
+    </section>
+    <p class="uwaga" id="uwaga">To nie jest prognoza plonu miodu. Model nie zna siły rodziny, konkurencji pasiek ani tego, czy wolno tu postawić ul. Plik działa bez internetu.</p>
+  </aside>
+</div>
+<script>
+const DANE = %%DANE%%;
+</script>
+<script>
+(function () {
+  const D = DANE;
+  const { nx, ny } = D;
+  const N = nx * ny;
+  const KROK = 5;
+  const DEK = [];
+  for (let d = 100; d <= 250; d += KROK) DEK.push(d);
+  const KOL = D.paleta.klasy;
+  const KOL_N = D.paleta.niezawodnosc;
+  const TLO = D.paleta.tlo;
+  const ATR = D.paleta.atrament;
+  const MUTED = D.paleta.muted;
+  const RGB = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const RGBK = KOL.map(RGB);
+  const RGBN = KOL_N.map(RGB);
+
+  function b64(s) {
+    const bin = atob(s);
+    const a = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    return a;
+  }
+  function warstwa(s, skala) {
+    const a = b64(s), o = new Float32Array(a.length);
+    for (let i = 0; i < a.length; i++) o[i] = a[i] / 255 * skala;
+    return o;
+  }
+
+  const maska = b64(D.maska);
+  const doyRz = {};
+  const doySad = {};
+  for (const k of Object.keys(D.data_rzepak)) {
+    doyRz[k] = b64(D.data_rzepak[k]);
+    doySad[k] = b64(D.data_sad[k]);
+  }
+  const rzGsa = {}, rzSat = {};
+  for (const k of Object.keys(D.rolnicy.rzepak))
+    rzGsa[k] = warstwa(D.rolnicy.rzepak[k], D.rolnicy.rzepak_skala);
+  for (const k of Object.keys(D.satelita.rzepak))
+    rzSat[k] = warstwa(D.satelita.rzepak[k], D.satelita.rzepak_skala);
+  const staleGsa = {};
+  for (const n of Object.keys(D.rolnicy.stale)) {
+    const m = D.rolnicy.stale_meta[n], war = {};
+    for (const k of Object.keys(D.rolnicy.stale[n]))
+      war[k] = warstwa(D.rolnicy.stale[n][k], m.skala);
+    staleGsa[n] = { ...war, kg: m.kg, s0: m.s0, p0: m.p0, k0: m.k0 };
+  }
+  const sezonGsa = {
+    "2025": warstwa(D.rolnicy.sezon["2025"], D.rolnicy.sezon_skala),
+    "2026": warstwa(D.rolnicy.sezon["2026"], D.rolnicy.sezon_skala),
+    "sr": warstwa(D.rolnicy.sezon.sr, D.rolnicy.sezon_skala),
+  };
+  // warstwy satelitarne per gatunek - do skladania produktu koncowego
+  const satGat = {};
+  for (const n of (D.satelita.gatunki || [])) {
+    const m = D.satelita.gatunki_meta[n];
+    satGat[n] = { v: warstwa(D.satelita.warstwy[n], m.skala),
+                  kg: m.kg, s0: m.s0, p0: m.p0, k0: m.k0 };
+  }
+  const KG_RODZINA = (D.koncowy && D.koncowy.kg_cukrow_na_rodzine) || 72;
+  const niezaw = b64(D.satelita.niezawodnosc);
+  const sezonSat = (() => {
+    const rz = rzSat.sr, kg = D.rzepak_kg / 1000;
+    const a = new Float32Array(N);
+    for (let i = 0; i < N; i++) a[i] = rz[i] * kg;
+    return a;
+  })();
+
+  function troj(x, s, p, k) {
+    if (x <= s || x >= k) return 0;
+    if (x <= p) return (x - s) / (p - s || 1);
+    return (k - x) / (k - p || 1);
+  }
+  function udzialy(s, p, k) {
+    const w = new Float32Array(DEK.length);
+    let su = 0;
+    const n = 8;
+    for (let i = 0; i < DEK.length; i++) {
+      const a = DEK[i], b = a + KROK;
+      let c = 0;
+      for (let j = 0; j < n; j++) c += troj(a + (j + .5) * KROK / n, s, p, k);
+      w[i] = c * KROK / n;
+      su += w[i];
+    }
+    if (su > 0) for (let i = 0; i < DEK.length; i++) w[i] /= su;
+    return w;
+  }
+
+  const cacheRz = [];
+  function wRz(pelnia) {
+    const p = pelnia | 0;
+    if (!cacheRz[p]) cacheRz[p] = udzialy(p + D.rzepak_okno[0], p, p + D.rzepak_okno[1]);
+    return cacheRz[p];
+  }
+  const cacheSad = [];
+  function wSad(doy) {
+    const p = doy | 0;
+    if (!cacheSad[p]) {
+      const dl = p - D.sad_pelnia_lit;
+      const m = D.rolnicy.stale_meta["Sad"];
+      cacheSad[p] = m ? udzialy(m.s0 + dl, m.p0 + dl, m.k0 + dl) : new Float32Array(DEK.length);
+    }
+    return cacheSad[p];
+  }
+  const wStale = {};
+  for (const n of Object.keys(staleGsa)) {
+    if (n === "Sad") continue;
+    wStale[n] = udzialy(staleGsa[n].s0, staleGsa[n].p0, staleGsa[n].k0);
+  }
+
+  function rzWarstwa(rok) {
+    return stan.zrodlo === "rolnicy" ? rzGsa[rok] : rzSat[stan.zrodlo === "koncowy" ? "sr" : rok];
+  }
+  function staleTeraz(rok) {
+    // PRODUKT KONCOWY: gatunki wedrujace bierzemy z DETEKCJI, a trwale
+    // z DEKLARACJI - kazde z zrodla, ktore dla nich wygralo w tescie
+    // przenoszenia. Gryka i slonecznik musza wiec zastapic swoje
+    // odpowiedniki z deklaracji, a nie do nich dojsc.
+    if (stan.zrodlo === "koncowy") {
+      const o = {};
+      for (const n of Object.keys(staleGsa)) {
+        if (satGat[n]) continue;                 // ten idzie z satelity
+        const g = staleGsa[n];
+        o[n] = { v: g.sr, kg: g.kg, s0: g.s0, p0: g.p0, k0: g.k0, zr: "gsa" };
+      }
+      for (const n of Object.keys(satGat)) {
+        if (n === "rzepak ozimy") continue;       // rzepak ma osobna sciezke
+        o[n] = { ...satGat[n], zr: "sat" };
+      }
+      return o;
+    }
+    if (stan.zrodlo === "satelita")
+      return {};
+    const o = {};
+    for (const n of Object.keys(staleGsa)) {
+      const g = staleGsa[n];
+      o[n] = { v: g[rok] || g.sr, kg: g.kg, s0: g.s0, p0: g.p0, k0: g.k0 };
+    }
+    return o;
+  }
+
+  const stosy = {};
+  function zloz(rok) {
+    const key = stan.zrodlo + "_" + rok;
+    if (stosy[key]) return stosy[key];
+    const s = new Float32Array(DEK.length * N);
+    const rz = rzWarstwa(rok), dr = doyRz[rok], ds = doySad[rok];
+    const kgR = D.rzepak_kg;
+    const stale = staleTeraz(rok);
+    for (const n of Object.keys(stale)) {
+      const g = stale[n];
+      if (n === "Sad") {
+        for (let i = 0; i < N; i++) {
+          if (!maska[i]) continue;
+          const w = wSad(ds[i]);
+          const q = g.v[i] * g.kg;
+          for (let d = 0; d < DEK.length; d++) s[d * N + i] += q * w[d];
+        }
+      } else {
+        const w = wStale[n];
+        for (let d = 0; d < DEK.length; d++) {
+          if (!w[d]) continue;
+          const off = d * N, k = g.kg * w[d];
+          for (let i = 0; i < N; i++) if (maska[i]) s[off + i] += g.v[i] * k;
+        }
+      }
+    }
+    for (let i = 0; i < N; i++) {
+      if (!maska[i]) continue;
+      const w = wRz(dr[i]), q = rz[i] * kgR;
+      for (let d = 0; d < DEK.length; d++) s[d * N + i] += q * w[d];
+    }
+    for (let i = 0; i < s.length; i++) s[i] /= 1000;
+    stosy[key] = s;
+    return s;
+  }
+
+  function percentyle(arr, nOff) {
+    const a = [];
+    for (let i = 0; i < N; i++) if (maska[i]) a.push(arr[nOff + i]);
+    a.sort((x, y) => x - y);
+    const q = p => a[Math.min(a.length - 1, (p / 100 * (a.length - 1)) | 0)];
+    const br = [q(0), q(60), q(80), q(92), q(98), q(100)];
+    if (br[5] - br[0] < 1e-6) return [0, 0, 0, 0, 0, 0];
+    return br;
+  }
+  const progiSatSezon = percentyle(sezonSat, 0);
+  // PRODUKT KONCOWY, suma sezonu: gatunki wedrujace z detekcji + trwale
+  // z deklaracji. Nie da sie tego wziac z gotowego sezonGsa, bo tamten
+  // zawiera gryke i slonecznik z deklaracji - te musza przyjsc z satelity.
+  const sezonKon = (() => {
+    const a = new Float32Array(N);
+    for (const nm of Object.keys(staleGsa)) {
+      if (satGat[nm]) continue;                     // idzie z satelity
+      const g = staleGsa[nm], kg = g.kg / 1000;
+      for (let i = 0; i < N; i++) a[i] += g.sr[i] * kg;
+    }
+    for (const nm of Object.keys(satGat)) {
+      const g = satGat[nm], kg = g.kg / 1000;
+      for (let i = 0; i < N; i++) a[i] += g.v[i] * kg;
+    }
+    return a;
+  })();
+  const progiKonSezon = percentyle(sezonKon, 0);
+  function klasa(v, br) {
+    if (v <= br[1]) return 0;
+    if (v <= br[2]) return 1;
+    if (v <= br[3]) return 2;
+    if (v <= br[4]) return 3;
+    return 4;
+  }
+  function pl(x, n) {
+    return x.toFixed(n).replace(".", ",");
+  }
+
+  const cvA = document.getElementById("cv-a");
+  const cvB = document.getElementById("cv-b");
+  const off = document.createElement("canvas");
+  off.width = nx; off.height = ny;
+  const octx = off.getContext("2d");
+  const img = octx.createImageData(nx, ny);
+
+  function malujRaster(cv, arr, off0, br, pal, podpis) {
+    const rgb = pal.map(RGB);
+    const d = img.data;
+    for (let i = 0; i < N; i++) {
+      const p = i * 4;
+      if (!maska[i]) { d[p] = 252; d[p + 1] = 252; d[p + 2] = 251; d[p + 3] = 255; continue; }
+      const c = rgb[klasa(arr[off0 + i], br)];
+      d[p] = c[0]; d[p + 1] = c[1]; d[p + 2] = c[2]; d[p + 3] = 255;
+    }
+    octx.putImageData(img, 0, 0);
+    const r = cv.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = Math.max(1, r.width * dpr);
+    cv.height = Math.max(1, r.height * dpr);
+    const ctx = cv.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = TLO;
+    ctx.fillRect(0, 0, r.width, r.height);
+    const pad = 18;
+    const sc = Math.min((r.width - 2 * pad) / nx, (r.height - 2 * pad) / ny);
+    const dw = nx * sc, dh = ny * sc;
+    const ox = (r.width - dw) / 2, oy = (r.height - dh) / 2;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(off, ox, oy, dw, dh);
+    ctx.beginPath();
+    D.granica.forEach((pt, i) => {
+      const x = ox + pt[0] * sc, y = oy + pt[1] * sc;
+      if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = ATR; ctx.globalAlpha = .55; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.font = "600 11px Segoe UI, sans-serif";
+    ctx.fillStyle = ATR;
+    ctx.strokeStyle = "#fff";
+    ctx.lineWidth = 3;
+    ctx.textAlign = "center";
+    for (const m of D.miasta) {
+      const x = ox + m.x * sc, y = oy + m.y * sc;
+      ctx.beginPath(); ctx.arc(x, y, 3.2, 0, 7); ctx.fillStyle = "#fff"; ctx.fill();
+      ctx.lineWidth = 1.2; ctx.strokeStyle = ATR; ctx.stroke();
+      ctx.lineWidth = 3; ctx.strokeStyle = "#fff";
+      ctx.strokeText(m.n, x, y - 8);
+      ctx.fillStyle = ATR; ctx.fillText(m.n, x, y - 8);
+    }
+    if (stan.sel != null) {
+      const x = ox + (stan.sel % nx + .5) * sc;
+      const y = oy + ((stan.sel / nx | 0) + .5) * sc;
+      ctx.beginPath(); ctx.arc(x, y, 6, 0, 7);
+      ctx.strokeStyle = ATR; ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(x, y, 2.2, 0, 7);
+      ctx.fillStyle = ATR; ctx.fill();
+    }
+    const km40 = 40 / D.px_km * sc;
+    const bx = ox + 14, by = oy + dh - 22;
+    ctx.fillStyle = ATR; ctx.fillRect(bx, by, km40, 3);
+    ctx.fillStyle = "#fff"; ctx.fillRect(bx, by, km40 / 2, 3);
+    ctx.strokeStyle = ATR; ctx.strokeRect(bx, by, km40, 3);
+    ctx.fillStyle = ATR; ctx.font = "11px Segoe UI, sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("40 km", bx + km40 / 2, by - 4);
+    cv._geo = { ox, oy, sc, w: r.width, h: r.height };
+  }
+
+  function pixZdarzenia(cv, ev) {
+    const g = cv._geo; if (!g) return -1;
+    const r = cv.getBoundingClientRect();
+    const j = Math.floor((ev.clientX - r.left - g.ox) / g.sc);
+    const i = Math.floor((ev.clientY - r.top - g.oy) / g.sc);
+    if (i < 0 || j < 0 || i >= ny || j >= nx) return -1;
+    const idx = i * nx + j;
+    return maska[idx] ? idx : -1;
+  }
+
+  // PIKSEL -> WSPOLRZEDNE. Interpolacja dwuliniowa po czterech naroznikach
+  // eksportowanych w WGS84. Przy 180 x 220 km blad to setki metrow, czyli
+  // znacznie mniej niz 1.2 km, na ktorych model i tak wygladza pozytek.
+  function pixNaGeo(i) {
+    if (!D.geo || !D.geo.lat) return null;
+    const g = D.geo, K = g.n;
+    // pozycja wzgledna w siatce K x K, potem interpolacja w komorce
+    const u = (i % nx + .5) / nx * (K - 1);
+    const v = ((i / nx | 0) + .5) / ny * (K - 1);
+    const j0 = Math.min(K - 2, Math.floor(u)), i0 = Math.min(K - 2, Math.floor(v));
+    const fu = u - j0, fv = v - i0;
+    const w = (m) => (1-fu)*(1-fv)*m[i0][j0] + fu*(1-fv)*m[i0][j0+1]
+                   + (1-fu)*fv*m[i0+1][j0] + fu*fv*m[i0+1][j0+1];
+    return [w(g.lat), w(g.lon)];
+  }
+
+  // Prognoza pobierana z mikroserwisu. Strona otwarta jako plik z dysku
+  // dziala normalnie - sekcja prognozy po prostu sie nie pokazuje.
+  let progAbort = null;
+  function pobierzPrognoze(i) {
+    const sek = document.getElementById("sec-prog");
+    const el = document.getElementById("prognoza");
+    const g = pixNaGeo(i);
+    if (!g) { sek.hidden = true; return; }
+    if (progAbort) progAbort.abort();
+    progAbort = new AbortController();
+    sek.hidden = false;
+    el.innerHTML = '<p class="puste">pytam serwis…</p>';
+    fetch(`/prognoza?lat=${g[0].toFixed(4)}&lon=${g[1].toFixed(4)}`,
+          { signal: progAbort.signal })
+      .then(r => r.json())
+      .then(d => {
+        if (d.blad) { sek.hidden = true; return; }
+        el.innerHTML = `
+          <p class="duza-data">${d.pelnia.opis} <span class="pm">±${d.niepewnosc_dni} d</span></p>
+          <p class="mini">${d.naglowek} · pełnia kwitnienia rzepaku, sezon ${d.sezon}</p>
+          ${d.rodzaj === "srednia_wieloletnia"
+            ? '<p class="mini ostrzez-mini">' + d.uwaga + '</p>' : ''}
+          <table class="mini-tab">
+            <tr><td>początek</td><td>${d.poczatek.opis}</td></tr>
+            <tr><td><b>ustaw ul</b></td><td><b>${d.ustaw_ul.opis}</b></td></tr>
+            <tr><td>pogoda realna</td><td>${d.pogoda_realna_pct}%</td></tr>
+          </table>
+          <p class="mini">${d.podstawa_bledu}</p>`;
+      })
+      .catch(() => { sek.hidden = true; });
+  }
+
+  const stan = { zrodlo: "rolnicy", widok: "kal", rok: "sr", dek: 6, sel: null,
+                 jedn: "t" };
+  // Przelicznik ton cukru na rodziny pszczele. Zapotrzebowanie 72 kg cukrow
+  // rocznie na rodzine (90 kg miodu / 1.25). Rodziny sa jednostka DECYZYJNA
+  // - pszczelarz nie wozi ton cukru, tylko ule.
+  function wJedn(t) { return stan.jedn === "r" ? t * 1000 / KG_RODZINA : t; }
+  function etJedn() { return stan.jedn === "r" ? "rodzin" : "t"; }
+  const LEAD = {
+    rolnicy: {
+      kal: "Deklaracje ARiMR 2025 i 2026 — wszystkie pożytki z działek rolników. Suwak co 5 dni, kliknięcie pokazuje kalendarz tego miejsca.",
+      gdzie: "Lewa mapa: sezon 2025. Prawa: sezon 2026. To twarda prawda z deklaracji, dwa konkretne lata."
+    },
+    satelita: {
+      kal: "Rzepak, gryka i słonecznik z klasyfikatora Sentinel-1 + Sentinel-2, lata 2019–2025, po kalibracji areałowej. Łąk, sadów i malin tu nie ma — to uprawy trwałe, dla których deklaracje są lepszym źródłem.",
+      gdzie: "Lewa: średnia z detekcji 2019–2025. Prawa: w ilu sezonach z 7 miejsce było w najlepszych 20%."
+    },
+    koncowy: {
+      kal: "Produkt końcowy: gatunki wędrujące z detekcji satelitarnej, trwałe z deklaracji ARiMR — każdy z tego źródła, które dla niego wygrało w teście przenoszenia. Przeciętny rok z 7 sezonów.",
+      gdzie: "Złożenie obu warstw. Lewa: potencjał przeciętnego roku. Prawa: w ilu sezonach miejsce było w czołówce."
+    }
+  };
+  const UWAGA = {
+    rolnicy: "Źródło: deklaracje obszarowe ARiMR (GSA) 2025 i 2026. Wszystkie gatunki z działek. To nie jest prognoza plonu miodu — model nie zna siły rodziny ani konkurencji pasiek.",
+    satelita: "Źródło: klasyfikator wielogatunkowy Sentinel-1 + Sentinel-2 (F1-makro 0,72), lata 2019–2025, po kalibracji areałowej. Trzy gatunki wędrujące — bez łąk, sadów i malin. To nie jest prognoza plonu miodu.",
+    koncowy: "Warstwa satelitarna (rzepak, gryka, słonecznik — 58,8% cukrów) plus deklaracje ARiMR dla 13 upraw trwałych. Przeciętny rok z 7 sezonów: pokazuje typowy układ sezonu, NIE prognozę na konkretny rok — do tego służy model fenologiczny z bieżącej pogody. To nie jest prognoza plonu miodu."
+  };
+
+  const lataEl = document.getElementById("lata");
+  function zbudujLata() {
+    lataEl.innerHTML = "";
+    const lata = D[stan.zrodlo].lata;
+    [["sr", "Typowy"]].concat(lata.map(y => [String(y), String(y)])).forEach(([k, et]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = et; b.dataset.rok = k;
+      if (k === "sr") b.className = "sr";
+      b.addEventListener("click", () => { stan.rok = k; rysuj(); });
+      lataEl.appendChild(b);
+    });
+  }
+
+  const ET = {
+    "Sad": "sad (jabłoń)",
+    "TUZ": "łąki (TUZ)",
+    "rzepak ozimy": "rzepak ozimy",
+    "fasola wielokwiatowa": "fasola wielokwiatowa",
+    "gryka zwyczajna": "gryka",
+    "słonecznik oleisty": "słonecznik oleisty",
+    "rzepak jary": "rzepak jary",
+    "lucerna mieszańcowa": "lucerna",
+    "koniczyna czerwona": "koniczyna czerwona",
+    "gorczyca biała": "gorczyca biała"
+  };
+  function etyk(n) { return ET[n] || n; }
+  function dz(doy) {
+    const d = new Date(Date.UTC(2025, 0, Math.round(doy)));
+    const M = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+    return d.getUTCDate() + " " + M[d.getUTCMonth()];
+  }
+
+  function wkladPunkt(rok, dek, idx) {
+    const out = [];
+    const pelnia = doyRz[rok][idx];
+    const wr = wRz(pelnia);
+    const rz = rzWarstwa(rok);
+    out.push({
+      n: "rzepak ozimy", t: rz[idx] * D.rzepak_kg * wr[dek] / 1000,
+      od: pelnia + D.rzepak_okno[0], do: pelnia + D.rzepak_okno[1], akt: wr[dek] > 0
+    });
+    const ds = doySad[rok][idx];
+    const stale = staleTeraz(rok);
+    for (const nazwa of Object.keys(stale)) {
+      const g = stale[nazwa];
+      let ww, od, dok;
+      if (nazwa === "Sad") {
+        ww = wSad(ds);
+        const dl = (ds | 0) - D.sad_pelnia_lit;
+        od = g.s0 + dl; dok = g.k0 + dl;
+      } else {
+        ww = wStale[nazwa];
+        od = g.s0; dok = g.k0;
+      }
+      out.push({ n: nazwa, t: g.v[idx] * g.kg * ww[dek] / 1000, od, do: dok, akt: ww[dek] > 0 });
+    }
+    return out.filter(p => p.akt).sort((a, b) => b.t - a.t);
+  }
+
+  const cacheWoj = {};
+  function wkladWoj(rok, dek) {
+    const key = stan.zrodlo + "_" + rok + "_" + dek;
+    if (cacheWoj[key]) return cacheWoj[key];
+    let nMask = 0;
+    for (let i = 0; i < N; i++) if (maska[i]) nMask++;
+    const out = [];
+    const rz = rzWarstwa(rok), dr = doyRz[rok];
+    let su = 0, akt = 0, odMin = 999, doMax = 0;
+    for (let i = 0; i < N; i++) {
+      if (!maska[i]) continue;
+      const w = wRz(dr[i]);
+      su += rz[i] * D.rzepak_kg * w[dek] / 1000;
+      if (w[dek] > 0) {
+        akt++;
+        odMin = Math.min(odMin, dr[i] + D.rzepak_okno[0]);
+        doMax = Math.max(doMax, dr[i] + D.rzepak_okno[1]);
+      }
+    }
+    if (akt) out.push({ n: "rzepak ozimy", t: su / nMask, od: odMin, do: doMax });
+    const ds = doySad[rok];
+    const stale = staleTeraz(rok);
+    for (const nazwa of Object.keys(stale)) {
+      const g = stale[nazwa];
+      su = 0; akt = 0; odMin = 999; doMax = 0;
+      if (nazwa === "Sad") {
+        for (let i = 0; i < N; i++) {
+          if (!maska[i]) continue;
+          const w = wSad(ds[i]);
+          su += g.v[i] * g.kg * w[dek] / 1000;
+          if (w[dek] > 0) {
+            akt++;
+            const dl = (ds[i] | 0) - D.sad_pelnia_lit;
+            odMin = Math.min(odMin, g.s0 + dl);
+            doMax = Math.max(doMax, g.k0 + dl);
+          }
+        }
+        if (akt) out.push({ n: nazwa, t: su / nMask, od: odMin, do: doMax });
+      } else {
+        const w = wStale[nazwa];
+        if (!w[dek]) continue;
+        for (let i = 0; i < N; i++) if (maska[i]) su += g.v[i] * g.kg * w[dek] / 1000;
+        out.push({ n: nazwa, t: su / nMask, od: g.s0, do: g.k0 });
+      }
+    }
+    out.sort((a, b) => b.t - a.t);
+    cacheWoj[key] = out;
+    return out;
+  }
+
+  function htmlGatunkow(lista, etSuma) {
+    const suma = lista.reduce((a, p) => a + p.t, 0);
+    let h = '<ul class="gatunki">';
+    if (!lista.length) {
+      h += '<li class="slad">Żaden gatunek nie ma okna kwitnienia w tym okresie.</li>';
+    } else {
+      for (const p of lista) {
+        const pct = suma > 1e-6 ? Math.round(p.t / suma * 100) : 0;
+        const vv = wJedn(p.t);
+        const t = p.t < 0.005 ? "śladowo"
+                : pl(vv, vv < 1 ? 2 : (stan.jedn === "r" ? 0 : 1)) + " " + etJedn();
+        h += `<li><span><b>${etyk(p.n)}</b><span class="okno">${dz(p.od)} – ${dz(p.do)}</span></span>`
+          + `<span class="liczby">${pct}% · ${t}</span></li>`;
+      }
+    }
+    h += "</ul>";
+    if (etSuma) h += `<p class="zrodlo" style="margin:6px 0 0">${etSuma}</p>`;
+    return h;
+  }
+
+  function zrodloTekst(rok) {
+    if (stan.zrodlo === "rolnicy") {
+      if (rok === "sr") return "Średnia deklaracji ARiMR 2025 i 2026. Wszystkie gatunki z działek rolników. Terminy rzepaku i sadu z GDD.";
+      return rok + ": deklaracje ARiMR tego roku. Rzepak, fasola, gryka, sady, łąki — tak jak rolnik zgłosił.";
+    }
+    if (stan.zrodlo === "koncowy")
+      return "Złożenie obu warstw: rzepak, gryka i słonecznik z detekcji satelitarnej (średnia 2019–2025), pozostałe 13 pożytków z deklaracji ARiMR. Terminy rzepaku i sadu z GDD.";
+    if (rok === "sr") return "Średnia detekcji 2019–2025: rzepak, gryka i słonecznik, po kalibracji areałowej. Bez łąk, sadów i malin — te idą z deklaracji.";
+    return rok + ": rzepak, gryka i słonecznik z klasyfikatora Sentinel-1 + Sentinel-2, terminy z GDD.";
+  }
+
+  function udzialRzepaku(rok, dek) {
+    const rz = rzWarstwa(rok), dr = doyRz[rok], s = zloz(rok);
+    let rSum = 0, tSum = 0;
+    const off = dek * N, kg = D.rzepak_kg;
+    for (let i = 0; i < N; i++) {
+      if (!maska[i]) continue;
+      rSum += rz[i] * kg * wRz(dr[i])[dek] / 1000;
+      tSum += s[off + i];
+    }
+    return tSum > 1e-6 ? rSum / tSum : 0;
+  }
+
+  function sredniaMaski(arr, off) {
+    let su = 0, n = 0;
+    for (let i = 0; i < N; i++) if (maska[i]) { su += arr[off + i]; n++; }
+    return n ? su / n : 0;
+  }
+  function szczytRzepaku(rok) {
+    const s = zloz(rok);
+    let mx = 0;
+    for (let d = 0; d < DEK.length; d++) mx = Math.max(mx, sredniaMaski(s, d * N));
+    return mx;
+  }
+  const szczytCache = {};
+  function szczytTyp() {
+    if (!szczytCache[stan.zrodlo]) szczytCache[stan.zrodlo] = szczytRzepaku("sr");
+    return szczytCache[stan.zrodlo];
+  }
+
+  const nLatSat = D.satelita.niezaw_lat;
+  const PROGI_N = [-.5, 2.5, 4.5, 5.5, 6.5, nLatSat + .5];
+  const ET_N = ["0–2 z " + nLatSat, "3–4", "5", "6", nLatSat + " z " + nLatSat];
+
+  function pozycjeLegendy(br0, jedn0, pal, etykiety) {
+    // Legenda musi isc za przelacznikiem jednostki - inaczej mapa
+    // pokazywala rodziny, a opis progow dalej tony.
+    const przelicz = jedn0 === "t";
+    const br = przelicz ? Array.from(br0, v => wJedn(v)) : br0;
+    const jedn = przelicz ? etJedn() : jedn0;
+    const frag = document.createDocumentFragment();
+    const n = stan.jedn === "r" && przelicz ? 0 : (br[5] < 2 ? 2 : 1);
+    for (let i = 0; i < 5; i++) {
+      const d = document.createElement("div");
+      const et = etykiety ? etykiety[i]
+        : (br[5] <= 0 ? "brak pożytku" : pl(br[i], n) + "–" + pl(br[i + 1], n) + " " + jedn);
+      d.innerHTML = "<i style=\"background:" + pal[i] + "\"></i>" + et;
+      frag.appendChild(d);
+    }
+    return frag;
+  }
+  function naglowekLegendy(t) {
+    const h = document.createElement("div");
+    h.style.cssText = "margin:8px 0 4px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)";
+    h.textContent = t;
+    return h;
+  }
+  function legenda(br, jedn, pal, etykiety) {
+    const el = document.getElementById("legenda");
+    el.innerHTML = "";
+    el.appendChild(pozycjeLegendy(br, jedn, pal, etykiety));
+  }
+
+  function kalendarzHtml(idx, rok) {
+    const s = zloz(rok);
+    const w = DEK.map((_, d) => s[d * N + idx]);
+    const mx = Math.max(...w, 0.05);
+    const akt = stan.widok === "kal" ? stan.dek : -1;
+    let svg = '<svg class="wykres" viewBox="0 0 320 118" xmlns="http://www.w3.org/2000/svg">';
+    const bw = 304 / DEK.length;
+    w.forEach((v, i) => {
+      const h = v / mx * 78;
+      const x = 8 + i * bw;
+      const fill = i === akt ? D.paleta.klasy[3] : D.paleta.klasy[1];
+      svg += `<rect x="${x}" y="${88 - h}" width="${Math.max(bw - .6, 1.5)}" height="${h}" fill="${fill}"/>`;
+    });
+    const mies = [[100, "IV"], [121, "V"], [152, "VI"], [182, "VII"], [213, "VIII"]];
+    for (const [doy, et] of mies) {
+      const i = DEK.findIndex(d => d >= doy);
+      if (i >= 0) svg += `<text x="${8 + i * bw}" y="108" font-size="10" fill="${MUTED}">${et}</text>`;
+    }
+    svg += "</svg>";
+    const suma = w.reduce((a, b) => a + b, 0);
+    const teraz = stan.widok === "kal" ? w[stan.dek] : suma;
+    const etTeraz = stan.widok === "kal"
+      ? pl(teraz, 2) + " t w tym okresie"
+      : pl(suma, 1) + " t w całym sezonie";
+    const miasto = najblizsze(idx);
+    const gat = stan.widok === "kal"
+      ? htmlGatunkow(wkladPunkt(rok, stan.dek, idx), "skład w tym miejscu")
+      : "";
+    return `<div class="wartosc">${etTeraz}</div>
+      <div class="jedn">${miasto}${stan.widok === "gdzie" ? " · kalendarz typowego roku" : ""} · tony cukrów w zasięgu lotu</div>
+      ${svg}${gat}`;
+  }
+  function najblizsze(idx) {
+    const x = (idx % nx) + .5, y = (idx / nx | 0) + .5;
+    let best = "", bd = 1e9;
+    for (const m of D.miasta) {
+      const d = (m.x - x) ** 2 + (m.y - y) ** 2;
+      if (d < bd) { bd = d; best = m.n; }
+    }
+    return best ? "k. " + best : "";
+  }
+
+  function rysuj() {
+    document.getElementById("lead").textContent = LEAD[stan.zrodlo][stan.widok];
+    document.getElementById("uwaga").textContent = UWAGA[stan.zrodlo];
+    document.getElementById("work").classList.toggle("place", stan.widok === "gdzie");
+    document.getElementById("wrap-b").classList.toggle("ukryty", stan.widok !== "gdzie");
+    document.getElementById("sec-rok").classList.toggle("ukryty", stan.widok === "gdzie");
+    document.getElementById("sec-dek").classList.toggle("ukryty", stan.widok === "gdzie");
+    document.getElementById("tab-kal").setAttribute("aria-selected", stan.widok === "kal");
+    document.getElementById("tab-gdzie").setAttribute("aria-selected", stan.widok === "gdzie");
+    document.getElementById("tab-rol").setAttribute("aria-selected", stan.zrodlo === "rolnicy");
+    document.getElementById("tab-sat").setAttribute("aria-selected", stan.zrodlo === "satelita");
+    document.getElementById("tab-kon").setAttribute("aria-selected", stan.zrodlo === "koncowy");
+    document.getElementById("jedn-t").className = stan.jedn === "t" ? "sr" : "";
+    document.getElementById("jedn-r").className = stan.jedn === "r" ? "sr" : "";
+    for (const b of lataEl.querySelectorAll("button"))
+      b.setAttribute("aria-pressed", b.dataset.rok === stan.rok);
+
+    if (stan.widok === "kal") {
+      document.getElementById("napis-a").innerHTML =
+        "<strong>Pożytek w ciągu 5 dni</strong><span>" + (stan.jedn === "r" ? "rodzin pszczelich w zasięgu lotu" : "tony cukrów w zasięgu lotu") + "</span>";
+      document.getElementById("dek-nazwa").textContent =
+        dz(DEK[stan.dek]) + " – " + dz(DEK[stan.dek] + KROK - 1);
+      document.getElementById("suwak").value = stan.dek;
+      const s = zloz(stan.rok);
+      const off0 = stan.dek * N;
+      const br = percentyle(s, off0);
+      const sila = szczytTyp() > 0 ? sredniaMaski(s, off0) / szczytTyp() : 0;
+      document.getElementById("sila-pct").textContent = Math.round(sila * 100) + "%";
+      document.getElementById("sila-wyp").style.width = Math.min(100, sila * 100) + "%";
+      const ur = udzialRzepaku(stan.rok, stan.dek);
+      const zEl = document.getElementById("zrodlo");
+      zEl.className = ur < 0.25 ? "zrodlo stala" : "zrodlo";
+      if (ur < 0.25 && stan.zrodlo === "rolnicy")
+        zEl.textContent = "Rzepak przekwitł. W tym okresie mapa stoi na fasoli, gryce, łąkach — z deklaracji tego roku (2025 vs 2026 może się różnić).";
+      else if (ur < 0.25 && stan.zrodlo === "koncowy")
+        zEl.textContent = "Rzepak przekwitł. W tym okresie mapa stoi na łąkach, gryce i fasoli — czyli głównie na warstwie z deklaracji.";
+      else if (ur < 0.25)
+        zEl.textContent = "Satelita widzi tu rzepak, grykę i słonecznik — czyli gatunki wędrujące w płodozmianie, dla których detekcja bije pamięć \"rosło tam rok temu\". Łąk, sadów i malin tu nie ma: to uprawy trwałe, dla których deklaracje są lepszym źródłem.";
+      else
+        zEl.textContent = zrodloTekst(stan.rok);
+      document.getElementById("dek-opis").textContent =
+        (stan.rok === "sr" ? "typowy rok" : "sezon " + stan.rok)
+        + (stan.zrodlo === "rolnicy" ? " · deklaracje ARiMR"
+           : stan.zrodlo === "koncowy" ? " · detekcja + deklaracje"
+           : " · detekcja: 3 gatunki wędrujące");
+      malujRaster(cvA, s, off0, br, KOL);
+      legenda(br, "t", KOL);
+      document.getElementById("lista-gatunkow").innerHTML = htmlGatunkow(
+        wkladWoj(stan.rok, stan.dek),
+        "udział w mapie · " + etJedn() + " = średnia w województwie");
+    } else if (stan.zrodlo === "rolnicy") {
+      document.getElementById("napis-a").innerHTML =
+        "<strong>Deklaracje 2025</strong><span>suma sezonu · tony cukrów w zasięgu lotu</span>";
+      document.getElementById("napis-b").innerHTML =
+        "<strong>Deklaracje 2026</strong><span>suma sezonu · tony cukrów w zasięgu lotu</span>";
+      malujRaster(cvA, sezonGsa["2025"], 0, D.rolnicy.progi_sezon, KOL);
+      malujRaster(cvB, sezonGsa["2026"], 0, D.rolnicy.progi_sezon, KOL);
+      const el = document.getElementById("legenda");
+      el.innerHTML = "";
+      el.appendChild(naglowekLegendy("Sezon, " + etJedn()));
+      el.appendChild(pozycjeLegendy(D.rolnicy.progi_sezon, "t", KOL));
+    } else if (stan.zrodlo === "koncowy") {
+      document.getElementById("napis-a").innerHTML =
+        "<strong>Produkt końcowy, przeciętny rok</strong><span>wszystkie pożytki: 3 wędrujące z detekcji + 13 trwałych z deklaracji</span>";
+      document.getElementById("napis-b").innerHTML =
+        "<strong>Niezawodność warstwy wędrującej</strong><span>ile sezonów z " + nLatSat + " w najlepszych 20% · dotyczy tylko upraw z detekcji</span>";
+      malujRaster(cvA, sezonKon, 0, progiKonSezon, KOL);
+      malujRaster(cvB, niezaw, 0, PROGI_N, KOL_N);
+      const el = document.getElementById("legenda");
+      el.innerHTML = "";
+      el.appendChild(naglowekLegendy("Przeciętny rok, " + etJedn()));
+      el.appendChild(pozycjeLegendy(progiKonSezon, "t", KOL));
+      el.appendChild(naglowekLegendy("Niezawodność"));
+      el.appendChild(pozycjeLegendy(PROGI_N, "", KOL_N, ET_N));
+    } else {
+      document.getElementById("napis-a").innerHTML =
+        "<strong>Satelita, przeciętny rok</strong><span>rzepak, gryka i słonecznik z detekcji 2019–2025, po kalibracji areałowej</span>";
+      document.getElementById("napis-b").innerHTML =
+        "<strong>Niezawodność rzepaku</strong><span>ile sezonów z " + nLatSat + " w najlepszych 20%</span>";
+      malujRaster(cvA, sezonSat, 0, progiSatSezon, KOL);
+      malujRaster(cvB, niezaw, 0, PROGI_N, KOL_N);
+      const el = document.getElementById("legenda");
+      el.innerHTML = "";
+      el.appendChild(naglowekLegendy("Przeciętny rok, " + etJedn()));
+      el.appendChild(pozycjeLegendy(progiSatSezon, "t", KOL));
+      el.appendChild(naglowekLegendy("Niezawodność"));
+      el.appendChild(pozycjeLegendy(PROGI_N, "", KOL_N, ET_N));
+    }
+
+    const od = document.getElementById("odczyt");
+    if (stan.sel == null) {
+      od.innerHTML = '<p class="puste">Kliknij mapę — pokaże się kalendarz tego punktu: co 5 dni od kwietnia do sierpnia.</p>';
+    } else {
+      od.innerHTML = kalendarzHtml(stan.sel, stan.widok === "gdzie" ? "sr" : stan.rok);
+    }
+  }
+
+  function hoverGdzie(i) {
+    if (stan.zrodlo === "rolnicy") return pl(wJedn(sezonGsa["2025"][i]), stan.jedn === "r" ? 0 : 2) + " " + etJedn() + " (2025)";
+    if (stan.zrodlo === "koncowy")
+      return pl(wJedn(sezonKon[i]), stan.jedn === "r" ? 0 : 2) + " " + etJedn();
+    return pl(wJedn(sezonSat[i]), stan.jedn === "r" ? 0 : 2) + " " + etJedn();
+  }
+  function podpietaMapa(cv, hoverEl, fmt) {
+    cv.addEventListener("mousemove", ev => {
+      const i = pixZdarzenia(cv, ev);
+      hoverEl.textContent = i < 0 ? "" : fmt(i);
+    });
+    cv.addEventListener("mouseleave", () => { hoverEl.textContent = ""; });
+    cv.addEventListener("click", ev => {
+      const i = pixZdarzenia(cv, ev);
+      if (i < 0) return;
+      stan.sel = i;
+      rysuj();
+      pobierzPrognoze(i);
+    });
+  }
+  podpietaMapa(cvA, document.getElementById("hover-a"), i => {
+    if (stan.widok === "gdzie") return hoverGdzie(i);
+    return pl(wJedn(zloz(stan.rok)[stan.dek * N + i]), stan.jedn === "r" ? 0 : 2)
+           + " " + etJedn();
+  });
+  podpietaMapa(cvB, document.getElementById("hover-b"), i => {
+    if (stan.zrodlo === "rolnicy") return pl(wJedn(sezonGsa["2026"][i]), stan.jedn === "r" ? 0 : 2) + " " + etJedn() + " (2026)";
+    return Math.round(niezaw[i]) + " z " + nLatSat;
+  });
+
+  function zmienZrodlo(z) {
+    stan.zrodlo = z;
+    const lata = D[z].lata.map(String);
+    if (stan.rok !== "sr" && lata.indexOf(stan.rok) < 0) stan.rok = "sr";
+    zbudujLata();
+    rysuj();
+  }
+  document.getElementById("tab-rol").addEventListener("click", () => zmienZrodlo("rolnicy"));
+  document.getElementById("tab-sat").addEventListener("click", () => zmienZrodlo("satelita"));
+  document.getElementById("tab-kon").addEventListener("click", () => zmienZrodlo("koncowy"));
+  document.getElementById("jedn-t").addEventListener("click", () => { stan.jedn = "t"; rysuj(); });
+  document.getElementById("jedn-r").addEventListener("click", () => { stan.jedn = "r"; rysuj(); });
+  document.getElementById("tab-kal").addEventListener("click", () => { stan.widok = "kal"; rysuj(); });
+  document.getElementById("tab-gdzie").addEventListener("click", () => { stan.widok = "gdzie"; rysuj(); });
+  document.getElementById("suwak").addEventListener("input", e => { stan.dek = +e.target.value; rysuj(); });
+  window.addEventListener("resize", rysuj);
+  window.addEventListener("keydown", ev => {
+    if (stan.widok !== "kal") return;
+    if (ev.key === "ArrowLeft") { stan.dek = Math.max(0, stan.dek - 1); rysuj(); }
+    if (ev.key === "ArrowRight") { stan.dek = Math.min(DEK.length - 1, stan.dek + 1); rysuj(); }
+  });
+
+  zbudujLata();
+  rysuj();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+# dane wejsciowe - ~2 GB, pobierane z geoportalu ARiMR
+dane/
+
+# produkty posrednie - odtwarzalne (uwaga: cache/woj_prawd_* to 10 h GEE)
+wyniki/rastry/*
+!wyniki/rastry/.gitkeep
+wyniki/cache/*
+!wyniki/cache/.gitkeep
+wyniki/podglady/*
+!wyniki/podglady/.gitkeep
+
+# GOTOWE STRONY SA SLEDZONE - CELOWO.
+# Normalnie plikow generowanych sie nie wersjonuje, ale tutaj NIE DA SIE ich
+# odtworzyc po pobraniu: wymagaja dane/ (3,9 GB) i wyniki/cache/ (0,7 GB),
+# ktorych repozytorium nie zawiera. Bez nich ktos, kto sklonuje projekt,
+# nie zobaczy zadnego wyniku - a to one sa produktem koncowym.
+# Buduje je: python skrypty/serwis/eksport_paczka.py
+
+# logi z uruchomien - robocze, nie wynik
+wyniki/log_*.txt
+
+# srodowisko
+__pycache__/
+*.pyc
+.ee_projekt
+
+# porzucony renderer PNG warstwy rzepaku - dawal ziarnista mape,
+# zastapily go warstwy kalendarza rysowane na canvas
+mapy/warstwa_rzepak.png
+
+# wyniki liczbowe w JSON zostaja pod kontrola wersji

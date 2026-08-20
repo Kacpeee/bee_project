@@ -1,0 +1,172 @@
+{
+ "zapotrzebowanie_kg_miodu_rocznie": 90.0,
+ "zapotrzebowanie_kg_cukrow": 72.0,
+ "zuzycie_miesieczne_kg_miodu": {
+  "1": 1,
+  "2": 1,
+  "3": 3,
+  "4": 8,
+  "5": 15,
+  "6": 20,
+  "7": 15,
+  "8": 13,
+  "9": 8,
+  "10": 3,
+  "11": 2,
+  "12": 1
+ },
+ "percentyle_pojemnosci": {
+  "50": 59.6915168762207,
+  "75": 103.81845092773438,
+  "90": 143.57456970214844,
+  "99": 221.93740844726562,
+  "100": 441.97607421875
+ },
+ "bilans_dekadowy": {
+  "100": {
+   "popyt_kg": 2.1333333333333333,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": -9.867429733265518e-17,
+    "Hrubieszów (pilot)": 0.1556569735209147,
+    "Bychawa": 0.032105485598246254,
+    "Włodawa (Polesie)": 1.598165647724723e-16
+   }
+  },
+  "110": {
+   "popyt_kg": 2.1333333333333333,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 7.047252475980173e-16,
+    "Hrubieszów (pilot)": 0.1556569735209147,
+    "Bychawa": 0.05886560016208225,
+    "Włodawa (Polesie)": 8.703352000923539e-16
+   }
+  },
+  "120": {
+   "popyt_kg": 2.1333333333333333,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 145.23796929253473,
+    "Hrubieszów (pilot)": 16.776131523980034,
+    "Bychawa": 17.276140001085068,
+    "Włodawa (Polesie)": 2.987034479777018
+   }
+  },
+  "130": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 135.80692545572916,
+    "Hrubieszów (pilot)": 60.96143256293403,
+    "Bychawa": 62.70525444878472,
+    "Włodawa (Polesie)": 3.0196075439453125
+   }
+  },
+  "140": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 3.6655917833930647e-16,
+    "Hrubieszów (pilot)": 1.8880926767985027,
+    "Bychawa": 1.2621068954467773,
+    "Włodawa (Polesie)": 1.8733758284779072e-16
+   }
+  },
+  "150": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.014264098472065397,
+    "Hrubieszów (pilot)": 1.4383845859103732,
+    "Bychawa": 0.8876150449117024,
+    "Włodawa (Polesie)": 0.12362139754825169
+   }
+  },
+  "160": {
+   "popyt_kg": 5.333333333333334,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.05230169163809882,
+    "Hrubieszów (pilot)": 0.6587396727667915,
+    "Bychawa": 0.1694384945763482,
+    "Włodawa (Polesie)": 0.45327843560112846
+   }
+  },
+  "170": {
+   "popyt_kg": 5.333333333333334,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.13385038905673557,
+    "Hrubieszów (pilot)": 0.68282593621148,
+    "Bychawa": 2.395748562282986,
+    "Włodawa (Polesie)": 0.04862502548429701
+   }
+  },
+  "180": {
+   "popyt_kg": 5.333333333333334,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 16.111592610677082,
+    "Hrubieszów (pilot)": 6.60819837782118,
+    "Bychawa": 3.41850217183431,
+    "Włodawa (Polesie)": 3.602951897515191
+   }
+  },
+  "190": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 19.870680067274307,
+    "Hrubieszów (pilot)": 8.59730445014106,
+    "Bychawa": 5.59641350640191,
+    "Włodawa (Polesie)": 11.938707139756945
+   }
+  },
+  "200": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 10.248658074273003,
+    "Hrubieszów (pilot)": 4.823711819118923,
+    "Bychawa": 2.3582547505696616,
+    "Włodawa (Polesie)": 10.70290035671658
+   }
+  },
+  "210": {
+   "popyt_kg": 4.0,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.13813559214274088,
+    "Hrubieszów (pilot)": 0.18863267368740505,
+    "Bychawa": 0.6890493498908149,
+    "Włodawa (Polesie)": 2.365008248223199
+   }
+  },
+  "220": {
+   "popyt_kg": 3.4666666666666663,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.01171822514798906,
+    "Hrubieszów (pilot)": 0.01822635531425476,
+    "Bychawa": 0.17949208948347303,
+    "Włodawa (Polesie)": 0.39115309715270996
+   }
+  },
+  "230": {
+   "popyt_kg": 3.4666666666666663,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.0,
+    "Hrubieszów (pilot)": 0.0,
+    "Bychawa": 0.0,
+    "Włodawa (Polesie)": 0.0
+   }
+  },
+  "240": {
+   "popyt_kg": 3.4666666666666663,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.0,
+    "Hrubieszów (pilot)": 0.0,
+    "Bychawa": 0.0,
+    "Włodawa (Polesie)": 0.0
+   }
+  },
+  "250": {
+   "popyt_kg": 2.1333333333333333,
+   "podaz_rodzin": {
+    "Bełżec (najlepszy)": 0.0,
+    "Hrubieszów (pilot)": 0.0,
+    "Bychawa": 0.0,
+    "Włodawa (Polesie)": 0.0
+   }
+  }
+ },
+ "zastrzezenie": "nektar wytworzony, nie zebrany - gorne oszacowanie"
+}

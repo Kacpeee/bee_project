@@ -1,0 +1,91 @@
+<!doctype html><html lang="pl"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Model pożytkowy — Lubelskie</title>
+<style>
+ :root{--tlo:#f4f6f5;--atr:#16201c;--mut:#5f6b66;--akc:#1d6f42;
+       --akc2:#b3801a;--ram:#dbe3df;--kar:#fff;--cien:0 1px 3px rgba(0,0,0,.05)}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--tlo);color:var(--atr);
+      font:16px/1.6 "Segoe UI",system-ui,sans-serif}
+ a{color:var(--akc)}
+ nav{background:var(--kar);border-bottom:1px solid var(--ram);
+     position:sticky;top:0;z-index:20}
+ nav .in{max-width:940px;margin:0 auto;padding:0 20px;display:flex;
+         align-items:center;gap:4px;height:56px}
+ nav .logo{font-weight:600;margin-right:auto;font-size:15px;
+           display:flex;align-items:center;gap:9px}
+ nav .kropka{width:9px;height:9px;border-radius:50%;background:var(--akc2)}
+ nav a{padding:7px 13px;border-radius:7px;text-decoration:none;
+       color:var(--mut);font-size:14.5px}
+ nav a:hover{background:var(--tlo);color:var(--atr)}
+ nav a.akt{background:var(--akc);color:#fff}
+ .w{max-width:940px;margin:0 auto;padding:38px 20px 70px}
+ h1{font-size:27px;margin:0 0 4px;letter-spacing:-.3px}
+ h1::after{content:"";display:block;width:46px;height:3px;
+           background:var(--akc2);margin-top:11px;border-radius:2px}
+ .pod{color:var(--mut);margin:0 0 26px;font-size:15px}
+ .karta{background:var(--kar);border:1px solid var(--ram);box-shadow:var(--cien);
+        border-radius:12px;padding:20px 22px;margin:0 0 16px}
+ .siatka{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+ @media(max-width:760px){.siatka{grid-template-columns:1fr}}
+ label{display:block;font-size:12.5px;color:var(--mut);margin:0 0 4px;
+       text-transform:uppercase;letter-spacing:.5px}
+ input{width:100%;padding:9px 11px;border:1px solid var(--ram);border-radius:7px;
+       font:inherit;background:var(--kar);color:var(--atr)}
+ .rzad{display:flex;gap:12px}.rzad>div{flex:1}
+ button{margin-top:14px;width:100%;padding:11px;border:0;border-radius:7px;
+        background:var(--akc);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+ button:hover{filter:brightness(1.08)}
+ .duza{font-size:34px;font-weight:600;margin:2px 0;letter-spacing:-.5px}
+ .pm{font-size:15px;font-weight:400;color:var(--mut)}
+ .mniej{color:var(--mut);font-size:13.5px}
+ table{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14.5px}
+ td{padding:7px 0;border-bottom:1px solid var(--ram)}
+ td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+ .zle{color:#a8442a}
+ .pasek{margin:14px 0 4px}
+ .pasek-tor{height:9px;background:var(--ram);border-radius:5px;overflow:hidden}
+ .pasek-wyp{height:100%;background:var(--akc);border-radius:5px;
+   transition:width .3s}
+ .pasek-txt{display:flex;justify-content:space-between;font-size:13px;
+   color:var(--mut);margin-top:6px}
+ .ostrzez{background:rgba(179,128,26,.13);border-left:3px solid var(--akc2);
+   padding:10px 13px;margin:10px 0 0;font-size:13.5px;border-radius:0 7px 7px 0;
+   color:var(--atr)}
+ .lista{max-height:320px;overflow:auto;margin:6px -6px 0}
+ .poz{display:flex;align-items:center;gap:10px;padding:8px 10px;
+      border-radius:8px;cursor:pointer;font-size:14.5px}
+ .poz:hover{background:var(--tlo)}
+ .poz.akt{background:var(--akc);color:#fff}
+ .poz .nr{width:22px;height:22px;border-radius:50%;background:var(--tlo);
+          color:var(--mut);font-size:12px;display:grid;place-items:center;
+          flex:0 0 auto;font-weight:600}
+ .poz.akt .nr{background:rgba(255,255,255,.25);color:#fff}
+ .poz .rodz{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:600}
+ #mapa img{width:100%;height:auto;display:block;border-radius:9px;
+   border:1px solid var(--ram);margin:10px 0 8px;background:#fff}
+ .krok{display:flex;gap:12px;align-items:flex-start;margin:0 0 12px}
+ .krok .ik{width:26px;height:26px;border-radius:50%;background:var(--akc);
+           color:#fff;display:grid;place-items:center;font-size:13px;
+           font-weight:600;flex:0 0 auto}
+ @media(prefers-color-scheme:dark){
+  :root{--tlo:#101613;--atr:#e3eae6;--mut:#8d9a94;--ram:#27332d;
+        --kar:#18211d;--akc:#54b37c;--akc2:#d6a53f;--cien:none}}
+
+ .kafel{display:block;background:var(--kar);border:1px solid var(--ram);
+   box-shadow:var(--cien);border-radius:12px;padding:18px 20px;margin:0 0 12px;
+   text-decoration:none;color:var(--atr)}
+ .kafel:hover{border-color:var(--akc)}
+ .kafel b{display:block;font-size:17px;margin-bottom:3px}
+ .kafel span{color:var(--mut);font-size:14px}
+ .uwaga{background:#fdf6e6;border-left:3px solid var(--akc2);padding:12px 15px;
+   border-radius:0 7px 7px 0;font-size:14px;color:#6b5416;margin:22px 0 0}
+</style>
+<div class="w">
+<h1>Model pożytkowy — województwo lubelskie</h1>
+<p class="pod">Gdzie postawić ul i kiedy zakwitnie rzepak. Wszystkie strony
+otwierają się z dysku — nie trzeba niczego instalować.</p>
+<a class="kafel" href="prognoza.html"><b>Prognoza</b><span>kiedy zakwitnie rzepak w wybranym miejscu</span></a><a class="kafel" href="kalendarz.html"><b>Kalendarz</b><span>co i kiedy kwitnie w każdym powiecie</span></a><a class="kafel" href="raport.html"><b>Raport</b><span>pełne wyniki, walidacje i zastrzeżenia</span></a><a class="kafel" href="mechanika.html"><b>Jak to działa</b><span>krok po kroku, skąd biorą się liczby</span></a>
+<p class="uwaga"><b>Prognoza</b> pobiera aktualną pogodę z Open-Meteo, więc
+potrzebuje internetu. Pozostałe trzy strony działają całkowicie bez sieci.</p>
+</div>

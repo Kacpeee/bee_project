@@ -1,0 +1,26 @@
+{
+ "lata": [
+  2025,
+  2024,
+  2023,
+  2022,
+  2021,
+  2020,
+  2019
+ ],
+ "trening": 2025,
+ "cechy": [
+  "jesien_ndvi",
+  "marzec_ndvi",
+  "marzec_ndyi",
+  "kwit_ndyi_max",
+  "kwit_ndyi_sr",
+  "kwit_ndvi_min",
+  "kwit_ndvi_sr",
+  "czerwiec_ndvi"
+ ],
+ "walidacja": {
+  "precyzja": 0.8457059679767104,
+  "czulosc": 0.9651162790697675
+ }
+}

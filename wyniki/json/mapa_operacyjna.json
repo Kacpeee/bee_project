@@ -1,0 +1,11 @@
+{
+ "sklad": {
+  "rzepak": "detekcja przedkwitnieniowa, prog 0.65",
+  "reszta": "deklaracje ostatniego roku minus ich rzepak"
+ },
+ "weryfikacja_2025": {
+  "r": 0.9528772831602517,
+  "top10_trafione": 0.7414119772638244,
+  "pulap_miedzyroczny_top10": 0.71
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "rok": 2025,
+ "n_cech": 52,
+ "drzew": 300,
+ "walidacja": "bloki przestrzenne 2500 m",
+ "wyniki": {
+  "rzepak ozimy": {
+   "n": 414,
+   "precyzja": 0.6196721311475409,
+   "czulosc": 0.9130434782608695,
+   "f1": 0.7382812499999999,
+   "mylona_z": "inne",
+   "udzial_pomylki": 0.05314009661835749
+  },
+  "fasola wielokwiatowa": {
+   "n": 405,
+   "precyzja": 0.8073593073593074,
+   "czulosc": 0.9209876543209876,
+   "f1": 0.8604382929642445,
+   "mylona_z": "słonecznik",
+   "udzial_pomylki": 0.04197530864197531
+  },
+  "gryka zwyczajna": {
+   "n": 403,
+   "precyzja": 0.49604743083003955,
+   "czulosc": 0.6228287841191067,
+   "f1": 0.5522552255225522,
+   "mylona_z": "słonecznik",
+   "udzial_pomylki": 0.0967741935483871
+  },
+  "malina": {
+   "n": 420,
+   "precyzja": 0.492,
+   "czulosc": 0.5857142857142857,
+   "f1": 0.5347826086956521,
+   "mylona_z": "porzeczka",
+   "udzial_pomylki": 0.10714285714285714
+  },
+  "koniczyna czerwona": {
+   "n": 425,
+   "precyzja": 0.6348314606741573,
+   "czulosc": 0.5317647058823529,
+   "f1": 0.5787451984635084,
+   "mylona_z": "lucerna mieszańcowa",
+   "udzial_pomylki": 0.1388235294117647
+  },
+  "lucerna mieszańcowa": {
+   "n": 394,
+   "precyzja": 0.6711956521739131,
+   "czulosc": 0.6269035532994924,
+   "f1": 0.6482939632545932,
+   "mylona_z": "koniczyna czerwona",
+   "udzial_pomylki": 0.1065989847715736
+  },
+  "gorczyca biała": {
+   "n": 399,
+   "precyzja": 0.44191919191919193,
+   "czulosc": 0.43859649122807015,
+   "f1": 0.44025157232704404,
+   "mylona_z": "gryka zwyczajna",
+   "udzial_pomylki": 0.14285714285714285
+  },
+  "porzeczka": {
+   "n": 458,
+   "precyzja": 0.6175824175824176,
+   "czulosc": 0.6135371179039302,
+   "f1": 0.615553121577218,
+   "mylona_z": "malina",
+   "udzial_pomylki": 0.11790393013100436
+  },
+  "TUZ": {
+   "n": 400,
+   "precyzja": 0.5626326963906582,
+   "czulosc": 0.6625,
+   "f1": 0.6084959816303099,
+   "mylona_z": "Sad",
+   "udzial_pomylki": 0.0825
+  },
+  "słonecznik": {
+   "n": 391,
+   "precyzja": 0.40594059405940597,
+   "czulosc": 0.4194373401534527,
+   "f1": 0.4125786163522012,
+   "mylona_z": "gryka zwyczajna",
+   "udzial_pomylki": 0.1432225063938619
+  },
+  "słonecznik oleisty": {
+   "n": 140,
+   "precyzja": 0.6043956043956044,
+   "czulosc": 0.39285714285714285,
+   "f1": 0.4761904761904761,
+   "mylona_z": "słonecznik",
+   "udzial_pomylki": 0.2785714285714286
+  },
+  "bobik": {
+   "n": 265,
+   "precyzja": 0.8217391304347826,
+   "czulosc": 0.7132075471698113,
+   "f1": 0.7636363636363636,
+   "mylona_z": "słonecznik",
+   "udzial_pomylki": 0.06792452830188679
+  },
+  "Sad": {
+   "n": 408,
+   "precyzja": 0.6293859649122807,
+   "czulosc": 0.7034313725490197,
+   "f1": 0.6643518518518519,
+   "mylona_z": "malina",
+   "udzial_pomylki": 0.09313725490196079
+  },
+  "gorczyca": {
+   "n": 415,
+   "precyzja": 0.3464566929133858,
+   "czulosc": 0.21204819277108433,
+   "f1": 0.26307922272047835,
+   "mylona_z": "gorczyca biała",
+   "udzial_pomylki": 0.3349397590361446
+  },
+  "rzepak jary": {
+   "n": 280,
+   "precyzja": 0.4117647058823529,
+   "czulosc": 0.025,
+   "f1": 0.04713804713804714,
+   "mylona_z": "rzepak ozimy",
+   "udzial_pomylki": 0.725
+  },
+  "inne": {
+   "n": 719,
+   "precyzja": 0.7118421052631579,
+   "czulosc": 0.7524339360222532,
+   "f1": 0.7315753887762002,
+   "mylona_z": "TUZ",
+   "udzial_pomylki": 0.03616133518776078
+  }
+ },
+ "wykrywalne_f1_08": [
+  "fasola wielokwiatowa"
+ ],
+ "pokrycie_cukru_pct": 5.1
+}

@@ -1,0 +1,16 @@
+{
+ "prog_arealowy": {
+  "prog": 0.65,
+  "areal_ha": 135937,
+  "precyzja": 0.6297843854138314,
+  "czulosc": 0.7614130579791349,
+  "f1": 0.6893716733635566
+ },
+ "korelacja_rzepak_tuz": 0.8553805289790474,
+ "korelacja_pelna": 0.7395146022960518,
+ "zrodla": {
+  "rzepak": "klasyfikator S2 przedkwitnieniowy",
+  "TUZ": "ESA WorldCover 2021 klasa 30",
+  "terminy": "model GDD"
+ }
+}

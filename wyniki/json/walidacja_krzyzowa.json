@@ -1,0 +1,19 @@
+{
+ "metoda": "leave-one-out: dla kazdej obserwacji baza i prog dobierane na pozostalych, blad liczony na odlozonej",
+ "zastrzezenie": "wartosci odniesienia to daty z krzywych NDYI Sentinel-2, nie obserwacje polowe; niezalezna walidacja polowa istnieje tylko dla lipy (2.8 d) i robinii (-1 d) wobec map IMGW",
+ "czyste": {
+  "n": 52,
+  "rmse_in_sample": 3.4769747058867844,
+  "rmse_loo": 3.4769747058867844,
+  "baza": 1.0,
+  "prog": 555.0,
+  "blad_sredni": 0.4694956320451008,
+  "najgorszy_d": 7.767197090536214
+ },
+ "pelne_z_odrzuconymi": {
+  "n": 59,
+  "rmse_in_sample": 6.229967867900867,
+  "rmse_loo": 6.312249721125699,
+  "najgorszy_d": 26.124990664907244
+ }
+}

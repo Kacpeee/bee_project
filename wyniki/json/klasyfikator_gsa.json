@@ -1,0 +1,30 @@
+{
+ "rok": 2025,
+ "etykiety": "ARiMR GSA 2025",
+ "bufor_ujemny_m": -10,
+ "blok_m": 2500,
+ "punktow": 10388,
+ "przestrzenna": {
+  "tn": 4124,
+  "fp": 130,
+  "fn": 26,
+  "tp": 878,
+  "precyzja": 0.871031746031746,
+  "czulosc": 0.9712389380530974,
+  "f1": 0.918410041841004,
+  "oa": 0.9697557192710353,
+  "n": 5158
+ },
+ "areal_model_ha": 12763.230571408749,
+ "areal_gsa_ha": 10808,
+ "waznosc_cech": {
+  "czerwiec_ndvi": 532.1160775299379,
+  "jesien_ndvi": 598.0956874663694,
+  "kwit_ndvi_min": 546.1911482016679,
+  "kwit_ndvi_sr": 537.6298459536292,
+  "kwit_ndyi_max": 521.5984655923514,
+  "kwit_ndyi_sr": 516.9780600899661,
+  "marzec_ndvi": 529.7321021171566,
+  "marzec_ndyi": 502.1981711623608
+ }
+}

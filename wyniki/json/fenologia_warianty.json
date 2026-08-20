@@ -1,0 +1,96 @@
+{
+ "obserwacji": 52,
+ "baza": 1.0,
+ "start_doy": 32,
+ "chlod_przedzial": [
+  0.0,
+  7.2
+ ],
+ "warianty": {
+  "podstawowy": {
+   "prog": 555.0,
+   "rmse": 3.4769747058867844,
+   "n": 52,
+   "gorny": null,
+   "chlod": null
+  },
+  "jarowizacja 20 dni": {
+   "prog": 550.0,
+   "rmse": 3.9643935076715353,
+   "n": 52,
+   "gorny": null,
+   "chlod": 20
+  },
+  "jarowizacja 40 dni": {
+   "prog": 445.0,
+   "rmse": 6.085173577057654,
+   "n": 45,
+   "gorny": null,
+   "chlod": 40
+  },
+  "gorny prog 25 C": {
+   "prog": 555.0,
+   "rmse": 3.4769747058867844,
+   "n": 52,
+   "gorny": 25.0,
+   "chlod": null
+  },
+  "prog 25 C + jarowizacja 20": {
+   "prog": 550.0,
+   "rmse": 3.9643935076715353,
+   "n": 52,
+   "gorny": 25.0,
+   "chlod": 20
+  },
+  "prog 25 C + jarowizacja 40": {
+   "prog": 445.0,
+   "rmse": 6.085173577057654,
+   "n": 45,
+   "gorny": 25.0,
+   "chlod": 40
+  },
+  "gorny prog 28 C": {
+   "prog": 555.0,
+   "rmse": 3.4769747058867844,
+   "n": 52,
+   "gorny": 28.0,
+   "chlod": null
+  },
+  "prog 28 C + jarowizacja 20": {
+   "prog": 550.0,
+   "rmse": 3.9643935076715353,
+   "n": 52,
+   "gorny": 28.0,
+   "chlod": 20
+  },
+  "prog 28 C + jarowizacja 40": {
+   "prog": 445.0,
+   "rmse": 6.085173577057654,
+   "n": 45,
+   "gorny": 28.0,
+   "chlod": 40
+  },
+  "gorny prog 30 C": {
+   "prog": 555.0,
+   "rmse": 3.4769747058867844,
+   "n": 52,
+   "gorny": 30.0,
+   "chlod": null
+  },
+  "prog 30 C + jarowizacja 20": {
+   "prog": 550.0,
+   "rmse": 3.9643935076715353,
+   "n": 52,
+   "gorny": 30.0,
+   "chlod": 20
+  },
+  "prog 30 C + jarowizacja 40": {
+   "prog": 445.0,
+   "rmse": 6.085173577057654,
+   "n": 45,
+   "gorny": 30.0,
+   "chlod": 40
+  }
+ },
+ "najlepszy": "podstawowy"
+}

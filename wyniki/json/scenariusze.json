@@ -1,0 +1,118 @@
+{
+ "rok_treningu": 2022,
+ "rok_testu": 2018,
+ "areal_etykiet": {
+  "2022": 7551.187137250226,
+  "2018": 8517.756549014073
+ },
+ "scenariusze": {
+  "pelny_sezon": {
+   "cechy": [
+    "jesien_ndvi",
+    "marzec_ndvi",
+    "marzec_ndyi",
+    "kwit_ndyi_max",
+    "kwit_ndyi_sr",
+    "kwit_ndvi_min",
+    "kwit_ndvi_sr",
+    "czerwiec_ndvi"
+   ],
+   "przestrzenna": {
+    "tn": 6425,
+    "fp": 320,
+    "fn": 220,
+    "tp": 1268,
+    "precyzja": 0.7984886649874056,
+    "czulosc": 0.8521505376344086,
+    "f1": 0.8244473342002602,
+    "oa": 0.9344103000121462,
+    "n": 8233
+   },
+   "miedzyroczna": {
+    "tn": 21447,
+    "fp": 2220,
+    "fn": 662,
+    "tp": 3094,
+    "precyzja": 0.5822356040647346,
+    "czulosc": 0.8237486687965921,
+    "f1": 0.6822491730981257,
+    "oa": 0.8949057360609707,
+    "n": 27423
+   },
+   "areal": {
+    "2022": 10718.692670912056,
+    "2018": 11915.090212560017
+   },
+   "mapa": "wyniki/podglady/mapa_pelny_sezon.png"
+  },
+  "przed_kwitnieniem": {
+   "cechy": [
+    "jesien_ndvi",
+    "marzec_ndvi",
+    "marzec_ndyi"
+   ],
+   "przestrzenna": {
+    "tn": 5505,
+    "fp": 1240,
+    "fn": 312,
+    "tp": 1176,
+    "precyzja": 0.4867549668874172,
+    "czulosc": 0.7903225806451613,
+    "f1": 0.6024590163934426,
+    "oa": 0.811490343738613,
+    "n": 8233
+   },
+   "miedzyroczna": {
+    "tn": 19615,
+    "fp": 4052,
+    "fn": 832,
+    "tp": 2924,
+    "precyzja": 0.419151376146789,
+    "czulosc": 0.7784877529286475,
+    "f1": 0.5449124114796869,
+    "oa": 0.8219013237063778,
+    "n": 27423
+   },
+   "areal": {
+    "2022": 17015.394678284323,
+    "2018": 15426.268020782398
+   },
+   "mapa": "wyniki/podglady/mapa_przed_kwitnieniem.png"
+  },
+  "tylko_kwitnienie": {
+   "cechy": [
+    "kwit_ndyi_max",
+    "kwit_ndyi_sr",
+    "kwit_ndvi_min",
+    "kwit_ndvi_sr"
+   ],
+   "przestrzenna": {
+    "tn": 6346,
+    "fp": 399,
+    "fn": 237,
+    "tp": 1251,
+    "precyzja": 0.7581818181818182,
+    "czulosc": 0.8407258064516129,
+    "f1": 0.7973231357552581,
+    "oa": 0.9227499089031944,
+    "n": 8233
+   },
+   "miedzyroczna": {
+    "tn": 20577,
+    "fp": 3090,
+    "fn": 631,
+    "tp": 3125,
+    "precyzja": 0.502815768302494,
+    "czulosc": 0.8320021299254526,
+    "f1": 0.6268177715374587,
+    "oa": 0.8643109798344455,
+    "n": 27423
+   },
+   "areal": {
+    "2022": 11443.628797472516,
+    "2018": 13924.483090525146
+   },
+   "mapa": "wyniki/podglady/mapa_tylko_kwitnienie.png"
+  }
+ }
+}

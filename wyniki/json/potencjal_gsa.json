@@ -1,0 +1,279 @@
+{
+ "zrodlo_upraw": "ARiMR GSA 2025, woj. lubelskie",
+ "stacja": {
+  "lat": 50.755,
+  "lon": 23.6,
+  "promien_m": 10000
+ },
+ "jadro": {
+  "lambda_m": 1000,
+  "zasieg_m": 3000
+ },
+ "rok": 2025,
+ "dekady": [
+  100,
+  110,
+  120,
+  130,
+  140,
+  150,
+  160,
+  170,
+  180,
+  190,
+  200,
+  210,
+  220,
+  230,
+  240,
+  250
+ ],
+ "daty": {
+  "100": "10.04",
+  "110": "20.04",
+  "120": "30.04",
+  "130": "10.05",
+  "140": "20.05",
+  "150": "30.05",
+  "160": "09.06",
+  "170": "19.06",
+  "180": "29.06",
+  "190": "09.07",
+  "200": "19.07",
+  "210": "29.07",
+  "220": "08.08",
+  "230": "18.08",
+  "240": "28.08",
+  "250": "07.09"
+ },
+ "pozytki": {
+  "rzepak ozimy": {
+   "kg_cukrow_ha": 115,
+   "start": 111,
+   "pelnia": 121,
+   "koniec": 133,
+   "zrodlo": "Pasieka 2/2003, 12 plantacji pod Pulawami: 80-150 kg cukrow/ha; okno z modelu GDD",
+   "klasa_zrodla": "A",
+   "ha_w_obszarze": 8413.32
+  },
+  "fasola wielokwiatowa": {
+   "kg_cukrow_ha": 73,
+   "start": 175,
+   "pelnia": 190,
+   "koniec": 215,
+   "zrodlo": "Koltowski, Pasieka 3/2005: 38-109 kg cukrow/ha, kwitnienie 30-50 dni od konca VI",
+   "klasa_zrodla": "A",
+   "ha_w_obszarze": 3267.6800000000003
+  },
+  "gryka zwyczajna": {
+   "kg_cukrow_ha": 140,
+   "start": 186,
+   "pelnia": 200,
+   "koniec": 217,
+   "zrodlo": "100-250 kg miodu/ha, 5 VII-5 VIII",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 25.680000000000003
+  },
+  "malina": {
+   "kg_cukrow_ha": 160,
+   "start": 139,
+   "pelnia": 149,
+   "koniec": 159,
+   "zrodlo": "150-250 kg miodu/ha, 19 V-8 VI",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 24.680000000000003
+  },
+  "koniczyna czerwona": {
+   "kg_cukrow_ha": 80,
+   "start": 166,
+   "pelnia": 172,
+   "koniec": 179,
+   "zrodlo": "50-150 kg miodu/ha, 15-28 VI",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 33.8
+  },
+  "lucerna mieszańcowa": {
+   "kg_cukrow_ha": 80,
+   "start": 176,
+   "pelnia": 191,
+   "koniec": 206,
+   "zrodlo": "50-150 kg miodu/ha, 25 VI-25 VII",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 93.39999999999999
+  },
+  "gorczyca biała": {
+   "kg_cukrow_ha": 52,
+   "start": 152,
+   "pelnia": 164,
+   "koniec": 176,
+   "zrodlo": "40-90 kg miodu/ha, 1-25 VI",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 63.839999999999996
+  },
+  "porzeczka": {
+   "kg_cukrow_ha": 36,
+   "start": 105,
+   "pelnia": 112,
+   "koniec": 120,
+   "zrodlo": "20-70 kg miodu/ha, 15-30 IV",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 20.16
+  },
+  "TUZ": {
+   "kg_cukrow_ha": 32,
+   "start": 125,
+   "pelnia": 150,
+   "koniec": 240,
+   "zrodlo": "laka ok. 40 kg miodu/ha (pastwisko 6); terminy wlasne - run jest mieszanka",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 4661.08
+  },
+  "słonecznik": {
+   "kg_cukrow_ha": 32,
+   "start": 191,
+   "pelnia": 210,
+   "koniec": 232,
+   "zrodlo": "30-50 kg miodu/ha, 10 VII-20 VIII",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 49.400000000000006
+  },
+  "słonecznik oleisty": {
+   "kg_cukrow_ha": 32,
+   "start": 191,
+   "pelnia": 210,
+   "koniec": 232,
+   "zrodlo": "30-50 kg miodu/ha, 10 VII-20 VIII",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 52.2
+  },
+  "bobik": {
+   "kg_cukrow_ha": 20,
+   "start": 166,
+   "pelnia": 178,
+   "koniec": 191,
+   "zrodlo": "20-30 kg miodu/ha, 15 VI-10 VII",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 60.2
+  },
+  "Sad": {
+   "kg_cukrow_ha": 14,
+   "start": 118,
+   "pelnia": 125,
+   "koniec": 132,
+   "zrodlo": "jablon 15-20 kg miodu/ha, 28 IV-12 V",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 152.4
+  },
+  "gorczyca": {
+   "kg_cukrow_ha": 52,
+   "start": 152,
+   "pelnia": 164,
+   "koniec": 176,
+   "zrodlo": "deklaracja zbiorcza; przyjeto gorczyce biala (dominujacy gatunek uprawny): 40-90 kg miodu/ha (polskieule, KPODR)",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 29.439999999999998
+  },
+  "rzepak jary": {
+   "kg_cukrow_ha": 56,
+   "start": 176,
+   "pelnia": 190,
+   "koniec": 210,
+   "zrodlo": "60-80 kg miodu/ha, kwitnie na przelomie VI/VII (polskieule, KPODR - dwa niezalezne zrodla)",
+   "klasa_zrodla": "B",
+   "ha_w_obszarze": 42.56
+  }
+ },
+ "kryteria": {
+  "sam rzepak": {
+   "wartosc": 14743.422481858395,
+   "lat": 50.80988993378188,
+   "lon": 23.58906248019302,
+   "mediana": 7843.282221591175
+  },
+  "caly sezon": {
+   "wartosc": 17373.230944121162,
+   "lat": 50.80945463294963,
+   "lon": 23.712619346958515,
+   "mediana": 10642.67938547815
+  },
+  "po rzepaku": {
+   "wartosc": 9020.709459868962,
+   "lat": 50.69145567165594,
+   "lon": 23.692257600387837,
+   "mediana": 2522.5706365661363
+  }
+ },
+ "kalendarze": {
+  "sam rzepak": {
+   "100": 0.0,
+   "110": 5528.783430696898,
+   "120": 9236.77090678398,
+   "130": 36.32532006511474,
+   "140": 82.26832448818489,
+   "150": 98.63415165455748,
+   "160": 99.34331609697291,
+   "170": 78.87674675963865,
+   "180": 125.32704992175721,
+   "190": 131.2168259658955,
+   "200": 72.93000353461917,
+   "210": 30.987334844579994,
+   "220": 17.50789867000545,
+   "230": 5.0451833423770465,
+   "240": 0.0,
+   "250": 0.0
+  },
+  "caly sezon": {
+   "100": 0.0,
+   "110": 5114.287155231636,
+   "120": 8541.849431635374,
+   "130": 67.64025549933493,
+   "140": 136.56423491685655,
+   "150": 163.37003574738173,
+   "160": 151.21342256513032,
+   "170": 173.83973308673367,
+   "180": 1058.680374867561,
+   "190": 1237.2193143838424,
+   "200": 637.153701825339,
+   "210": 52.079246813212094,
+   "220": 29.939557618292785,
+   "230": 9.394479930463184,
+   "240": 0.0,
+   "250": 0.0
+  },
+  "po rzepaku": {
+   "100": 0.0,
+   "110": 929.951216914405,
+   "120": 1563.7561850087939,
+   "130": 93.29171819173841,
+   "140": 210.79590157689913,
+   "150": 238.6162187167907,
+   "160": 202.43344337640156,
+   "170": 169.17753435419957,
+   "180": 2914.9529624050842,
+   "190": 3447.1017673321794,
+   "200": 1762.749997626575,
+   "210": 74.88163448083354,
+   "220": 42.96929306151826,
+   "230": 12.95718308218589,
+   "240": 0.0,
+   "250": 0.0
+  }
+ },
+ "sklad": {
+  "rzepak ozimy": 13637.76482149039,
+  "fasola wielokwiatowa": 2612.3499532994056,
+  "gryka zwyczajna": 10.494798709451404,
+  "malina": 2.139539863644501,
+  "koniczyna czerwona": 50.775473662695696,
+  "lucerna mieszańcowa": 52.17092872625003,
+  "gorczyca biała": 1.8474111129762605e-15,
+  "porzeczka": 0.12534717273994667,
+  "TUZ": 963.8736408655228,
+  "słonecznik": 11.249717206928974,
+  "słonecznik oleisty": -5.051321848412334e-15,
+  "bobik": 9.879852720383552e-16,
+  "Sad": 18.246418203880754,
+  "gorczyca": 14.040304920248927,
+  "rzepak jary": -3.606004383982508e-15
+ }
+}

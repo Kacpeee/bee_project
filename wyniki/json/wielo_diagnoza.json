@@ -1,0 +1,184 @@
+{
+ "warianty_f1_makro": {
+  "A_jak_bylo": 0.5543603601460109,
+  "B_scalone": 0.6708407426965237,
+  "C_bez_pustych_okien": 0.5532708891788374,
+  "D_obie": 0.6659300240993609
+ },
+ "okna_odrzucone": [
+  "ndvi_06",
+  "ndvi_07",
+  "ndvi_08",
+  "ndvi_11",
+  "ndyi_06",
+  "ndyi_07",
+  "ndyi_08",
+  "ndyi_11"
+ ],
+ "scalone": {
+  "gorczyca biała": "gorczyca",
+  "słonecznik oleisty": "słonecznik"
+ },
+ "odrzucone": [
+  "rzepak jary"
+ ],
+ "wyniki_D": {
+  "Sad": {
+   "precyzja": 0.6021276595744681,
+   "czulosc": 0.6936274509803921,
+   "f1": 0.6446469248291572,
+   "n": 408
+  },
+  "TUZ": {
+   "precyzja": 0.5594713656387665,
+   "czulosc": 0.635,
+   "f1": 0.594847775175644,
+   "n": 400
+  },
+  "bobik": {
+   "precyzja": 0.905,
+   "czulosc": 0.6830188679245283,
+   "f1": 0.778494623655914,
+   "n": 265
+  },
+  "fasola wielokwiatowa": {
+   "precyzja": 0.847926267281106,
+   "czulosc": 0.908641975308642,
+   "f1": 0.8772348033373063,
+   "n": 405
+  },
+  "gorczyca": {
+   "precyzja": 0.5997888067581837,
+   "czulosc": 0.6977886977886978,
+   "f1": 0.6450880181714934,
+   "n": 814
+  },
+  "gryka zwyczajna": {
+   "precyzja": 0.6017191977077364,
+   "czulosc": 0.5210918114143921,
+   "f1": 0.5585106382978724,
+   "n": 403
+  },
+  "inne": {
+   "precyzja": 0.7932618683001531,
+   "czulosc": 0.7204450625869263,
+   "f1": 0.7551020408163266,
+   "n": 719
+  },
+  "koniczyna czerwona": {
+   "precyzja": 0.6347826086956522,
+   "czulosc": 0.5152941176470588,
+   "f1": 0.5688311688311688,
+   "n": 425
+  },
+  "lucerna mieszańcowa": {
+   "precyzja": 0.6685236768802229,
+   "czulosc": 0.6091370558375635,
+   "f1": 0.6374501992031872,
+   "n": 394
+  },
+  "malina": {
+   "precyzja": 0.5249406175771971,
+   "czulosc": 0.5261904761904762,
+   "f1": 0.525564803804994,
+   "n": 420
+  },
+  "porzeczka": {
+   "precyzja": 0.6220095693779905,
+   "czulosc": 0.5676855895196506,
+   "f1": 0.593607305936073,
+   "n": 458
+  },
+  "rzepak ozimy": {
+   "precyzja": 0.9142857142857143,
+   "czulosc": 0.927536231884058,
+   "f1": 0.920863309352518,
+   "n": 414
+  },
+  "słonecznik": {
+   "precyzja": 0.5307167235494881,
+   "czulosc": 0.5856873822975518,
+   "f1": 0.5568487018800359,
+   "n": 531
+  }
+ },
+ "binarny_rzepak": {
+  "precyzja": 0.6704288939051919,
+  "czulosc": 0.717391304347826
+ },
+ "agregacja_10km": {
+  "Sad": {
+   "f1_piksel": 0.6604651162790698,
+   "r_komorka": 0.8579081235163281,
+   "komorek": 156
+  },
+  "TUZ": {
+   "f1_piksel": 0.5933774834437087,
+   "r_komorka": 0.6580014777352882,
+   "komorek": 159
+  },
+  "bobik": {
+   "f1_piksel": 0.7641921397379913,
+   "r_komorka": 0.9505977195853693,
+   "komorek": 73
+  },
+  "fasola wielokwiatowa": {
+   "f1_piksel": 0.8804733727810651,
+   "r_komorka": 0.9931133261065423,
+   "komorek": 70
+  },
+  "gorczyca": {
+   "f1_piksel": 0.6428982173663025,
+   "r_komorka": 0.9087969463250685,
+   "komorek": 203
+  },
+  "gryka zwyczajna": {
+   "f1_piksel": 0.5432756324900133,
+   "r_komorka": 0.8208286758752417,
+   "komorek": 151
+  },
+  "inne": {
+   "f1_piksel": 0.76008804108584,
+   "r_komorka": 0.8979008263115901,
+   "komorek": 195
+  },
+  "malina": {
+   "f1_piksel": 0.5400739827373613,
+   "r_komorka": 0.9513939474097803,
+   "komorek": 135
+  },
+  "motylkowe pastewne": {
+   "f1_piksel": 0.7375,
+   "r_komorka": 0.915926064985846,
+   "komorek": 192
+  },
+  "porzeczka": {
+   "f1_piksel": 0.5878048780487805,
+   "r_komorka": 0.9240385496776061,
+   "komorek": 109
+  },
+  "rzepak ozimy": {
+   "f1_piksel": 0.9217809867629362,
+   "r_komorka": 0.963794671307689,
+   "komorek": 124
+  },
+  "słonecznik": {
+   "f1_piksel": 0.5594280607685433,
+   "r_komorka": 0.8514986352214196,
+   "komorek": 185
+  }
+ },
+ "klasy_powyzej_progu": [
+  "Sad",
+  "bobik",
+  "fasola wielokwiatowa",
+  "gorczyca",
+  "malina",
+  "motylkowe pastewne",
+  "porzeczka",
+  "rzepak ozimy",
+  "słonecznik"
+ ],
+ "pokrycie_cukru_pct": 74.30000000000001,
+ "prog_r": 0.85
+}

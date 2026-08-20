@@ -1,0 +1,18 @@
+{
+ "pytanie": "czy postac funkcji spadku (nieudokumentowana) zmienia mape",
+ "metoda": "trzy ksztalty skalibrowane do tej samej zmierzonej sredniej i znormalizowane do tej samej masy",
+ "wyniki": {
+  "wykladniczy": {
+   "korelacja": 1.0,
+   "top10_wspolne_proc": 100.0
+  },
+  "gaussowski": {
+   "korelacja": 0.9983894217380099,
+   "top10_wspolne_proc": 95.2756427795604
+  },
+  "liniowy": {
+   "korelacja": 0.9965394951766833,
+   "top10_wspolne_proc": 93.20642185353773
+  }
+ }
+}

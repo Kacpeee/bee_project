@@ -1,0 +1,23 @@
+{
+ "cukry_mapa_kg": 26010620.22770762,
+ "zebrane_udzial": 0.31,
+ "zrodlo_udzialu": "Harris i in., Ecology and Evolution 2024",
+ "zebrane_miod_kg": 6450633.816471489,
+ "gus_produkcja_ton": 2320,
+ "gus_wydajnosc_kg_na_rodzine": {
+  "zawodowe (>80 pni)": 26.0,
+  "pozostale": 10.0
+ },
+ "zuzycie_rodziny_kg": 90.0,
+ "warianty": {
+  "zawodowe (>80 pni)": {
+   "rodzin": 89230.76923076923,
+   "zebrane_razem_ton": 10350.76923076923
+  },
+  "pozostale": {
+   "rodzin": 232000.0,
+   "zebrane_razem_ton": 23200.0
+  }
+ },
+ "zastrzezenie": "sprawdzian rzedu wielkosci calosci, nie walidacja przestrzenna; mapa nie obejmuje pozytkow dzikich"
+}

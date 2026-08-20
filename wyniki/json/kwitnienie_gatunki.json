@@ -1,0 +1,210 @@
+{
+ "cel": "walidacja kotwiczonych modeli fenologicznych pomiarem z Sentinel-2 na dzialkach deklarowanych",
+ "ograniczenie": "deklaracje tylko 2025 i 2026, wiec to walidacja punktowa, nie kalibracja modelu GDD",
+ "indeksy": {
+  "NDYI": "(zielony-niebieski)/(zielony+niebieski) - zolc",
+  "JASN": "zielony + czerwony - jasnosc, dla bialych kwiatow"
+ },
+ "gatunki": {
+  "rzepak ozimy": {
+   "indeks": "NDYI",
+   "kwiat": "zolty, zwarty lan",
+   "okno_modelu": [
+    118,
+    128,
+    140
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 137.78806079601762,
+     "model_doy": 132,
+     "roznica_d": 5.788060796017618,
+     "scen": 16,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 131.6059449753152,
+     "model_doy": 134,
+     "roznica_d": -2.3940550246848034,
+     "scen": 19,
+     "dzialek": 60
+    }
+   }
+  },
+  "gorczyca biała": {
+   "indeks": "NDYI",
+   "kwiat": "zolty",
+   "okno_modelu": [
+    152,
+    164,
+    176
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 146.2673609644062,
+     "model_doy": 164,
+     "roznica_d": -17.73263903559379,
+     "scen": 11,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 170.680983505754,
+     "model_doy": 164,
+     "roznica_d": 6.680983505754,
+     "scen": 13,
+     "dzialek": 60
+    }
+   }
+  },
+  "gorczyca": {
+   "indeks": "NDYI",
+   "kwiat": "zolty",
+   "okno_modelu": [
+    152,
+    164,
+    176
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 147.04462106605774,
+     "model_doy": 164,
+     "roznica_d": -16.955378933942256,
+     "scen": 12,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 165.99933855751658,
+     "model_doy": 164,
+     "roznica_d": 1.9993385575165803,
+     "scen": 16,
+     "dzialek": 60
+    }
+   }
+  },
+  "słonecznik": {
+   "indeks": "NDYI",
+   "kwiat": "zolty, duze koszyczki",
+   "okno_modelu": [
+    191,
+    210,
+    232
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 217.56541095188885,
+     "model_doy": 214,
+     "roznica_d": 3.5654109518888504,
+     "scen": 15,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 226.1044663277093,
+     "model_doy": 208,
+     "roznica_d": 18.104466327709304,
+     "scen": 20,
+     "dzialek": 60
+    }
+   }
+  },
+  "rzepak jary": {
+   "indeks": "NDYI",
+   "kwiat": "zolty",
+   "okno_modelu": [
+    176,
+    190,
+    210
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 171.343053657032,
+     "model_doy": 191,
+     "roznica_d": -19.656946342968013,
+     "scen": 21,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 173.85799461024237,
+     "model_doy": 186,
+     "roznica_d": -12.142005389757628,
+     "scen": 21,
+     "dzialek": 60
+    }
+   }
+  },
+  "gryka zwyczajna": {
+   "indeks": "JASN",
+   "kwiat": "bialo-rozowy",
+   "okno_modelu": [
+    186,
+    200,
+    217
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 176.1045512278815,
+     "model_doy": 202,
+     "roznica_d": -25.8954487721185,
+     "scen": 19,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 171.00568752357026,
+     "model_doy": 197,
+     "roznica_d": -25.99431247642974,
+     "scen": 20,
+     "dzialek": 60
+    }
+   }
+  },
+  "malina": {
+   "indeks": "JASN",
+   "kwiat": "bialy, drobny",
+   "okno_modelu": [
+    139,
+    149,
+    159
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 119.46328931240616,
+     "model_doy": 149,
+     "roznica_d": -29.53671068759384,
+     "scen": 14,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 147.95876934252888,
+     "model_doy": 148,
+     "roznica_d": -0.04123065747111809,
+     "scen": 16,
+     "dzialek": 60
+    }
+   }
+  },
+  "porzeczka": {
+   "indeks": "JASN",
+   "kwiat": "zielonkawy, niepozorny",
+   "okno_modelu": [
+    105,
+    112,
+    120
+   ],
+   "lata": {
+    "2025": {
+     "zmierzone_doy": 140.0,
+     "model_doy": 94,
+     "roznica_d": 46.0,
+     "scen": 18,
+     "dzialek": 60
+    },
+    "2026": {
+     "zmierzone_doy": 80.0,
+     "model_doy": 106,
+     "roznica_d": -26.0,
+     "scen": 19,
+     "dzialek": 60
+    }
+   }
+  }
+ }
+}

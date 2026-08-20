@@ -1,0 +1,63 @@
+{
+ "zrodlo": "IMGW-PIB, obserwacje fitofenologiczne 51 stacji synoptycznych od 2007; mapy z agrometeo.imgw.pl",
+ "uwaga": "daty odczytane wzrokowo z map rastrowych, dokladnosc do dekady - to ograniczenie zrodla, nie modelu",
+ "pory": {
+  "lato": {
+   "gatunek_wskaznikowy": "lipa drobnolistna (Tilia cordata)",
+   "nasz_model": "lipa",
+   "map_pobranych": 19,
+   "srednia_model": 181.4,
+   "srednia_imgw": 176,
+   "roznica_srednich_d": 5.400000000000006,
+   "odczytane": {
+    "2010": {
+     "imgw": 176,
+     "model": 181
+    },
+    "2018": {
+     "imgw": 166,
+     "model": 164
+    },
+    "2019": {
+     "imgw": 176,
+     "model": 173
+    },
+    "2021": {
+     "imgw": 186,
+     "model": 187
+    },
+    "2024": {
+     "imgw": 166,
+     "model": 169
+    }
+   }
+  },
+  "pelnia_wiosny": {
+   "gatunek_wskaznikowy": "lilak pospolity i kasztanowiec",
+   "nasz_model": "Sad",
+   "map_pobranych": 19,
+   "srednia_model": 125.06666666666666,
+   "srednia_imgw": 126,
+   "roznica_srednich_d": -0.9333333333333371,
+   "odczytane": {
+    "2024": {
+     "imgw": 116,
+     "model": 101
+    },
+    "2025": {
+     "imgw": 126,
+     "model": 111
+    }
+   }
+  },
+  "wczesne_lato": {
+   "gatunek_wskaznikowy": "robinia akacjowa (Robinia pseudoacacia)",
+   "nasz_model": "robinia (akacja)",
+   "map_pobranych": 19,
+   "srednia_model": 145.2,
+   "srednia_imgw": 146,
+   "roznica_srednich_d": -0.8000000000000114,
+   "odczytane": {}
+  }
+ }
+}

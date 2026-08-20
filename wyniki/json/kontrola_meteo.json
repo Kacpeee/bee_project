@@ -1,0 +1,51 @@
+{
+ "cel": "biezaca kontrola reanalizy ERA5 wobec pomiaru stacji IMGW",
+ "zrodlo_imgw": "https://danepubliczne.imgw.pl/api/data/synop",
+ "ograniczenie": "IMGW zwraca tylko biezacy odczyt godzinowy, bez historii - nie zastapi reanalizy jako zrodla",
+ "odniesienie_historyczne": {
+  "stacja": "Zamosc 595",
+  "n_dni": 962,
+  "rmse_K": 1.126,
+  "r": 0.986
+ },
+ "sprawdzono": "2026-08-19",
+ "stacje": [
+  {
+   "stacja": "Lublin",
+   "id_imgw": "12495",
+   "data": "2026-08-19",
+   "godzina": 18,
+   "imgw_C": 19.8,
+   "openmeteo_C": 21.0,
+   "roznica_K": 1.2
+  },
+  {
+   "stacja": "Zamość",
+   "id_imgw": "12595",
+   "data": "2026-08-19",
+   "godzina": 18,
+   "imgw_C": 20.3,
+   "openmeteo_C": 22.4,
+   "roznica_K": 2.1
+  },
+  {
+   "stacja": "Włodawa",
+   "id_imgw": "12497",
+   "data": "2026-08-19",
+   "godzina": 18,
+   "imgw_C": 19.1,
+   "openmeteo_C": 22.2,
+   "roznica_K": 3.1
+  },
+  {
+   "stacja": "Terespol",
+   "id_imgw": "12399",
+   "data": "2026-08-19",
+   "godzina": 18,
+   "imgw_C": 20.8,
+   "openmeteo_C": 22.5,
+   "roznica_K": 1.7
+  }
+ ],
+ "obciazenie_srednie_K": 2.02
+}

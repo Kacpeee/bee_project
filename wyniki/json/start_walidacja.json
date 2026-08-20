@@ -1,0 +1,26 @@
+{
+ "warianty": {
+  "32": {
+   "opis": "1 II  (obecny)",
+   "baza": 1.0,
+   "prog": 555.0,
+   "rmse_in": 3.8883181128836535,
+   "rmse_loo": 4.16676060333456,
+   "najgorszy": 11.73786045316271
+  },
+  "74": {
+   "opis": "15 III (kandydat)",
+   "baza": 1.5,
+   "prog": 430.0,
+   "rmse_in": 3.1292519123301825,
+   "rmse_loo": 3.1901675162571173,
+   "najgorszy": 9.161403146599994
+  }
+ },
+ "loo_ze_startem_w_petli": {
+  "rmse": 3.1901675162571173,
+  "wybory_startu": {
+   "74": 45
+  }
+ }
+}

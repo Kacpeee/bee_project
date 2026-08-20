@@ -1,0 +1,77 @@
+{
+ "problem": "po rozszerzeniu do 19 obszarow awarie odczytu sa rozproszone, wiec regula sezonowa przestala dzialac",
+ "prog_fizyczny_d": 6,
+ "uzasadnienie": "rozrzut modelowany miedzy obszarami: mediana 2 d, maks 5 d -> odchylenie od mediany do 2.5 d z termiki; plus ok. 3 d niepewnosci odczytu NDYI",
+ "warianty": [
+  {
+   "prog_odrzutu_d": 6,
+   "n": 141,
+   "odrzuconych": 21,
+   "baza": 1.0,
+   "prog_gdd": 465.0,
+   "rmse_dopasowania": 2.974459386286358,
+   "rmse_loo": 3.168887331898993,
+   "najgorszy_d": 11.932704300770496
+  },
+  {
+   "prog_odrzutu_d": 8,
+   "n": 145,
+   "odrzuconych": 17,
+   "baza": 1.5,
+   "prog_gdd": 430.0,
+   "rmse_dopasowania": 3.151509202193025,
+   "rmse_loo": 3.2111057626349035,
+   "najgorszy_d": 11.932704300770496
+  },
+  {
+   "prog_odrzutu_d": 10,
+   "n": 148,
+   "odrzuconych": 14,
+   "baza": 1.0,
+   "prog_gdd": 460.0,
+   "rmse_dopasowania": 3.326155202993173,
+   "rmse_loo": 3.5008339696870365,
+   "najgorszy_d": 11.932704300770496
+  },
+  {
+   "prog_odrzutu_d": 12,
+   "n": 150,
+   "odrzuconych": 12,
+   "baza": 1.5,
+   "prog_gdd": 440.0,
+   "rmse_dopasowania": 3.5432957772804126,
+   "rmse_loo": 3.591530365375201,
+   "najgorszy_d": 11.932704300770496
+  },
+  {
+   "prog_odrzutu_d": 15,
+   "n": 153,
+   "odrzuconych": 9,
+   "baza": 1.5,
+   "prog_gdd": 430.0,
+   "rmse_dopasowania": 3.847617086772612,
+   "rmse_loo": 3.9581811025754683,
+   "najgorszy_d": 16.05955264518481
+  },
+  {
+   "prog_odrzutu_d": 20,
+   "n": 157,
+   "odrzuconych": 5,
+   "baza": 0.5,
+   "prog_gdd": 485.0,
+   "rmse_dopasowania": 4.7305813982586535,
+   "rmse_loo": 4.817992410628321,
+   "najgorszy_d": 21.22195437491935
+  },
+  {
+   "prog_odrzutu_d": null,
+   "n": 162,
+   "odrzuconych": 0,
+   "baza": 2.0,
+   "prog_gdd": 410.0,
+   "rmse_dopasowania": 6.936037150990986,
+   "rmse_loo": 7.087808736581004,
+   "najgorszy_d": 38.0
+  }
+ ]
+}

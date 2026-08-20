@@ -1,0 +1,56 @@
+{
+ "model": {
+  "baza": 1.5,
+  "prog": 430.0,
+  "start": "15III",
+  "start_doy": 74,
+  "rmse": 3.2111057626349035,
+  "rmse_dopasowania": 3.151509202193025,
+  "n": 145,
+  "sezony_odrzucone": [],
+  "metoda_bledu": "walidacja krzyzowa leave-one-out",
+  "zmiana": "proba rozszerzona z 45 obserwacji z 7 obszarow do 145 z 19; parametry potwierdzone niezaleznie (siatka trafia w te same baze 1.5 i prog 430), blad 3.19 -> 3.21 d",
+  "obszarow": 19
+ },
+ "dni_decyzji": [
+  46,
+  60,
+  74,
+  91,
+  105,
+  121
+ ],
+ "sredni_termin_kwitnienia": 133.7187765583293,
+ "statystyki": {
+  "46": {
+   "rmse": 6.813660792195725,
+   "bias": -0.07739724798449973,
+   "n": 145
+  },
+  "60": {
+   "rmse": 6.813660792195725,
+   "bias": -0.07739724798449973,
+   "n": 145
+  },
+  "74": {
+   "rmse": 6.87074186645054,
+   "bias": 0.012257924429293365,
+   "n": 145
+  },
+  "91": {
+   "rmse": 7.329572978383179,
+   "bias": 0.3088096485672244,
+   "n": 145
+  },
+  "105": {
+   "rmse": 4.544664496243189,
+   "bias": 0.38467171753274165,
+   "n": 145
+  },
+  "121": {
+   "rmse": 3.400162592959158,
+   "bias": -0.8153282824672584,
+   "n": 145
+  }
+ }
+}

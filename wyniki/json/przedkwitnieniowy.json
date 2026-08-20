@@ -1,0 +1,48 @@
+{
+ "pytanie": "ile skutecznosci detekcji zostaje, gdy obetniemy cechy do dnia decyzji przed kwitnieniem",
+ "okna": "polmiesieczne od IX poprzedniego roku; 12-13 = marzec",
+ "wyniki": {
+  "XII": {
+   "okno_do": 7,
+   "n_cech": 40,
+   "f1_makro": 0.423140436952211,
+   "f1_rzepak": 0.8259911894273128,
+   "wyprzedzenie": "~5 mies."
+  },
+  "I": {
+   "okno_do": 9,
+   "n_cech": 50,
+   "f1_makro": 0.4347328690948149,
+   "f1_rzepak": 0.8402234636871508,
+   "wyprzedzenie": "~4 mies."
+  },
+  "II": {
+   "okno_do": 11,
+   "n_cech": 60,
+   "f1_makro": 0.46543163961008727,
+   "f1_rzepak": 0.84,
+   "wyprzedzenie": "~10 tyg."
+  },
+  "III": {
+   "okno_do": 13,
+   "n_cech": 70,
+   "f1_makro": 0.4843814733881613,
+   "f1_rzepak": 0.8692660550458715,
+   "wyprzedzenie": "~6 tyg."
+  },
+  "IV": {
+   "okno_do": 15,
+   "n_cech": 80,
+   "f1_makro": 0.5410549507679338,
+   "f1_rzepak": 0.9116945107398569,
+   "wyprzedzenie": "~2 tyg."
+  },
+  "cały sezon": {
+   "okno_do": 25,
+   "n_cech": 130,
+   "f1_makro": 0.7004322194499414,
+   "f1_rzepak": 0.9386281588447654,
+   "wyprzedzenie": "po fakcie"
+  }
+ }
+}

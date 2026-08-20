@@ -1,0 +1,38 @@
+{
+ "zrodlo": "Couvillon M.J. i in., PLOS ONE 9(4), 2014 - odczyt 5 tys. tancow pszczelich; srednie dystanse lotu wg pory roku",
+ "dystanse_zmierzone_m": {
+  "wiosna": 493.0,
+  "lato": 2156.0,
+  "jesien": 1275.0
+ },
+ "jadra": {
+  "wiosna": {
+   "lambda_m": 294.4277053377209,
+   "zasieg_m": 1177.7108213508836,
+   "suma_jadra": 49.58482763782747,
+   "px": 23,
+   "sredni_dystans_m": 493.0000000006268
+  },
+  "lato": {
+   "lambda_m": 1285.4960132173346,
+   "zasieg_m": 5141.9840528693385,
+   "suma_jadra": 943.1314331277904,
+   "px": 103,
+   "sredni_dystans_m": 2155.925783580405
+  },
+  "jesien": {
+   "lambda_m": 760.3453162868846,
+   "zasieg_m": 3041.381265147538,
+   "suma_jadra": 329.77203761499254,
+   "px": 61,
+   "sredni_dystans_m": 1273.9458586299631
+  }
+ },
+ "poprzednie": {
+  "lambda_m": 1000.0,
+  "zasieg_m": 3000.0,
+  "sredni_dystans_m": 1439.3793651739318,
+  "suma_jadra": 502.88590631399967
+ },
+ "przypisanie_pory": "wg DOY pelni kwitnienia: <152 wiosna, 152-243 lato, >=244 jesien"
+}

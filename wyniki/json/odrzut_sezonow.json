@@ -1,0 +1,80 @@
+{
+ "kryterium": "sezon odrzucany, gdy rozrzut jego obserwacji przekracza 2.0x mediane rozrzutow wszystkich sezonow - regula odporna oparta na medianie, nie prog dobrany pod oczekiwany wynik",
+ "mediana_rozrzutow_d": 30.208509516696694,
+ "prog_odrzutu_d": 60.41701903339339,
+ "margines": 2.0,
+ "diagnoza_lat": {
+  "2018": {
+   "n": 19,
+   "rozrzut_obs": 7.758063943593029,
+   "x_mediany": 0.2568171706487217,
+   "przyjety": true
+  },
+  "2019": {
+   "n": 18,
+   "rozrzut_obs": 30.306600657278835,
+   "x_mediany": 1.0032471360603847,
+   "przyjety": true
+  },
+  "2020": {
+   "n": 19,
+   "rozrzut_obs": 59.22195437491935,
+   "x_mediany": 1.9604394696198597,
+   "przyjety": true
+  },
+  "2021": {
+   "n": 17,
+   "rozrzut_obs": 17.588986121399785,
+   "x_mediany": 0.5822526964356878,
+   "przyjety": true
+  },
+  "2022": {
+   "n": 18,
+   "rozrzut_obs": 48.35742763590588,
+   "x_mediany": 1.6007882682585848,
+   "przyjety": true
+  },
+  "2023": {
+   "n": 19,
+   "rozrzut_obs": 5.661891232523345,
+   "x_mediany": 0.1874270304330617,
+   "przyjety": true
+  },
+  "2024": {
+   "n": 14,
+   "rozrzut_obs": 11.065220553503167,
+   "x_mediany": 0.3662948199210972,
+   "przyjety": true
+  },
+  "2025": {
+   "n": 19,
+   "rozrzut_obs": 30.208509516696694,
+   "x_mediany": 1.0,
+   "przyjety": true
+  },
+  "2026": {
+   "n": 19,
+   "rozrzut_obs": 40.20778032836752,
+   "x_mediany": 1.3310084135777729,
+   "przyjety": true
+  }
+ },
+ "sezony_odrzucone": [],
+ "n_przed": 162,
+ "n_po": 145,
+ "baza": 1.5,
+ "prog": 430.0,
+ "rmse_dopasowania": 3.151509202193025,
+ "rmse_walidacji_loo": 3.2111057626349035,
+ "blad_bezwzgledny": 4.512507975013817,
+ "najgorszy_d": 11.932704300770496,
+ "poprzednia_proba": {
+  "n": 162,
+  "obszarow": 7,
+  "rmse_walidacji_loo": 7.278918578051317
+ },
+ "start_doy": 74,
+ "obszarow": 19,
+ "odrzut": "punktowy, prog 8 dni od mediany sezonu",
+ "uwaga_proba": "Probe rozszerzono z 7 na 19 obszarow (162 obserwacje). Awarie odczytu okazaly sie ROZPROSZONE, nie skupione w sezonach, wiec regula sezonowa przestala dzialac - mediana rozrzutow urosla z 9 na 30 dni i prog razem z nia. Wrocono do odrzutu punktowego, ale z progiem wyprowadzonym z fizyki (rozrzut modelowany miedzy obszarami 2-5 d + ok. 3 d niepewnosci odczytu NDYI = ok. 6 d). Wynik jest na ten wybor odporny: 3.17 d przy progu 6, 3.21 przy 8. Bez odrzutu 7.09 d. Przy progu 8 siatka trafia w te same parametry (baza 1.5, prog 430), ktore wyprowadzono wczesniej z 45 obserwacji z 7 obszarow."
+}

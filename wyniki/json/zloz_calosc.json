@@ -1,0 +1,42 @@
+{
+ "sezony_uzyte": [
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025
+ ],
+ "sezony_brakujace": [],
+ "gatunki_z_detekcji": [
+  "rzepak ozimy",
+  "gryka zwyczajna",
+  "słonecznik"
+ ],
+ "gatunki_z_deklaracji": [
+  "malina",
+  "porzeczka",
+  "Sad",
+  "TUZ",
+  "fasola wielokwiatowa",
+  "bobik",
+  "gorczyca",
+  "TUZ odrost",
+  "koniczyna czerwona",
+  "lucerna mieszańcowa",
+  "gorczyca biała",
+  "słonecznik oleisty",
+  "rzepak jary"
+ ],
+ "zapotrzebowanie_rodziny_kg_cukrow": 72.0,
+ "cukier_razem_mln_kg": 12810.36328125,
+ "udzial_satelity": 0.5904054045677185,
+ "pojemnosc_percentyle": {
+  "50": 62.14124298095703,
+  "75": 101.04832458496094,
+  "90": 138.46044921875,
+  "99": 202.4518280029297
+ },
+ "brak": "pozytki dzikie (lipa, akacja, nawloc, mniszek) - sprawdzian wobec GUS wskazuje niedoszacowanie ok. 27%"
+}

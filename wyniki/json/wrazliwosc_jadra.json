@@ -1,0 +1,106 @@
+{
+ "cel": "pomiar wplywu normalizacji jadra sezonowego na mape",
+ "sumy_jader": {
+  "wiosna": 49.46423834990132,
+  "lato": 942.6674390317381,
+  "jesien": 329.52111626151355
+ },
+ "korelacja": 0.612013937625503,
+ "top10_wspolne_proc": 37.46040833089613,
+ "udzial_por": {
+  "wiosna": {
+   "surowe_proc": 12.77163530516177,
+   "znorm_proc": 73.61708877504383
+  },
+  "lato": {
+   "surowe_proc": 87.22835770602413,
+   "znorm_proc": 26.382909888007173
+  },
+  "jesien": {
+   "surowe_proc": 0.0,
+   "znorm_proc": 0.0
+  }
+ },
+ "udzial_gatunkow": {
+  "rzepak ozimy": {
+   "surowe_proc": 8.84081187325242,
+   "znorm_proc": 50.959395977401854,
+   "pora": "wiosna"
+  },
+  "TUZ": {
+   "surowe_proc": 2.086308867629888,
+   "znorm_proc": 12.02570987809959,
+   "pora": "wiosna"
+  },
+  "TUZ odrost": {
+   "surowe_proc": 30.898916652752682,
+   "znorm_proc": 9.345621728406153,
+   "pora": "lato"
+  },
+  "malina": {
+   "surowe_proc": 1.274621226288576,
+   "znorm_proc": 7.347054766060202,
+   "pora": "wiosna"
+  },
+  "gryka zwyczajna": {
+   "surowe_proc": 23.465312898276526,
+   "znorm_proc": 7.09727023909749,
+   "pora": "lato"
+  },
+  "fasola wielokwiatowa": {
+   "surowe_proc": 19.53851963032006,
+   "znorm_proc": 5.9095807698591,
+   "pora": "lato"
+  },
+  "porzeczka": {
+   "surowe_proc": 0.5126356142583166,
+   "znorm_proc": 2.9548872203821457,
+   "pora": "wiosna"
+  },
+  "lucerna mieszańcowa": {
+   "surowe_proc": 3.6448902033734596,
+   "znorm_proc": 1.102425853227818,
+   "pora": "lato"
+  },
+  "koniczyna czerwona": {
+   "surowe_proc": 3.1505931835228513,
+   "znorm_proc": 0.9529218863089932,
+   "pora": "lato"
+  },
+  "słonecznik": {
+   "surowe_proc": 2.346676013274098,
+   "znorm_proc": 0.7097707079923344,
+   "pora": "lato"
+  },
+  "gorczyca biała": {
+   "surowe_proc": 1.177675287205934,
+   "znorm_proc": 0.35619719804938454,
+   "pora": "lato"
+  },
+  "gorczyca": {
+   "surowe_proc": 1.12681000112331,
+   "znorm_proc": 0.3408125556256632,
+   "pora": "lato"
+  },
+  "Sad": {
+   "surowe_proc": 0.05725758214824748,
+   "znorm_proc": 0.3300389207007459,
+   "pora": "wiosna"
+  },
+  "rzepak jary": {
+   "surowe_proc": 0.9601504240621301,
+   "znorm_proc": 0.2904050770347714,
+   "pora": "lato"
+  },
+  "słonecznik oleisty": {
+   "surowe_proc": 0.555296776703131,
+   "znorm_proc": 0.16795389895077656,
+   "pora": "lato"
+  },
+  "bobik": {
+   "surowe_proc": 0.3635221909089706,
+   "znorm_proc": 0.10995016868745572,
+   "pora": "lato"
+  }
+ }
+}
