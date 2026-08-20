@@ -1,216 +1,216 @@
-# Model lokalizacji pasiek — województwo lubelskie
+# Apiary Siting Model — Lubelskie Voivodeship
 
-Wskazuje, gdzie postawić ul, na podstawie deklaracji upraw ARiMR, detekcji
-rzepaku z Sentinel-2, modelu terminu kwitnienia i warunków lotu pszczół.
-Zasięg: całe województwo lubelskie, siatka 100 m (1 px = 1 ha).
+Finds **where to place a beehive** and **when the rapeseed will bloom**, from
+farmer crop declarations, Sentinel-1/2 detection and a thermal phenology model.
+Covers the whole voivodeship on a 100 m grid (1 px = 1 ha).
 
-Pochodzenie każdego parametru: [ZRODLA.md](ZRODLA.md).
+> Provenance of every parameter, plus the negative results, is in
+> [ZRODLA.md](ZRODLA.md) *(Polish)*.
 
-## Jak to otworzyć
+---
 
-**Otwórz `index.html`.** Nic nie trzeba instalować — cztery strony działają
-z dysku, dwuklikiem, także po skopiowaniu katalogu na pendrive.
+## Open it
 
-| strona | co pokazuje | potrzebuje internetu |
+**Open `index.html`.** Nothing to install — the pages run straight from disk,
+including from a copied folder or a USB stick. Maps and charts are embedded in
+the files, so nothing breaks when you email them.
+
+| page | what it shows | needs internet |
 |---|---|---|
-| `index.html` | punkt wejścia | nie |
-| `prognoza.html` | kiedy zakwitnie rzepak w wybranym miejscu | **tak** (pogoda z Open-Meteo) |
-| `kalendarz.html` | co i kiedy kwitnie w każdym powiecie | nie |
-| `raport.html` | pełne wyniki, walidacje, zastrzeżenia | nie |
-| `mechanika.html` | krok po kroku, skąd biorą się liczby | nie |
+| `index.html` | entry point | no |
+| `prognoza.html` | when rapeseed blooms at a chosen spot | **yes** — live weather |
+| `kalendarz.html` | what blooms when, per district | no |
+| `raport.html` | full results, validation, caveats | no |
+| `mechanika.html` | step by step, where the numbers come from | no |
 
-Mapy i wykresy są wtopione w pliki, więc nie ma czego zgubić przy wysyłaniu.
+The forecast page **computes in your browser** — the thermal model is ported to
+JavaScript, weather comes from Open-Meteo. Agreement with the Python original is
+tested, not assumed: `test_rownowaznosc.py` runs the same points through both.
+It already caught one real divergence — Python rounds halves to even,
+JavaScript rounds them up, which sent the two into different weather cells.
 
-**Prognoza liczy się w przeglądarce.** Model termiczny jest przepisany
-z Pythona na JavaScript, a pogodę strona pobiera wprost z Open-Meteo — dlatego
-działa bez serwera. Zgodność obu wersji nie jest założona, tylko sprawdzana:
-`skrypty/serwis/test_rownowaznosc.py` przepuszcza te same punkty przez Pythona
-i przez przeglądarkę i porównuje 11 pól. Test wykrył już jedną realną
-rozbieżność (patrz ZRODLA.md, „Zaokrąglanie połówek").
+---
 
-### Przebudowa stron
+## What it computes — and what it does not
 
-```
-python skrypty/serwis/eksport_paczka.py     # buduje prognoze + nawigacje + index
-python skrypty/serwis/test_strony.py        # czy otwieraja sie z dysku bez bledu JS
-python skrypty/serwis/test_rownowaznosc.py  # czy JS liczy to samo, co Python
-```
+**It computes nectar-sugar potential** — how much sugar a bee starting at a
+given point can actually reach, weighted by distance through an exponential
+kernel calibrated on measured waggle-dance distances (Couvillon et al. 2014):
+1.2 km in spring, 5.1 km in summer.
 
-### Wersja serwerowa (opcjonalna)
+**It is not a honey-yield forecast.** Colony strength, competing apiaries and
+siting permissions all sit between potential and harvest, and the model has
+none of them. It **has never been validated against a real harvest** — the
+largest open gap.
 
-`bash skrypty/serwis/restart.sh` uruchamia mikroserwis Flask na
-http://127.0.0.1:8000 — to samo, plus API `/prognoza?lat=&lon=`.
-**Wymaga pełnych danych** (`dane/`, `wyniki/cache/`, `wyniki/rastry/` — 4,6 GB),
-których repozytorium nie zawiera. Po samym pobraniu projektu nie ruszy;
-strony statyczne owszem.
+**Learned components cover rapeseed only** — about half the voivodeship's
+nectar sugar, and the only species with its own bloom-date model. Everything
+else uses fixed literature windows, because timing depends on an unknown
+sowing date.
 
-## Co ten model liczy, a czego nie
+---
 
-**Liczy** potencjał pożytkowy — ile cukrów w nektarze pszczoła z danego punktu
-realnie dosięgnie, ważone odległością (jądro wykładnicze, λ = 1 km, zasięg 3 km).
+## Results
 
-**Nie jest** prognozą plonu miodu. Między potencjałem a zbiorem stoi siła
-rodziny, konkurencja innych pasiek i to, czy w danym miejscu wolno ul postawić —
-żadnej z tych rzeczy model nie ma. Potencjał nie został zwalidowany ani jednym
-rzeczywistym zbiorem pasieki.
+All figures are spatial-block cross-validation (2.5 km blocks) or
+leave-one-out, never in-sample.
 
-**Zakres komponentów uczonych:** klasyfikacja z Sentinel-2 i model fenologiczny
-opracowano wyłącznie dla rzepaku ozimego (57% cukrów w województwie). Warstwa
-potencjału obejmuje 13 zadeklarowanych upraw pożytkowych — wyłącznie te
-z udokumentowaną wydajnością (klasa A/B w ZRODLA.md); uprawy bez źródła
-(1,1% cukrów) są wykluczone, nie oszacowane. Terminy kwitnienia gatunków
-innych niż rzepak pochodzą ze stałych dat literaturowych, nie z modelu.
+### Which crop is in the field
 
-## Główne produkty
-
-| mapa | plik | treść |
+| sensor | F1-macro | features |
 |---|---|---|
-| kalendarz interaktywny | `kalendarz.html` | rolnicy: pełne uprawy 2025/26; satelita: sam rzepak 2019–2025 |
-| przeciętny rok + niezawodność | `mapy/mapa_sredni_rok.png` | średnia 8 sezonów 2019–2026 i liczba sezonów w top-20% |
-| potencjał, średnia 2 sezonów deklaracji | `mapy/mapa_sezonow.png` | 2025/2026 + mapa zmian między nimi |
-| kalendarz: KIEDY + GDZIE | `mapy/mapa_woj_czas.png` | dekada szczytu + suma sezonowa |
-| wersja czysto teledetekcyjna | `mapy/mapa_teledetekcja.png` | rzepak + łąki WorldCover; nie jest to zakładka satelity w kalendarzu |
-| detekcja vs deklaracje | `mapy/mapa_detekcji.png` | dowód: r = 0,94 po rozmyciu zasięgiem lotu |
-| sam model fenologiczny | `mapy/mapa_modelu.png` | mapa terminu kwitnienia + szereg 2000–2026 |
-| prognoza w trakcie sezonu | `mapy/wykres_prognoza.png` | błąd vs wyprzedzenie (hindcast) |
+| Sentinel-2 only | 0.683 | 44 |
+| Sentinel-1 only | 0.585 | 78 |
+| **both** | **0.718** | 122 |
 
-## Wyniki liczbowe
+Radar carries **52.9%** of model importance. Its real advantage is coverage:
+**zero empty half-month windows against eight for optics** — in the first half
+of January, 100% of points have no cloud-free scene at all.
 
-| element | miara |
+| species | F1 | note |
+|---|---|---|
+| **winter rapeseed** | **0.940** | three unmistakable signals a year: green rosette in winter, yellow in May, stubble in July |
+| runner bean | 0.922 | |
+| permanent grassland | 0.725 | radar lifts it from 0.593 — it sees the mowing |
+| sunflower | 0.605 | spring-sown |
+| buckwheat | 0.583 | spring-sown; looks like any fresh field for months |
+
+### When it blooms
+
+Growing-degree days above **1.5 °C**, accumulated from **15 March**, bloom at
+**430 GDD**.
+
+| metric | result |
 |---|---|
-| klasyfikator rzepaku (8 cech) | F1 0,90 na punktach; po rozmyciu 3 km r = 0,97 z GSA 2025, r = 0,95 z EUCROPMAP 2022 |
-| klasyfikator przedkwitnieniowy (3 cechy) | F1 0,84 — wskazuje pola 6 tygodni przed kwitnieniem |
-| **klasyfikator wieloklasowy S1+S2** | 12 klas pożytkowych, 21 tys. działek; F1-makro 0,718 (sama optyka 0,683) |
-| **wkład radaru** | 52,9% ważności modelu; 0 pustych okien wobec 8 u optyki |
-| **przenoszenie na inny rok** (ucz 2025 → sprawdź 2026) | detekcja bije odniesienie „rosło tam, gdzie rok temu" dla 4 gatunków = 70,4% cukru |
-| model fenologiczny GDD | RMSE 3,5 dnia (rekonstrukcja, 52 obs. z 7 obszarów); prognoza: 4,4 d na 2 tyg. przed, ~7 d wcześniej |
-| stabilność rejonów rzepakowych | r = 0,95 rok-do-roku (GSA), r = 0,89 na 8 lat (EUCROPMAP 2018 ↔ GSA 2026) |
-| stabilność pełnej mapy potencjału | r = 0,945 (2025 ↔ 2026), top-10% utrzymane w 71% |
-| warstwa lotności | w sezonie 2025 pogoda zabrała 61% potencjału |
+| **RMSE, leave-one-out** | **3.21 days** *(n = 145, 19 areas, 9 seasons)* |
+| in-sample RMSE | 3.15 days |
+| baseline "always the average date" | 7.3 days |
 
-## Kolejność uruchamiania
+The sample was tripled from 7 to 19 areas to test whether this was an artefact
+of site choice. It was not: same error, same parameters.
 
-Skrypty zapisują wyniki do `wyniki/*.json`, `*.tif`, `*.npy|npz`; kolejne
-czytają z tych plików.
+**In-season forecasting** only becomes useful late — April decides the date:
 
-Rdzeń (obszar pilotażowy):
+| decision day | lead time | RMSE |
+|---|---|---|
+| 15 Feb – 1 Apr | 6–12 weeks | 6.8–7.3 d |
+| 15 Apr | 4 weeks | 4.5 d |
+| **1 May** | **2 weeks** | **3.4 d** |
 
-```
-python skrypty/fenologia/meteo_gdd.py            # meteo 2000-2026 + wstępna kalibracja progu GDD
-python skrypty/detekcja/klasyfikator_gsa.py     # klasyfikator rzepaku na etykietach ARiMR
-python skrypty/fenologia/fenologia_gsa.py        # daty kwitnienia z 9 sezonów
-python skrypty/fenologia/fenologia_wielo.py      # to samo w 7 obszarach (długie; wznawialne)
-python skrypty/fenologia/fenologia_kalibracja.py # wspólna kalibracja bazy i progu GDD
-python skrypty/fenologia/fenologia_final.py      # złożenie modelu: baza 1.0, od 1 II, próg 555
-python skrypty/potencjal/potencjal_gsa.py        # mapa potencjału pilotażu, kalendarz, dekady
-python skrypty/potencjal/lotnosc.py              # warstwa lotności, modulacja pogodowa
-```
+### Where it will be, before it blooms
 
-Województwo:
+Truncating features to the decision day still finds rapeseed months ahead —
+**93% of full-season accuracy six weeks before bloom**. This is also what keeps
+the bloom date from being learned circularly from the bloom itself.
 
-```
-python skrypty/potencjal/wojewodztwo.py            # siatka 100 m, meteo 63 punkty, splot 2025
-python skrypty/potencjal/wojewodztwo_sezony.py     # sezon 2026 + średnia + porównanie
-python skrypty/kalendarz/wojewodztwo_kalendarz.py  # mapa KIEDY + GDZIE i krzywe kalendarza
-python skrypty/potencjal/mapa_wojewodztwa.py       # mapa główna z podkładem OSM
-python skrypty/potencjal/mapa_sezonow.py           # średnia dwóch sezonów + mapa zmian
-python skrypty/fenologia/mapa_modelu.py            # rysunek samego modelu fenologicznego
-python skrypty/fenologia/prognoza_w_sezonie.py     # hindcast prognozy terminu
-python skrypty/fenologia/imgw_walidacja.py         # ERA5 vs stacja IMGW Zamość
-python skrypty/fenologia/fenologia_sadu.py         # dynamiczne okno jabłoni (kotwiczenie)
-```
+| data through | lead time | F1 rapeseed |
+|---|---|---|
+| December | ~5 months | 0.826 |
+| February | ~10 weeks | 0.840 |
+| **March** | **~6 weeks** | **0.869** |
+| whole season | after the fact | 0.939 |
 
-Teledetekcja (kolejność ważna — każdy czyta wyniki poprzedniego):
+### Independent checks
 
-```
-python skrypty/detekcja/detekcja_wojewodztwo.py   # przedkwitnieniowa detekcja 2025, ~1.5 h GEE
-python skrypty/detekcja/teledetekcja_mapy.py      # stara mapa rzepak+łąki (nie kalendarz)
-python skrypty/detekcja/mapa_detekcji.py          # detekcja obok deklaracji
-python skrypty/detekcja/stabilnosc_rzepaku.py     # EUCROPMAP 2018/2022 + GSA: 8 lat
-python skrypty/detekcja/detekcja_lata.py          # pełny klasyfikator na 2019-2025, ~10 h GEE
-python skrypty/potencjal/sredni_rok.py             # finał: przeciętny rok + niezawodność
+| check | result |
+|---|---|
+| detection vs ARiMR declarations, 2025 | r = 0.948 |
+| detection vs EUCROPMAP, 2022 | r = 0.918 |
+| ERA5 vs IMGW Zamość weather station | RMSE 1.13 K, r = 0.986 |
+
+---
+
+## Rebuilding
+
+```bash
+python skrypty/serwis/eksport_paczka.py     # build all pages + navigation + index
+python skrypty/serwis/test_strony.py        # do they open from disk without JS errors
+python skrypty/serwis/test_rownowaznosc.py  # does the JS match Python
 ```
 
-Detekcja wielogatunkowa (Sentinel-1 + Sentinel-2) — kolejność obowiązkowa,
-każdy krok czyta cache poprzedniego:
+An optional Flask service (`bash skrypty/serwis/restart.sh`, port 8000) adds a
+`/prognoza?lat=&lon=` API. **It needs the full 4.6 GB of inputs**, which this
+repository does not carry — a fresh clone runs the static pages, not the service.
 
+<details>
+<summary><b>Full processing pipeline</b> — order matters, each step reads the previous one's cache</summary>
+
+```bash
+# Phenology
+python skrypty/fenologia/meteo_gdd.py           # weather 2000-2026, first GDD threshold
+python skrypty/fenologia/fenologia_wielo.py     # bloom dates, 19 areas (long, resumable)
+python skrypty/fenologia/walidacja_krzyzowa.py  # leave-one-out
+python skrypty/fenologia/fenologia_final.py     # final model: base 1.5, 15 III, 430
+
+# Multi-species detection (Sentinel-1 + Sentinel-2)
+python skrypty/detekcja/klasyfikator_wielo.py   # 21k parcels + S2 features, ~70 min GEE
+python skrypty/detekcja/wielo_diagnoza.py       # label merging
+python skrypty/detekcja/wielo_s1s2.py           # does radar help
+python skrypty/detekcja/wielo_lata.py           # maps 2019-2024
+python skrypty/detekcja/kalibracja_arealowa.py  # area calibration + EUCROPMAP check
+
+# Potential maps
+python skrypty/potencjal/wojewodztwo.py         # 100 m grid, convolution
+python skrypty/potencjal/sredni_rok.py          # typical year + reliability layer
+python skrypty/potencjal/najlepsze_punkty.py    # 12 best locations
+
+# Outputs
+python skrypty/kalendarz/eksport_interaktywny.py
+python skrypty/raport/raport_buduj.py
+python skrypty/raport/mechanika.py
 ```
-python skrypty/detekcja/klasyfikator_wielo.py   # próbka 21 tys. działek + cechy S2, ~70 min GEE
-python skrypty/detekcja/wielo_diagnoza.py       # scalenie etykiet, miara po agregacji
-python skrypty/detekcja/wielo_transfer.py       # ucz 2025 → sprawdź 2026 (sama optyka)
-python skrypty/detekcja/wielo_s1s2.py           # czy radar pomaga: S2 vs S1 vs S1+S2
-python skrypty/detekcja/transfer_s1s2.py        # przenoszenie z radarem, wybór gatunków
-python skrypty/detekcja/wielo_lata.py           # mapy 2019-2024, trening jako zasób GEE
-```
 
-Uwaga: `wielo_lata.py` zapisuje model do zasobu
-`projects/<projekt>/assets/modele/` — ten katalog trzeba raz utworzyć ręcznie
-w Code Editorze (zakładka Assets → NEW → Folder), bo świeży projekt GEE go
-nie ma i eksport kończy się błędem „Asset does not exist".
+`wielo_lata.py` writes a model into `projects/<project>/assets/modele/`; create
+that folder once in the Earth Engine Code Editor, or the export fails with
+"Asset does not exist".
 
-Raport i diagnostyka:
+</details>
 
-```
-python skrypty/raport/raport_buduj.py              # raport.html
-python skrypty/kalendarz/eksport_interaktywny.py   # kalendarz.html (satelita = sam rzepak)
-python skrypty/detekcja/gee_profil_rzepaku.py   # profile spektralne upraw (Etap 0b)
-python skrypty/detekcja/gee_ndyi_przeglad.py    # przegląd diagnostyczny (Etap 0)
-python skrypty/detekcja/klasyfikator_fasoli.py  # wynik negatywny: fasola F1 0,69
-python skrypty/detekcja/wybor_stacji_rzepak.py  # wybór obszaru pilotażowego (Etap 1)
-```
+### Requirements
 
-## Wymagania
-
-Środowisko: `C:/Users/kacpe/miniconda3/python.exe` — tam siedzi Earth Engine
-razem z geopandas. Domyślny `python` w PATH to inny interpreter i nie ma `ee`.
-
-```
+```bash
 pip install earthengine-api geopandas pyogrio rasterio scipy matplotlib requests
 earthengine authenticate
 ```
 
-ID projektu Earth Engine w pliku `.ee_projekt` obok skryptów.
+Earth Engine project id goes in `.ee_projekt`.
 
-## Dane wejściowe
+---
 
-| źródło | zakres | skąd |
+## Input data
+
+| source | span | note |
 |---|---|---|
-| ARiMR GSA — uprawy | 2025, 2026 | `dane/gsa_lubelskie_*/` — geoportal ARiMR publikuje wyłącznie te dwa roczniki |
-| Sentinel-2 | 2018–2026 | Earth Engine; lokalnie tylko wyniki klasyfikacji |
-| Sentinel-1 GRD (radar) | 2018–2026 | Earth Engine; tryb IW, orbita zstępująca, VV+VH |
-| EUCROPMAP (JRC) | 2018, 2022 | Earth Engine, klasa 232 = rzepak |
-| ERA5 przez Open-Meteo | 2000–2026 | pobierane przez `meteo_gdd.py` / `wojewodztwo.py` |
-| ESA WorldCover | 2021 | maska gruntów ornych przy klasyfikatorze; łąki nie wchodzą na kalendarz satelitarny |
-| OSM (Overpass) | — | podkład kartograficzny, cache `dane/osm_podklad.json` |
+| ARiMR GSA crop declarations | 2025, 2026 | only two years are published — hence the satellite work |
+| Sentinel-2 L2A | 2018–2026 | Earth Engine |
+| Sentinel-1 GRD | 2018–2026 | IW, descending, VV+VH |
+| EUCROPMAP (JRC) | 2018, 2022 | independent cross-check |
+| ERA5 via Open-Meteo | 2000–2026 | |
+| ESA WorldCover | 2021 | arable mask |
 
-Katalog `dane/` (~2 GB po sprzątnięciu zipów) nie jest wersjonowany; shapefile
-GSA pobiera się z geoportalu ARiMR („Deklaracje rolne … — uprawy, woj.
-lubelskie"). Kosztowne wyniki pośrednie (7 sezonów detekcji `woj_prawd_*.npy`,
-~10 h GEE) leżą w `wyniki/` — nie kasować.
+`dane/` (3.9 GB) and `wyniki/cache/` are not versioned. The detection cache
+`woj_prawd_*.npy` represents ~10 hours of Earth Engine compute — do not delete it.
 
-## Ograniczenia, o których trzeba pamiętać
+---
 
-- **Deklaracje istnieją tylko za 2025 i 2026** — wieloletniość mapy stoi na
-  detekcji satelitarnej rzepaku. W kalendarzu zakładka satelity to sam rzepak
-  (łąk WorldCover tam nie ma). Pozostałe gatunki są tylko u rolników.
-- **Fenologia jest dynamiczna dla rzepaku (kalibrowana pomiarem) i sadu
-  (kotwiczona w literaturze).** Rośliny jare (gryka, słonecznik, fasola…)
-  mają stałe daty z konieczności — ich termin zależy od nieznanej daty
-  siewu, więc sztywne okno literaturowe jest jedyną uczciwą opcją;
-  szerokość czerwcowej przerwy jest przez to częściowo artefaktem.
-- **Prognoza terminu ma sens od ~3 tygodni przed kwitnieniem.** Wcześniej model
-  nie bije zwykłej średniej wieloletniej — o terminie decyduje kwiecień.
-- **Szereg fenologiczny zaczyna się w 2018** (start Sentinela-2); lata
-  2000–2017 to ekstrapolacja bez możliwości weryfikacji. MODIS za gruby
-  (500 m vs mediana działki 1,16 ha), Landsat za rzadki — sprawdzone oba.
-- **„Obserwacje" fenologiczne pochodzą z satelity**, nie z obserwacji BBCH
-  w polu. RMSE mierzy zgodność z fenologią teledetekcyjną.
-- **Detekcja na pikselach jest słabsza niż na rejonach** (precyzja ~0,7 na
-  pikselu 100 m); mapy używają jej wyłącznie po rozmyciu zasięgiem lotu.
+## Limitations worth knowing
 
-## Czego brakuje
+- **Declarations exist for 2025 and 2026 only.** Everything multi-year rests on
+  satellite detection, and the satellite layer is 84% rapeseed by sugar — it is
+  not an independent second opinion, it is rapeseed plus 16%.
+- **Phenology is dynamic for rapeseed only.** Spring-sown crops get fixed
+  literature dates out of necessity, so the width of the June gap is partly an
+  artefact.
+- **The series starts in 2018** with Sentinel-2; earlier years are
+  extrapolation. MODIS is too coarse (500 m vs 1.16 ha median parcel), Landsat
+  too sparse — both tested.
+- **"Observations" are satellite-derived**, not field BBCH records, so the
+  3.21-day RMSE measures agreement with remote-sensing phenology.
+- **Pixel-level detection is weaker than regional** (~0.7 precision at 100 m);
+  maps use it only after blurring by flight range.
 
-Walidacji rzeczywistym zbiorem miodu (największa dziura), konkurencji
-istniejących pasiek, detekcji fasoli wielokwiatowej wraz z jej własnym modelem
-GDD (wynik negatywny: F1 0,69, myli się z soją i dynią)
+## What is missing
 
+Validation against a real honey harvest — by far the biggest gap — plus
+competition from existing apiaries, and a bloom model for species other than
+rapeseed.
