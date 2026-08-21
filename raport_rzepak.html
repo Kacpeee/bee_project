@@ -156,7 +156,7 @@ w tym układzie nie powtarza:</p>
 <div class="wzor">26 okien półmiesięcznych (wrzesień → wrzesień)
 w każdym oknie:  NDVI, NDYI      — optyka, jako anomalie sceny
                  VV, VH, VH−VV   — radar, w decybelach
-razem 122 cech, 300 drzew</div>
+razem 122 cech, 300 drzew w lesie losowym</div>
 <p><b>Anomalia sceny, nie surowy wskaźnik.</b> Od każdej wartości optycznej
 odejmowana jest mediana gruntów ornych <i>z tego samego zdjęcia</i>. Bez tego
 model uczyłby się kąta słońca i zamglenia zamiast rośliny — ta sama uprawa
@@ -440,7 +440,7 @@ na ceny i na przezimowanie — ale mieszczą się w skali, którą znamy z danyc
 ARiMR między 2025 a 2026.</p>
 
 <div class="klucz"><b>Czego to nie dowodzi.</b> Powyższe sprawdza
-wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
+wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówi nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
@@ -454,7 +454,7 @@ w dniach.</p>
 <p>Rośliny nie idą za kalendarzem, tylko za nagromadzonym ciepłem. Każdy dzień
 dokłada tyle, o ile jego średnia temperatura przekracza bazę, poniżej której
 rozwój stoi. Kwitnienie następuje, gdy suma przekroczy próg.</p>
-<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − 1,5 °C , 0 )   od 15III
+<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − 1,5 °C , 0 )   od 15 III
 kwitnienie pierwszego dnia, w którym GDD ≥ 430</div>
 
 <div class="klucz"><b>Po co więc satelita?</b> Posłużył <b>jednorazowo</b>,
@@ -633,7 +633,7 @@ kandydaty walidowano tak samo:</p>
     <th>RMSE dopasowania</th><th>RMSE leave-one-out</th>
     <th>najgorszy przypadek</th></tr></thead>
   <tbody>
-    <tr><td>1 II  (obecny)</td><td>1,0 °C</td><td>555</td><td>3,89</td><td><b>4,17</b></td><td>11,7</td></tr>    <tr><td>15 III (kandydat)</td><td>1,5 °C</td><td>430</td><td>3,13</td><td><b>3,19</b></td><td>9,2</td></tr>
+    <tr><td>1 II (wersja pierwotna)</td><td>1,0 °C</td><td>555</td><td>3,89</td><td><b>4,17</b></td><td>11,7</td></tr>    <tr><td><b>15 III (przyjęty)</b></td><td>1,5 °C</td><td>430</td><td>3,13</td><td><b>3,19</b></td><td>9,2</td></tr>
   </tbody>
 </table>
 <p class="mniej">Wartość 3,19 w tej tabeli różni się
@@ -664,7 +664,7 @@ jest bez sensu — parametrem jest para, nie żadna z liczb osobno.</p>
     <tr><td>rejon Skopje, BBCH 63</td><td>—</td><td>—</td><td>633–809</td></tr>
     <tr><td>Estonia, przezimowanie</td><td>5,0 °C</td><td>—</td><td>416</td></tr>
     <tr><td><b>ten model</b></td><td><b>1,5 °C</b></td>
-        <td><b>15III</b></td><td><b>430</b></td></tr>
+        <td><b>15 III</b></td><td><b>430</b></td></tr>
   </tbody>
 </table>
 <p>Suma GDD ma sens wyłącznie razem ze swoją bazą i datą startu. Przy bazie
@@ -700,13 +700,8 @@ do szumu.</p>
 <h2 id="splot"><span class="nr">5</span>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
 <p class="lead">Ul nie zbiera z piksela, na którym stoi. Mapa musi
 odpowiadać, <b>ile cukru jest w zasięgu</b>, czyli sumować otoczenie z wagą
-malejącą wraz z odległością.</p>
-
-<div class="wzor">P(x) = Σ_y  C(y) · K( d(x,y) )        K(d) = exp( −d / λ )</div>
-<p>gdzie C(y) to cukier na pikselu y, a d odległość między pikselami. To jest
-<b>splot</b>, liczony przez FFT na całej siatce
-1 806 × 2 237 przy rozdzielczości
-100 m — jeden piksel to jeden hektar.</p>
+malejącą wraz z odległością. Ta operacja nazywa się <b>splotem</b>
+i składa się z czterech kroków.</p>
 
 <h3>Krok 1 — waga zależna od odległości</h3>
 <p>Pole oddalone o <i>d</i> metrów liczy się z wagą:</p>
@@ -765,7 +760,7 @@ miejsca <i>realnie dosięgnie</i> — a nie ile go leży dokładnie pod ulem.</p
   <thead><tr><th>kształt</th><th>korelacja z wykładniczym</th>
     <th>wspólne top 10%</th></tr></thead>
   <tbody>
-    <tr><td>wykladniczy</td><td>1,0000</td><td>100,0%</td></tr>    <tr><td>gaussowski</td><td>0,9984</td><td>95,3%</td></tr>    <tr><td>liniowy</td><td>0,9965</td><td>93,2%</td></tr>
+    <tr><td>wykładniczy</td><td>1,0000</td><td>100,0%</td></tr>    <tr><td>gaussowski</td><td>0,9984</td><td>95,3%</td></tr>    <tr><td>liniowy</td><td>0,9965</td><td>93,2%</td></tr>
   </tbody>
 </table>
 <p>Jądro gaussowskie i liniowe dają praktycznie tę samą mapę. Spór o postać
@@ -795,8 +790,9 @@ granice służą wyłącznie za podkład.</p>
 
 <h3>Jak dokładnie trzeba trafić w punkt</h3>
 <p>Miejsca wyznaczono jako <b>lokalne maksima rozdzielone o
-8 km</b>. Odstęp nie jest dowolny:
-8 km, ok. 7x zasieg lotu - przy odstepie rownym zasiegowi (1178 m) cala czolowka wypadala w jednym powiecie</p>
+8 km</b>. Odstęp nie jest dowolny — to około siedmiokrotność zasięgu lotu.
+Przy odstępie równym samemu zasięgowi (1 178 m) cała
+czołówka wypadała w jednym powiecie.</p>
 <p>Dla każdego liczony jest <b>promień równoważności</b> — jak daleko można
 się odsunąć, zanim straci się 5, 10 albo 20% potencjału:</p>
 <table>
@@ -804,18 +800,19 @@ się odsunąć, zanim straci się 5, 10 albo 20% potencjału:</p>
   <thead><tr><th>miejsce</th><th>rodzin</th><th>−5%</th><th>−10%</th>
     <th>−20%</th></tr></thead>
   <tbody>
-    <tr><td>nr 1 · 51.059 N 22.103 E</td><td>411</td><td>200 m</td><td>300 m</td><td>400 m</td></tr>    <tr><td>nr 2 · 50.807 N 22.467 E</td><td>388</td><td>0 m</td><td>100 m</td><td>200 m</td></tr>    <tr><td>nr 3 · 51.009 N 22.221 E</td><td>347</td><td>0 m</td><td>100 m</td><td>200 m</td></tr>
+    <tr><td>nr 1 · 51,059 N 22,103 E</td><td>411</td><td>200 m</td><td>300 m</td><td>400 m</td></tr>    <tr><td>nr 2 · 50,807 N 22,467 E</td><td>388</td><td>0 m</td><td>100 m</td><td>200 m</td></tr>    <tr><td>nr 3 · 51,009 N 22,221 E</td><td>347</td><td>0 m</td><td>100 m</td><td>200 m</td></tr>
   </tbody>
 </table>
-<div class="uwaga"><b>Promien rownowaznosci mowi, ze wewnatrz niego mapa NIE rozstrzyga - decyduja dojazd, oslona od wiatru i woda.</b>
+<div class="uwaga"><b>Wewnątrz promienia równoważności mapa nie
+rozstrzyga</b> — decydują dojazd, osłona od wiatru i woda.
 Promienie są małe, bo pole potencjału nie jest płaskie: odsunięcie o 100 m
 zmniejsza wkład sąsiedniego pola o
 29%.</div>
 
 <p class="mniej">Warto przy tym pamiętać, że ranking porządkuje <b>cały</b>
 osiągalny cukier, nie sam rzepak. Miejsce nr 1 stoi najwyżej w tym
-zestawieniu, ale leży w rejonie sadowniczym — rzepaku ma tam
-0,0 tony w zasięgu lotu. Pszczelarz jadący tam z datą kwitnienia
+zestawieniu, ale leży w rejonie sadowniczym — rzepaku nie ma tam praktycznie wcale — w promieniu 3 km model
+znalazł 51 działek, wobec 144 przy miejscu nr 12. Pszczelarz jadący tam z datą kwitnienia
 rzepaku trafi na sady i maliny, kwitnące w innym terminie.</p>
 
 <!-- ============================================================ DANE -->

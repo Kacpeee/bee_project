@@ -253,7 +253,7 @@ w tym układzie nie powtarza:</p>
 <div class="wzor">26 okien półmiesięcznych (wrzesień → wrzesień)
 w każdym oknie:  NDVI, NDYI      — optyka, jako anomalie sceny
                  VV, VH, VH−VV   — radar, w decybelach
-razem {s1s2['n_cech']['S1_S2']} cech, 300 drzew</div>
+razem {s1s2['n_cech']['S1_S2']} cech, 300 drzew w lesie losowym</div>
 <p><b>Anomalia sceny, nie surowy wskaźnik.</b> Od każdej wartości optycznej
 odejmowana jest mediana gruntów ornych <i>z tego samego zdjęcia</i>. Bez tego
 model uczyłby się kąta słońca i zamglenia zamiast rośliny — ta sama uprawa
@@ -538,7 +538,7 @@ na ceny i na przezimowanie — ale mieszczą się w skali, którą znamy z danyc
 ARiMR między 2025 a 2026.</p>
 
 <div class="klucz"><b>Czego to nie dowodzi.</b> Powyższe sprawdza
-wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
+wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówi nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
@@ -552,7 +552,7 @@ w dniach.</p>
 <p>Rośliny nie idą za kalendarzem, tylko za nagromadzonym ciepłem. Każdy dzień
 dokłada tyle, o ile jego średnia temperatura przekracza bazę, poniżej której
 rozwój stoi. Kwitnienie następuje, gdy suma przekroczy próg.</p>
-<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − {pl(m['baza'],1)} °C , 0 )   od {m['start']}
+<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − {pl(m['baza'],1)} °C , 0 )   od {m['start'].replace('15III', '15 III')}
 kwitnienie pierwszego dnia, w którym GDD ≥ {pl(m['prog'],0)}</div>
 
 <div class="klucz"><b>Po co więc satelita?</b> Posłużył <b>jednorazowo</b>,
@@ -732,10 +732,11 @@ kandydaty walidowano tak samo:</p>
     <th>RMSE dopasowania</th><th>RMSE leave-one-out</th>
     <th>najgorszy przypadek</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>{v['opis']}</td><td>{pl(v['baza'],1)} °C</td>"
+{"".join(f"    <tr><td>{ {'32':'1 II (wersja pierwotna)','74':'<b>15 III (przyjęty)</b>'}.get(k, v['opis']) }</td>"
+         f"<td>{pl(v['baza'],1)} °C</td>"
          f"<td>{pl(v['prog'],0)}</td><td>{pl(v['rmse_in'],2)}</td>"
          f"<td><b>{pl(v['rmse_loo'],2)}</b></td>"
-         f"<td>{pl(v['najgorszy'],1)}</td></tr>" for v in star.values())}
+         f"<td>{pl(v['najgorszy'],1)}</td></tr>" for k, v in star.items())}
   </tbody>
 </table>
 <p class="mniej">Wartość {pl(star['74']['rmse_loo'],2)} w tej tabeli różni się
@@ -766,7 +767,7 @@ jest bez sensu — parametrem jest para, nie żadna z liczb osobno.</p>
     <tr><td>rejon Skopje, BBCH 63</td><td>—</td><td>—</td><td>633–809</td></tr>
     <tr><td>Estonia, przezimowanie</td><td>5,0 °C</td><td>—</td><td>416</td></tr>
     <tr><td><b>ten model</b></td><td><b>{pl(m['baza'],1)} °C</b></td>
-        <td><b>{m['start']}</b></td><td><b>{pl(m['prog'],0)}</b></td></tr>
+        <td><b>{m['start'].replace('15III', '15 III')}</b></td><td><b>{pl(m['prog'],0)}</b></td></tr>
   </tbody>
 </table>
 <p>Suma GDD ma sens wyłącznie razem ze swoją bazą i datą startu. Przy bazie
@@ -802,13 +803,8 @@ do szumu.</p>
 <h2 id="splot"><span class="nr">5</span>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
 <p class="lead">Ul nie zbiera z piksela, na którym stoi. Mapa musi
 odpowiadać, <b>ile cukru jest w zasięgu</b>, czyli sumować otoczenie z wagą
-malejącą wraz z odległością.</p>
-
-<div class="wzor">P(x) = Σ_y  C(y) · K( d(x,y) )        K(d) = exp( −d / λ )</div>
-<p>gdzie C(y) to cukier na pikselu y, a d odległość między pikselami. To jest
-<b>splot</b>, liczony przez FFT na całej siatce
-{pl(woj['siatka'][0], 0)} × {pl(woj['siatka'][1], 0)} przy rozdzielczości
-{woj['piksel_m']} m — jeden piksel to jeden hektar.</p>
+malejącą wraz z odległością. Ta operacja nazywa się <b>splotem</b>
+i składa się z czterech kroków.</p>
 
 <h3>Krok 1 — waga zależna od odległości</h3>
 <p>Pole oddalone o <i>d</i> metrów liczy się z wagą:</p>
@@ -871,7 +867,8 @@ miejsca <i>realnie dosięgnie</i> — a nie ile go leży dokładnie pod ulem.</p
   <thead><tr><th>kształt</th><th>korelacja z wykładniczym</th>
     <th>wspólne top 10%</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>{k}</td><td>{pl(v['korelacja'],4)}</td>"
+{"".join(f"    <tr><td>{ {'wykladniczy':'wykładniczy','gaussowski':'gaussowski','liniowy':'liniowy'}.get(k, k) }</td>"
+         f"<td>{pl(v['korelacja'],4)}</td>"
          f"<td>{pl(v['top10_wspolne_proc'],1)}%</td></tr>"
          for k, v in ksz.items())}
   </tbody>
@@ -912,8 +909,9 @@ granice służą wyłącznie za podkład.</p>
 
 <h3>Jak dokładnie trzeba trafić w punkt</h3>
 <p>Miejsca wyznaczono jako <b>lokalne maksima rozdzielone o
-{pl(najl['odstep_m'] / 1000, 0)} km</b>. Odstęp nie jest dowolny:
-{najl['uzasadnienie_odstepu']}</p>
+{pl(najl['odstep_m'] / 1000, 0)} km</b>. Odstęp nie jest dowolny — to około siedmiokrotność zasięgu lotu.
+Przy odstępie równym samemu zasięgowi ({pl(wios['zasieg_m'], 0)} m) cała
+czołówka wypadała w jednym powiecie.</p>
 <p>Dla każdego liczony jest <b>promień równoważności</b> — jak daleko można
 się odsunąć, zanim straci się 5, 10 albo 20% potencjału:</p>
 <table>
@@ -921,21 +919,22 @@ się odsunąć, zanim straci się 5, 10 albo 20% potencjału:</p>
   <thead><tr><th>miejsce</th><th>rodzin</th><th>−5%</th><th>−10%</th>
     <th>−20%</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>nr {x['nr']} · {x['lat']:.3f} N {x['lon']:.3f} E</td>"
+{"".join(f"    <tr><td>nr {x['nr']} · {pl(x['lat'], 3)} N {pl(x['lon'], 3)} E</td>"
          f"<td>{x['rodzin']:.0f}</td><td>{x['promien_95_m']} m</td>"
          f"<td>{x['promien_90_m']} m</td><td>{x['promien_80_m']} m</td></tr>"
          for x in najl['miejsca'][:3])}
   </tbody>
 </table>
-<div class="uwaga"><b>{najl['uwaga'][0].upper()}{najl['uwaga'][1:]}.</b>
+<div class="uwaga"><b>Wewnątrz promienia równoważności mapa nie
+rozstrzyga</b> — decydują dojazd, osłona od wiatru i woda.
 Promienie są małe, bo pole potencjału nie jest płaskie: odsunięcie o 100 m
 zmniejsza wkład sąsiedniego pola o
 {pl((1 - 2.718281828 ** (-100 / wios['lambda_m'])) * 100, 0)}%.</div>
 
 <p class="mniej">Warto przy tym pamiętać, że ranking porządkuje <b>cały</b>
 osiągalny cukier, nie sam rzepak. Miejsce nr 1 stoi najwyżej w tym
-zestawieniu, ale leży w rejonie sadowniczym — rzepaku ma tam
-{pl(0.0, 1)} tony w zasięgu lotu. Pszczelarz jadący tam z datą kwitnienia
+zestawieniu, ale leży w rejonie sadowniczym — rzepaku nie ma tam praktycznie wcale — w promieniu 3 km model
+znalazł 51 działek, wobec 144 przy miejscu nr 12. Pszczelarz jadący tam z datą kwitnienia
 rzepaku trafi na sady i maliny, kwitnące w innym terminie.</p>
 
 <!-- ============================================================ DANE -->
