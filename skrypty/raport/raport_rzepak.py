@@ -202,12 +202,11 @@ wpisana ręcznie.</p>
 <div class="spis">
   <a href="#gdzie"><b>1</b>Gdzie rośnie — rozpoznanie uprawy z orbity</a>
   <a href="#wstecz"><b>2</b>Model przeniesiony na inne sezony</a>
-  <a href="#walidacje"><b>3</b>Jak to sprawdzano — opis walidacji</a>
-  <a href="#kiedy"><b>4</b>Kiedy zakwitnie — model termiczny</a>
-  <a href="#prog"><b>5</b>Skąd wzięły się próg GDD i temperatura bazowa</a>
-  <a href="#splot"><b>6</b>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</a>
-  <a href="#mapy"><b>7</b>Mapy</a>
-  <a href="#dane"><b>8</b>Dane i ograniczenia</a>
+  <a href="#kiedy"><b>3</b>Kiedy zakwitnie — model termiczny</a>
+  <a href="#prog"><b>4</b>Skąd wzięły się próg GDD i temperatura bazowa</a>
+  <a href="#splot"><b>5</b>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</a>
+  <a href="#mapy"><b>6</b>Mapy</a>
+  <a href="#dane"><b>7</b>Dane i ograniczenia</a>
 </div>
 
 <!-- ============================================================ GDZIE -->
@@ -238,6 +237,24 @@ odejmowana jest mediana gruntów ornych <i>z tego samego zdjęcia</i>. Bez tego
 model uczyłby się kąta słońca i zamglenia zamiast rośliny — ta sama uprawa
 wygląda inaczej na zdjęciu czerwcowym i wrześniowym z powodów czysto
 atmosferycznych.</p>
+
+<h3>Jak sprawdzano klasyfikator: walidacja przestrzenna</h3>
+<p><b>Problem:</b> sąsiednie działki są do siebie podobne. Ta sama gleba, ten
+sam gospodarz, ta sama data siewu, często ta sama odmiana. Gdyby zbiór
+podzielić losowo, niemal identyczne pola trafiłyby jednocześnie do treningu
+i do testu — model zdałby egzamin, bo widział odpowiedzi.</p>
+<p><b>Rozwiązanie:</b> województwo dzielone jest na <b>kwadraty 2,5 km</b>,
+a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
+<div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
+dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
+<p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
+treningowej rośnie z <b>439 m</b> przy podziale losowym do <b>1 723 m</b> przy
+blokach. Tylko 1,8% działek testowych ma sąsiada tej samej klasy bliżej niż
+500 m.</p>
+<p><b>Czy to zmienia wynik:</b> sprawdzone przez zaostrzenie. Przy blokach
+10 km, czyli separacji czterokrotnie ostrzejszej, rzepak dostaje
+<b class="ok">0,947</b> — czyli <i>więcej</i>, nie mniej. Model uczy się
+rośliny, nie lokalizacji.</p>
 
 <table>
   <caption>Walidacja przestrzenna, bloki 2,5 km, 12 klas</caption>
@@ -319,6 +336,13 @@ klasom rzadkim. Poprawka: jeden współczynnik na gatunek z roku wzorcowego.</p>
 próba prawie go nie zniekształca — inaczej niż słonecznika, wykrywanego
 dziewięciokrotnie za obficie.</p>
 
+<p><b>Sprawdzenie:</b> porównanie sumy wykrytego areału z zadeklarowanym
+w roku wzorcowym, a potem <b>kontrola na innym roku i innym źródle</b> —
+EUCROPMAP 2022 podaje {kal['kontrola_eucropmap']['2022']['eucropmap_ha']:,.0f} ha,
+model po korekcie {kal['kontrola_eucropmap']['2022']['model_ha']:,.0f} ha,
+różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
+Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
+
 <h3>Znaleźć pola, zanim zakwitną</h3>
 <p>Datę kwitnienia mierzy się z NDYI, czyli z sygnału żółci. Gdyby te same
 zdjęcia wybierały też, <i>które</i> pola mierzyć, data byłaby uczona sama
@@ -360,6 +384,18 @@ trzy niezależne sprawdzenia, że to przeniesienie faktycznie działa.</div>
     <div class="co">zgodność układu rejonów przez <b>siedem lat</b>
       i dwa różne źródła danych</div></div>
 </div>
+
+<h3>Czym się sprawdza rok bez etykiet</h3>
+<p><b>Problem:</b> dla lat 2019–2024 nie ma żadnych etykiet, więc nie da się
+policzyć F1. Trzeba czegoś, co powstało zupełnie inaczej.</p>
+<p><b>Rozwiązanie:</b> EUCROPMAP — warstwa upraw dla całej Unii, robiona
+przez Wspólne Centrum Badawcze Komisji Europejskiej z innego potoku, innych
+cech i innego modelu. Porównuje się mapy <i>po rozmyciu zasięgiem lotu</i>,
+bo to na tym poziomie działa produkt.</p>
+<p class="mniej">Dlaczego po rozmyciu, a nie na pikselu: pomyłka między
+dwiema sąsiednimi działkami nie ma znaczenia dla pszczoły, która i tak
+oblatuje kilometr. Miarą sensowną jest zgodność <b>zagęszczeń rejonu</b>,
+nie pojedynczych pól.</p>
 
 <h3>Dowód pierwszy: niezależna mapa EUCROPMAP</h3>
 <p>EUCROPMAP to warstwa upraw dla całej Unii, robiona przez Wspólne Centrum
@@ -441,42 +477,20 @@ sprawdzają <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
-<!-- ======================================================== WALIDACJE -->
-<h2 id="walidacje"><span class="nr">3</span>Jak to sprawdzano — opis walidacji</h2>
-<p class="lead">Każda liczba w tym raporcie pochodzi z innej procedury
-sprawdzającej. Tu jest opisane, na czym każda polega i przed czym chroni.</p>
+<!-- ============================================================ KIEDY -->
+<h2 id="kiedy"><span class="nr">3</span>Kiedy zakwitnie — model termiczny</h2>
+<p class="lead">Pytanie: <b>którego dnia pole jest w pełni kwitnienia?</b>
+Ten model nie klasyfikuje pikseli, więc nie ma F1 — jego błąd mierzy się
+w dniach.</p>
 
-<h3>Walidacja przestrzenna blokami — dla klasyfikatora</h3>
-<p><b>Problem:</b> sąsiednie działki są do siebie podobne. Ta sama gleba, ten
-sam gospodarz, ta sama data siewu, często ta sama odmiana. Gdyby zbiór
-podzielić losowo, niemal identyczne pola trafiłyby jednocześnie do treningu
-i do testu — model zdałby egzamin, bo widział odpowiedzi.</p>
-<p><b>Rozwiązanie:</b> województwo dzielone jest na <b>kwadraty 2,5 km</b>,
-a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
-<div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
-dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
-<p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
-treningowej rośnie z <b>439 m</b> przy podziale losowym do <b>1 723 m</b> przy
-blokach. Tylko 1,8% działek testowych ma sąsiada tej samej klasy bliżej niż
-500 m.</p>
-<p><b>Czy to zmienia wynik:</b> sprawdzone przez zaostrzenie. Przy blokach
-10 km, czyli separacji czterokrotnie ostrzejszej, rzepak dostaje
-<b class="ok">0,947</b> — czyli <i>więcej</i>, nie mniej. Model uczy się
-rośliny, nie lokalizacji.</p>
+<h3>Mechanizm</h3>
+<p>Rośliny nie idą za kalendarzem, tylko za nagromadzonym ciepłem. Każdy dzień
+dokłada tyle, o ile jego średnia temperatura przekracza bazę, poniżej której
+rozwój stoi. Kwitnienie następuje, gdy suma przekroczy próg.</p>
+<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − {pl(m['baza'],1)} °C , 0 )   od {m['start']}
+kwitnienie pierwszego dnia, w którym GDD ≥ {pl(m['prog'],0)}</div>
 
-<h3>Kontrola niezależnym źródłem — dla przeniesienia na inne lata</h3>
-<p><b>Problem:</b> dla lat 2019–2024 nie ma żadnych etykiet, więc nie da się
-policzyć F1. Trzeba czegoś, co powstało zupełnie inaczej.</p>
-<p><b>Rozwiązanie:</b> EUCROPMAP — warstwa upraw dla całej Unii, robiona
-przez Wspólne Centrum Badawcze Komisji Europejskiej z innego potoku, innych
-cech i innego modelu. Porównuje się mapy <i>po rozmyciu zasięgiem lotu</i>,
-bo to na tym poziomie działa produkt. Wyniki tego porównania są w sekcji 2.</p>
-<p class="mniej">Dlaczego po rozmyciu, a nie na pikselu: pomyłka między
-dwiema sąsiednimi działkami nie ma znaczenia dla pszczoły, która i tak
-oblatuje kilometr. Miarą sensowną jest zgodność <b>zagęszczeń rejonu</b>,
-nie pojedynczych pól.</p>
-
-<h3>Leave-one-out — dla modelu terminu kwitnienia</h3>
+<h3>Czym tu jest „obserwacja” i jak liczony jest błąd</h3>
 <p><b>Co znaczy „{m['n']} obserwacji".</b> Obserwacja to jedna para
 <i>obszar × sezon</i>: dla danego rejonu i danego roku wyznaczona data pełni
 kwitnienia. {m['obszarow']} obszarów razy 9 sezonów, minus przypadki
@@ -503,38 +517,7 @@ RMSE = pierwiastek ze sredniej kwadratow tych {m['n']} bledow</div>
 <p>Dzięki temu model nigdy nie jest oceniany na danych, które go
 ukształtowały. Różnica między błędem dopasowania a leave-one-out nazywa się
 <b>optymizmem dopasowania</b>: gdyby była duża, znaczyłoby to, że model uczy
-się szumu zamiast zjawiska. Obie liczby są w sekcji 4.</p>
-
-<h3>Kalibracja areałowa — czy poziom się zgadza</h3>
-<p><b>Problem:</b> model uczony na próbie zrównoważonej rozdaje piksele zbyt
-hojnie klasom rzadkim. Układ przestrzenny jest dobry, poziom zawyżony.</p>
-<p><b>Sprawdzenie:</b> porównanie sumy wykrytego areału z zadeklarowanym
-w roku wzorcowym, a potem <b>kontrola na innym roku i innym źródle</b> —
-EUCROPMAP 2022 podaje {kal['kontrola_eucropmap']['2022']['eucropmap_ha']:,.0f} ha,
-model po korekcie {kal['kontrola_eucropmap']['2022']['model_ha']:,.0f} ha,
-różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
-Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
-
-<!-- ============================================================ KIEDY -->
-<h2 id="kiedy"><span class="nr">4</span>Kiedy zakwitnie — model termiczny</h2>
-<p class="lead">Pytanie: <b>którego dnia pole jest w pełni kwitnienia?</b>
-Ten model nie klasyfikuje pikseli, więc nie ma F1 — jego błąd mierzy się
-w dniach.</p>
-
-<h3>Mechanizm</h3>
-<p>Rośliny nie idą za kalendarzem, tylko za nagromadzonym ciepłem. Każdy dzień
-dokłada tyle, o ile jego średnia temperatura przekracza bazę, poniżej której
-rozwój stoi. Kwitnienie następuje, gdy suma przekroczy próg.</p>
-<div class="wzor">GDD = Σ max( (T_max + T_min)/2 − {pl(m['baza'],1)} °C , 0 )   od {m['start']}
-kwitnienie pierwszego dnia, w którym GDD ≥ {pl(m['prog'],0)}</div>
-
-<h3>Czym tu jest „obserwacja"</h3>
-<p>Tych {m['n']} obserwacji to <b>nie są zapisy z pola</b>. Dla każdego obszaru
-i sezonu śledzona jest krzywa NDYI pól rzepaku, a za pełnię przyjmuje się datę
-jej szczytu. Przez trzy punkty wokół maksimum dopasowywana jest parabola, więc
-data nie jest ograniczona do dni, w których akurat przeleciał satelita. Podany
-niżej błąd mierzy więc zgodność z <b>fenologią teledetekcyjną</b>, a nie
-z obserwacjami BBCH w terenie.</p>
+się szumu zamiast zjawiska. Obie są w tabeli poniżej.</p>
 
 <table>
   <caption>{m['n']} obserwacji, {m['obszarow']} obszarów, 9 sezonów</caption>
@@ -575,7 +558,7 @@ r = {pl(imgw['r'],3)}</b>, obciążenie {pl(imgw['bias_K'],2)} K. Przy około
 o znacznie mniej niż dzień.</p>
 
 <!-- ============================================================ PROG -->
-<h2 id="prog"><span class="nr">5</span>Skąd wzięły się próg GDD i temperatura bazowa</h2>
+<h2 id="prog"><span class="nr">4</span>Skąd wzięły się próg GDD i temperatura bazowa</h2>
 <div class="uwaga"><b>Zostały dopasowane, nie wzięte z literatury.</b> Żadne
 publikowane źródło nie podaje bazy {pl(m['baza'],1)} °C z progiem
 {pl(m['prog'],0)}. Obie liczby pochodzą z przeszukania siatki wobec
@@ -666,7 +649,7 @@ najmocniejszy dostępny tu dowód, że parametry są realne, a nie dopasowane
 do szumu.</p>
 
 <!-- ============================================================ SPLOT -->
-<h2 id="splot"><span class="nr">6</span>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
+<h2 id="splot"><span class="nr">5</span>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
 <p class="lead">Ul nie zbiera z piksela, na którym stoi. Mapa musi
 odpowiadać, <b>ile cukru jest w zasięgu</b>, czyli sumować otoczenie z wagą
 malejącą wraz z odległością.</p>
@@ -719,7 +702,7 @@ funkcji byłby stratą czasu — liczy się skala odległości, a ta pochodzi
 z pomiaru.</p>
 
 <!-- ============================================================ MAPY -->
-<h2 id="mapy"><span class="nr">7</span>Mapy</h2>
+<h2 id="mapy"><span class="nr">6</span>Mapy</h2>
 <p class="lead">Produkt końcowy ścieżki rzepakowej: detekcja → kalibracja
 areałowa → pomnożenie przez wydajność → splot jądrem wiosennym.</p>
 
@@ -755,7 +738,7 @@ więc pszczelarz jadący na miejsce 1 z datą kwitnienia rzepaku trafi na sady
 i maliny, kwitnące w innym terminie.</p>
 
 <!-- ============================================================ DANE -->
-<h2 id="dane"><span class="nr">8</span>Dane i ograniczenia</h2>
+<h2 id="dane"><span class="nr">7</span>Dane i ograniczenia</h2>
 <table>
   <thead><tr><th>źródło</th><th>zakres</th><th>rola dla rzepaku</th></tr></thead>
   <tbody>
