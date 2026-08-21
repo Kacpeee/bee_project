@@ -193,6 +193,7 @@ def buduj() -> str:
     tr_rz = tran["per_gatunek"]["rzepak ozimy"]
     woj = czytaj("wojewodztwo.json")
     wios = jad["jadra"]["wiosna"]
+    najl = czytaj("najlepsze_punkty.json")
     ar = sr["areal_det_ha"]
 
     def w_odl(k):
@@ -554,6 +555,35 @@ rozwój stoi. Kwitnienie następuje, gdy suma przekroczy próg.</p>
 <div class="wzor">GDD = Σ max( (T_max + T_min)/2 − {pl(m['baza'],1)} °C , 0 )   od {m['start']}
 kwitnienie pierwszego dnia, w którym GDD ≥ {pl(m['prog'],0)}</div>
 
+<div class="klucz"><b>Po co więc satelita?</b> Posłużył <b>jednorazowo</b>,
+żeby ustalić dwie liczby: bazę {pl(m['baza'],1)} °C i próg {pl(m['prog'],0)}.
+Po kalibracji jest zbędny — model potrzebuje już tylko termometru. To jest
+zaleta, a nie brak: model wymagający zdjęć do codziennej pracy byłby
+operacyjnie bezużyteczny, bo w maju nad Lubelszczyzną bywa pochmurno przez
+tydzień.</div>
+
+<h3>Trzy rzeczy, bez których pomiar NDYI nic nie znaczy</h3>
+<table>
+  <thead><tr><th>zabezpieczenie</th><th>na czym polega</th>
+    <th>co bez niego</th></tr></thead>
+  <tbody>
+    <tr><td><b>normalizacja sceny</b></td>
+        <td>od wartości pola odejmowana mediana gruntów ornych z tego samego
+            zdjęcia</td>
+        <td style="text-align:left">mierzy się atmosferę, nie kwitnienie —
+            błąd rośnie z <b>4,1 na 9,5 dnia</b></td></tr>
+    <tr><td><b>brak cyrkularności</b></td>
+        <td>pola wskazuje klasyfikator przedkwitnieniowy</td>
+        <td style="text-align:left">gdyby używał okna kwitnienia, wskazywałby
+            piksele, które zakwitły <i>tam, gdzie okno</i> — data ciążyłaby
+            do jego środka</td></tr>
+    <tr><td><b>wierzchołek paraboli</b></td>
+        <td>parabola przez trzy najwyższe punkty krzywej</td>
+        <td style="text-align:left">zwykłe maksimum daje wynik skwantowany
+            do dat przelotów satelity</td></tr>
+  </tbody>
+</table>
+
 <h3>Czym tu jest „obserwacja” i jak liczony jest błąd</h3>
 <p><b>Co znaczy „{m['n']} obserwacji".</b> Obserwacja to jedna para
 <i>obszar × sezon</i>: dla danego rejonu i danego roku wyznaczona data pełni
@@ -680,10 +710,14 @@ publikowane źródło nie podaje bazy {pl(m['baza'],1)} °C z progiem
   <li><b>Zmierzyć cel.</b> Daty kwitnienia z krzywych NDYI, na polach
       wskazanych przez klasyfikator przedkwitnieniowy, żeby data nie była
       cyrkularna.</li>
-  <li><b>Przeszukać siatkę.</b> Każda para (baza, próg) dostaje ocenę za to,
-      jak dobrze odtwarza te daty we wszystkich obszarach i sezonach.</li>
-  <li><b>Wybrać start akumulacji.</b> Sześć dat startowych przetestowanych,
-      nie założonych.</li>
+  <li><b>Przeszukać siatkę.</b> Baza od 0 do 8,5 °C co 0,5, próg od 150 do
+      900 co 5 — każda para dostaje ocenę za to, jak dobrze odtwarza te daty
+      we wszystkich obszarach i sezonach. Baza i próg dobierane
+      <b>jednocześnie</b>, nie po kolei, bo się kompensują.</li>
+  <li><b>Wybrać start akumulacji.</b> Sześć dat przetestowanych, nie
+      założonych: 1 I dało 4,39 dnia, 1 II — 3,89, a 15 III —
+      {pl(star['74']['rmse_in'],2)}. To zmieniło wynik bardziej niż
+      cokolwiek innego.</li>
   <li><b>Odrzucić obserwacje niemożliwe.</b> Próg wyprowadzony fizycznie,
       nie dobrany ręcznie.</li>
   <li><b>Zwalidować leave-one-out.</b> Parametry dobierane bez ocenianej
@@ -776,16 +810,29 @@ malejącą wraz z odległością.</p>
 {pl(woj['siatka'][0], 0)} × {pl(woj['siatka'][1], 0)} przy rozdzielczości
 {woj['piksel_m']} m — jeden piksel to jeden hektar.</p>
 
-<h3>Jądro kalibrowane na zmierzonych lotach pszczół</h3>
-<p>λ nie jest dobierane dla wyglądu. Rozwiązuje się je numerycznie tak, żeby
-<b>ważona średnia odległość lotu w jądrze równała się odległości zmierzonej
-z tańca pszczelego</b> — około 5 tys. tańców odczytanych przez Couvillon i in.
-(<i>PLOS ONE</i>, 2014):</p>
+<h3>Krok 1 — waga zależna od odległości</h3>
+<p>Pole oddalone o <i>d</i> metrów liczy się z wagą:</p>
+<div class="wzor">K(d) = exp( −d / λ )   dla d ≤ R,   0 dalej</div>
+<p>λ to skala spadku: po tylu metrach waga maleje e-krotnie, około 2,7 raza.
+Dla wiosny λ = {pl(wios['lambda_m'], 0)} m, więc pole oddalone o
+{pl(wios['lambda_m'], 0)} m liczy się <b>2,7 raza słabiej</b>, a o 600 m —
+już około siedmiokrotnie słabiej. R to odcięcie: dalej model nie sięga wcale.</p>
+
+<h3>Krok 2 — skąd bierze się λ</h3>
+<p><b>Nie z założenia.</b> Znamy zmierzoną średnią odległość lotu —
+{pl(jad['dystanse_zmierzone_m']['wiosna'], 0)} m wiosną, z odczytu około
+5 tys. tańców pszczelich (Couvillon i in., <i>PLOS ONE</i>, 2014). λ dobiera
+się więc tak, żeby <b>ważona średnia odległość samego jądra wyszła dokładnie
+tyle</b>:</p>
+<div class="wzor">średnia jądra = Σ( d · K(d) ) / Σ K(d) = {pl(jad['dystanse_zmierzone_m']['wiosna'], 0)} m</div>
+<p>Szukane bisekcją — połowieniem przedziału, aż się trafi. Wyszło
+{pl(wios['lambda_m'], 0)} m. Zasięg przyjęto R = 4λ, bo obejmuje to 99% masy
+jądra, a reszta jest pomijalna.</p>
 <table>
-  <thead><tr><th>pora</th><th>zmierzony średni lot</th><th>λ</th>
-    <th>zasięg efektywny (4λ)</th></tr></thead>
+  <thead><tr><th>pora</th><th>zmierzony dystans</th><th>λ</th>
+    <th>zasięg R = 4λ</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>{ {'wiosna':'wiosna','lato':'lato','jesien':'jesień'}[k] }</td>"
+{"".join(f"    <tr><td>{ {'wiosna':'wiosna (rzepak)','lato':'lato (gryka, TUZ)','jesien':'jesień'}[k] }</td>"
          f"<td>{pl(jad['dystanse_zmierzone_m'][k], 0)} m</td>"
          f"<td>{pl(v['lambda_m'], 0)} m</td>"
          f"<td>{pl(v['zasieg_m'], 0)} m</td></tr>"
@@ -794,14 +841,29 @@ z tańca pszczelego</b> — około 5 tys. tańców odczytanych przez Couvillon i
 </table>
 <p><b>Rzepak używa jądra wiosennego</b> — jego pełnia wypada przed 152. dniem
 roku, więc zasięg to {pl(wios['zasieg_m'], 0)} m, a nie letnie
-{pl(jad['jadra']['lato']['zasieg_m'], 0)} m. Pszczoły latają dalej latem, kiedy
-pożytku jest mniej; w majowym łanie rzepaku nie muszą.</p>
+{pl(jad['jadra']['lato']['zasieg_m'], 0)} m. Pszczoły latają dalej latem,
+kiedy pożytku jest mniej; w majowym łanie rzepaku nie muszą.</p>
 
-<div class="uwaga"><b>Jądra są normalizowane do stałej masy.</b> Każde jest
-przeskalowane tak, by wszystkie pory sumowały się do tej samej wartości przed
-splotem. Bez tego jądro letnie — rozłożone na {pl((jad['jadra']['lato']['zasieg_m'] / wios['zasieg_m'])**2, 0)} razy większą powierzchnię —
-po prostu dodawałoby więcej cukru każdemu pikselowi, a mapa stawiałaby
-gatunki późne wyżej z powodu czysto arytmetycznego.</div>
+<h3>Krok 3 — normalizacja jąder</h3>
+<div class="uwaga">Jądro letnie jest szersze, więc obejmuje więcej pikseli
+i sumuje się do większej liczby. Gdyby zostawić je tak, <b>hektar gryki
+liczyłby się {pl((jad['jadra']['lato']['zasieg_m'] / wios['zasieg_m'])**2, 0)} razy
+mocniej niż hektar rzepaku</b> — wyłącznie dlatego, że ma szersze jądro.
+Dlatego każde jądro dzielimy przez jego sumę i mnożymy przez tę samą stałą.
+Po tym zasięg lotu decyduje tylko o tym, <i>jak szeroko</i> pożytek się
+rozmywa, a nie <i>ile</i> go jest.</div>
+
+<h3>Krok 4 — splot</h3>
+<p>Dla każdego piksela mapy bierzemy wszystkie pola w zasięgu, mnożymy ich
+pożytek przez wagę z kroku 1 i sumujemy:</p>
+<div class="wzor">P(x) = Σ_y  C(y) · K( d(x,y) )</div>
+<p>gdzie C(y) to cukier na pikselu y, a d odległość między pikselami.
+Powtarzane dla wszystkich {pl(woj['siatka'][0] * woj['siatka'][1] / 1e6, 1)} mln
+pikseli siatki {pl(woj['siatka'][0], 0)} × {pl(woj['siatka'][1], 0)} przy
+rozdzielczości {woj['piksel_m']} m — dlatego liczone przez FFT, bo wprost
+byłoby to nie do udźwignięcia.</p>
+<p><b>Co z tego wychodzi:</b> każdy piksel mówi, ile cukru pszczoła z tego
+miejsca <i>realnie dosięgnie</i> — a nie ile go leży dokładnie pod ulem.</p>
 
 <h3>Kształt nie ma znaczenia, zasięg ma</h3>
 <table>
@@ -838,21 +900,43 @@ granice działek — a bez nich nie dałoby się pokazać pojedynczych pól. Kol
 działki nadal pochodzi z klasyfikacji satelitarnej, nie z wniosku rolnika;
 granice służą wyłącznie za podkład.</p>
 
+{obraz("nectar_site_12.png",
+       "Site 12, 3 km around the hive: the coloured surface is the "
+       "convolution result, the green parcels are its input. A single field "
+       "lifts the potential around it, because a colony forages over "
+       "kilometres rather than from the pixel it stands on.")}
+
 {obraz("nectar_site_2.png",
-       "Site 2, 3 km around the hive: the coloured surface is the convolution "
-       "result, the green parcels are its input. A single field lifts the "
-       "potential around it, because a colony forages over kilometres.")}
+       "Site 2 — a second rapeseed belt, with the fields arranged in long "
+       "strips typical of this region.")}
 
-{obraz("nectar_site_1.png",
-       "Site 1 for contrast — the highest-scoring location overall, but a "
-       "fruit-growing region: only 51 rapeseed parcels within 3 km.")}
+<h3>Jak dokładnie trzeba trafić w punkt</h3>
+<p>Miejsca wyznaczono jako <b>lokalne maksima rozdzielone o
+{pl(najl['odstep_m'] / 1000, 0)} km</b>. Odstęp nie jest dowolny:
+{najl['uzasadnienie_odstepu']}</p>
+<p>Dla każdego liczony jest <b>promień równoważności</b> — jak daleko można
+się odsunąć, zanim straci się 5, 10 albo 20% potencjału:</p>
+<table>
+  <caption>Trzy najlepsze miejsca w rankingu ogólnym</caption>
+  <thead><tr><th>miejsce</th><th>rodzin</th><th>−5%</th><th>−10%</th>
+    <th>−20%</th></tr></thead>
+  <tbody>
+{"".join(f"    <tr><td>nr {x['nr']} · {x['lat']:.3f} N {x['lon']:.3f} E</td>"
+         f"<td>{x['rodzin']:.0f}</td><td>{x['promien_95_m']} m</td>"
+         f"<td>{x['promien_90_m']} m</td><td>{x['promien_80_m']} m</td></tr>"
+         for x in najl['miejsca'][:3])}
+  </tbody>
+</table>
+<div class="uwaga"><b>{najl['uwaga'][0].upper()}{najl['uwaga'][1:]}.</b>
+Promienie są małe, bo pole potencjału nie jest płaskie: odsunięcie o 100 m
+zmniejsza wkład sąsiedniego pola o
+{pl((1 - 2.718281828 ** (-100 / wios['lambda_m'])) * 100, 0)}%.</div>
 
-<p class="mniej">Zestawienie miejsc 1 i 2 warto zauważyć: oba są wysoko
-w rankingu potencjału, ale miejsce 1 leży w rejonie sadowniczym, gdzie rzepak
-jest składnikiem drugorzędnym, a miejsce 2 w prawdziwym pasie rzepakowym.
-Mapa potencjału porządkuje <i>cały</i> osiągalny cukier, nie sam rzepak —
-więc pszczelarz jadący na miejsce 1 z datą kwitnienia rzepaku trafi na sady
-i maliny, kwitnące w innym terminie.</p>
+<p class="mniej">Warto przy tym pamiętać, że ranking porządkuje <b>cały</b>
+osiągalny cukier, nie sam rzepak. Miejsce nr 1 stoi najwyżej w tym
+zestawieniu, ale leży w rejonie sadowniczym — rzepaku ma tam
+{pl(0.0, 1)} tony w zasięgu lotu. Pszczelarz jadący tam z datą kwitnienia
+rzepaku trafi na sady i maliny, kwitnące w innym terminie.</p>
 
 <!-- ============================================================ DANE -->
 <h2 id="dane"><span class="nr">7</span>Dane i ograniczenia</h2>

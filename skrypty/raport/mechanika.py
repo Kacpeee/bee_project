@@ -432,9 +432,13 @@ bezużyteczny.</p>
   </table>
   Rzepak ozimy zimuje jako rozeta i <b>rusza z wegetacją dopiero wiosną</b>,
   więc ciepło styczniowe niczego nie napędza — dokłada wyłącznie szum.
-  Literatura branżowa mówi to samo: sumę liczy się „od wznowienia wegetacji",
-  a podawany zakres <b>400–500 °C</b> obejmuje nasz próg 430. Doszliśmy do
-  niego z satelity, nie z agronomii.
+  Zasada „sumuj od wznowienia wegetacji" jest w agronomii powszechna, ale
+  <b>konkretnego progu 430 nie potwierdza żadne znalezione źródło</b>.
+  Publikowane wartości dla kwitnienia rzepaku ozimego są liczone przy innych
+  bazach i innych datach startu (Czechy: baza 6 °C od 30 I, próg 157;
+  rejon Skopje: 633–809 przy BBCH 63), więc nie są z naszą porównywalne —
+  suma GDD ma sens tylko razem ze swoją bazą i datą startu. Nasz próg
+  pochodzi <b>wyłącznie z pomiaru satelitarnego</b>, nie z literatury.
 </div></div>
 
 <div class="etap-k">
