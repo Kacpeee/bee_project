@@ -57,96 +57,117 @@ def pl(x, n=3):
 
 
 STYL = """
+/* PALETA - trzy role, nie jeden kolor.
+   Wczesniejsza wersja byla w calosci zielona: tlo, karty, naglowki, liczby.
+   Nic sie przez to nie wyroznialo. Teraz tlo jest NEUTRALNE (grafit),
+   zloto niesie temat (rzepak, miod) i prowadzi wzrok po naglowkach,
+   blekit oznacza dane i pomiary, zielen wylacznie DOBRE WYNIKI.       */
 :root{
-  --tlo:#1b2621; --tlo2:#212e28; --kar:#26332d; --kar2:#2c3b34;
-  --atr:#eef4ef; --mut:#a3b5aa; --ram:#3a4b43;
-  --akc:#4fbe85; --akc2:#e0a938; --zle:#e2705a;
-  --cien:0 2px 12px rgba(0,0,0,.22);
+  --tlo:#15171b; --tlo2:#1b1e23; --kar:#1f2329; --kar2:#262b32;
+  --atr:#e9ecf0; --mut:#98a2ae; --ram:#333a43; --ram2:#404955;
+  --zloto:#e8b33c; --zloto2:#f5cf7a;
+  --blekit:#6bb3e8; --ziel:#57c98d; --zle:#e8785f;
+  --cien:0 2px 12px rgba(0,0,0,.28);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--tlo);color:var(--atr);
-     font:16px/1.7 "Segoe UI",system-ui,sans-serif;
-     background-image:radial-gradient(1100px 620px at 12% -8%,
-       rgba(79,190,133,.07), transparent 62%),
-       radial-gradient(900px 520px at 88% 4%,
-       rgba(224,169,56,.05), transparent 60%);
+     font:16px/1.72 "Segoe UI",system-ui,sans-serif;
+     background-image:radial-gradient(1200px 600px at 15% -10%,
+       rgba(232,179,60,.07), transparent 60%);
      background-attachment:fixed}
-.w{max-width:920px;margin:0 auto;padding:52px 22px 90px}
-h1{font-size:34px;margin:0 0 6px;letter-spacing:-.6px;line-height:1.22;
-   font-weight:650}
-h1 .akc{color:var(--akc2)}
-h1::after{content:"";display:block;width:64px;height:3px;
-  background:linear-gradient(90deg,var(--akc),var(--akc2));
-  margin-top:16px;border-radius:2px}
-h2{font-size:25px;margin:64px 0 6px;letter-spacing:-.3px;font-weight:640;
-   display:flex;align-items:baseline;gap:12px}
-h2 .nr{font-size:13px;color:var(--akc);border:1px solid var(--akc);
-  border-radius:8px;padding:2px 9px;font-weight:600;flex:0 0 auto}
-h3{font-size:17.5px;margin:34px 0 8px;color:var(--atr);font-weight:620}
+.w{max-width:900px;margin:0 auto;padding:56px 22px 90px}
+
+h1{font-size:35px;margin:0 0 10px;letter-spacing:-.7px;line-height:1.2;
+   font-weight:660;color:#fff}
+h1::after{content:"";display:block;width:70px;height:3px;
+  background:linear-gradient(90deg,var(--zloto),transparent);
+  margin-top:18px;border-radius:2px}
+h2{font-size:26px;margin:70px 0 8px;letter-spacing:-.35px;font-weight:650;
+   color:#fff;display:flex;align-items:center;gap:14px}
+h2 .nr{font-size:15px;color:var(--tlo);background:var(--zloto);
+  border-radius:9px;padding:3px 11px;font-weight:700;flex:0 0 auto;
+  letter-spacing:0}
+h3{font-size:18px;margin:36px 0 10px;font-weight:620;color:var(--zloto2)}
 p{margin:0 0 14px}
-.lead{color:var(--mut);font-size:17px;margin:0 0 10px}
-.etap{display:inline-block;background:rgba(79,190,133,.14);color:var(--akc);
-  border:1px solid rgba(79,190,133,.35);font-size:11.5px;padding:4px 12px;
-  border-radius:20px;letter-spacing:.7px;text-transform:uppercase;
-  margin-bottom:14px}
-table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;
-  background:var(--kar);border-radius:10px;overflow:hidden;
-  box-shadow:var(--cien)}
-th,td{padding:10px 14px;border-bottom:1px solid var(--ram);text-align:left}
+.lead{color:var(--mut);font-size:17px;margin:0 0 12px}
+.etap{display:inline-block;background:rgba(232,179,60,.13);color:var(--zloto);
+  border:1px solid rgba(232,179,60,.32);font-size:11.5px;padding:5px 13px;
+  border-radius:20px;letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:16px;font-weight:600}
+
+table{border-collapse:separate;border-spacing:0;width:100%;margin:18px 0;
+  font-size:14.5px;background:var(--kar);border:1px solid var(--ram);
+  border-radius:11px;overflow:hidden}
+th,td{padding:11px 15px;border-bottom:1px solid var(--ram);text-align:left}
 tbody tr:last-child td{border-bottom:none}
-th{font-weight:600;color:var(--mut);font-size:12px;text-transform:uppercase;
-  letter-spacing:.6px;background:var(--tlo2)}
+th{font-weight:600;color:var(--mut);font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.7px;background:var(--tlo2);border-bottom:1px solid var(--ram2)}
 td:not(:first-child),th:not(:first-child){text-align:right;
   font-variant-numeric:tabular-nums}
+td:first-child{color:var(--atr)}
 caption{caption-side:top;text-align:left;color:var(--mut);font-size:13px;
-  padding:0 0 8px}
-b.ok{color:var(--akc)} b.zle{color:var(--zle)}
-.wzor{background:#161f1a;border:1px solid var(--ram);border-left:3px solid var(--akc);
-  padding:14px 18px;border-radius:0 10px 10px 0;color:#cfe6d8;
+  padding:0 0 9px;font-style:italic}
+b.ok{color:var(--ziel)} b.zle{color:var(--zle)}
+
+.wzor{background:#101216;border:1px solid var(--ram);
+  border-left:3px solid var(--blekit);padding:15px 19px;
+  border-radius:0 10px 10px 0;color:#bcd6ea;
   font-family:"Cascadia Mono",Consolas,monospace;font-size:13.5px;
-  margin:16px 0;overflow-x:auto;white-space:pre;line-height:1.55}
-.uwaga{background:rgba(224,169,56,.08);border-left:3px solid var(--akc2);
-  padding:14px 18px;border-radius:0 10px 10px 0;font-size:14.5px;
-  color:#f0dcae;margin:16px 0}
-.klucz{background:rgba(79,190,133,.09);border-left:3px solid var(--akc);
-  padding:16px 20px;border-radius:0 10px 10px 0;font-size:15.5px;margin:18px 0}
+  margin:18px 0;overflow-x:auto;white-space:pre;line-height:1.6}
+.uwaga{background:rgba(232,120,95,.09);border-left:3px solid var(--zle);
+  padding:15px 19px;border-radius:0 10px 10px 0;font-size:14.5px;
+  color:#f3c9bd;margin:18px 0}
+.klucz{background:rgba(107,179,232,.09);border-left:3px solid var(--blekit);
+  padding:17px 21px;border-radius:0 10px 10px 0;font-size:15.5px;margin:20px 0;
+  color:#d6e7f4}
 .mniej{color:var(--mut);font-size:14px}
-figure{margin:26px 0}
-figure img{width:100%;border:1px solid var(--ram);border-radius:12px;
+
+figure{margin:30px 0}
+figure img{width:100%;border:1px solid var(--ram2);border-radius:12px;
   display:block;box-shadow:var(--cien)}
-figcaption{color:var(--mut);font-size:13.5px;margin-top:10px;font-style:italic}
-ol.kroki{padding-left:0;counter-reset:k;list-style:none;margin:18px 0}
-ol.kroki li{counter-increment:k;position:relative;padding-left:46px;
+figcaption{color:var(--mut);font-size:13.5px;margin-top:11px;font-style:italic;
+  padding-left:2px;border-left:2px solid var(--ram2);padding-left:12px}
+
+ol.kroki{padding-left:0;counter-reset:k;list-style:none;margin:20px 0}
+ol.kroki li{counter-increment:k;position:relative;padding-left:48px;
   margin-bottom:18px}
-ol.kroki li::before{content:counter(k);position:absolute;left:0;top:0;
-  width:30px;height:30px;border-radius:9px;
-  background:linear-gradient(135deg,var(--akc),#2e8f61);color:#08120d;
+ol.kroki li::before{content:counter(k);position:absolute;left:0;top:1px;
+  width:30px;height:30px;border-radius:50%;background:transparent;
+  border:1.5px solid var(--zloto);color:var(--zloto);
   display:flex;align-items:center;justify-content:center;font-size:14px;
   font-weight:700}
+
 .spis{background:var(--kar);border:1px solid var(--ram);border-radius:14px;
-  padding:20px 24px;margin:30px 0;box-shadow:var(--cien)}
-.spis a{color:var(--atr);text-decoration:none;display:block;padding:6px 0;
-  font-size:15px;border-bottom:1px solid transparent;transition:.15s}
-.spis a:last-child{padding-bottom:0}
-.spis a:hover{color:var(--akc);padding-left:6px}
-.spis a b{color:var(--akc);font-weight:600;margin-right:8px}
-.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:14px;margin:18px 0}
+  padding:10px 26px;margin:32px 0}
+.spis a{color:var(--atr);text-decoration:none;display:flex;gap:14px;
+  padding:11px 0;font-size:15.5px;border-bottom:1px solid var(--ram);
+  transition:.14s}
+.spis a:last-child{border-bottom:none}
+.spis a:hover{color:var(--zloto)}
+.spis a b{color:var(--mut);font-weight:600;min-width:16px;
+  font-variant-numeric:tabular-nums}
+.spis a:hover b{color:var(--zloto)}
+
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:14px;margin:22px 0}
 .kafel{background:var(--kar);border:1px solid var(--ram);border-radius:12px;
-  padding:18px 20px;box-shadow:var(--cien)}
-.kafel .duza{font-size:29px;font-weight:650;color:var(--akc);
-  letter-spacing:-.5px;line-height:1.15}
-.kafel .duza.z{color:var(--akc2)}
-.kafel .co{color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.45}
+  padding:20px 22px;border-top:2px solid var(--blekit)}
+.kafel .duza{font-size:32px;font-weight:660;color:var(--blekit);
+  letter-spacing:-.7px;line-height:1.1}
+.kafel .duza.z{color:var(--zloto)}
+.kafel .co{color:var(--mut);font-size:13.5px;margin-top:8px;line-height:1.5}
+
 .brak{color:var(--zle);font-style:italic}
-footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--ram);
+footer{margin-top:76px;padding-top:24px;border-top:1px solid var(--ram);
   color:var(--mut);font-size:13.5px}
-code{background:var(--kar2);padding:1px 6px;border-radius:5px;font-size:13.5px;
-  color:#cfe6d8}
+code{background:var(--kar2);padding:2px 7px;border-radius:5px;font-size:13.5px;
+  color:var(--zloto2);border:1px solid var(--ram)}
 ul{margin:0 0 14px;padding-left:22px}
-li{margin-bottom:8px}
-@media(max-width:640px){.w{padding:30px 16px 60px}h1{font-size:26px}
-  h2{font-size:21px}}
+li{margin-bottom:9px}
+li::marker{color:var(--zloto)}
+i,em{color:#cfd6de}
+@media(max-width:640px){.w{padding:32px 16px 60px}h1{font-size:27px}
+  h2{font-size:22px}}
 """
 
 
@@ -176,7 +197,7 @@ def buduj() -> str:
 
     def w_odl(k):
         d = odl.get(k, {})
-        return (f"<td>{d.get('n', 0):,}</td><td>{pl(d.get('precyzja', 0))}</td>"
+        return (f"<td>{pl(d.get('n', 0), 0)}</td><td>{pl(d.get('precyzja', 0))}</td>"
                 f"<td>{pl(d.get('czulosc', 0))}</td>"
                 f"<td><b>{pl(d.get('f1', 0))}</b></td>").replace(",", " ")
 
@@ -278,7 +299,7 @@ stycznia 100% punktów nie ma ani jednej bezchmurnej sceny.</p>
 <h3>Środek działki to nie piksel</h3>
 <p>Powyższe F1 mierzy się w <b>jednym reprezentatywnym punkcie wewnątrz
 działki</b>. Wdrożenie klasyfikuje każdy piksel, także brzegowy. Zmierzone na
-{piks['pokolenia']['pokolenie 2 (S1+S2, 130 cech)']['n_pikseli']:,} pikselach
+{pl(piks['pokolenia']['pokolenie 2 (S1+S2, 130 cech)']['n_pikseli'], 0)} pikselach
 odłożonych z bloków testowych, ze zbożami w zbiorze:</p>
 <table>
   <thead><tr><th>poziom</th><th>precyzja</th><th>czułość</th><th>F1</th></tr></thead>
@@ -325,9 +346,9 @@ klasom rzadkim. Poprawka: jeden współczynnik na gatunek z roku wzorcowego.</p>
   <thead><tr><th>kontrola</th><th>wartość</th></tr></thead>
   <tbody>
     <tr><td>areał zadeklarowany, ARiMR 2025</td>
-        <td>{kal['areal_gsa']['rzepak ozimy']:,.0f} ha</td></tr>
+        <td>{pl(kal['areal_gsa']['rzepak ozimy'], 0)} ha</td></tr>
     <tr><td>wykryty przed korektą</td>
-        <td>{kal['areal_wykryty']['rzepak ozimy']:,.0f} ha</td></tr>
+        <td>{pl(kal['areal_wykryty']['rzepak ozimy'], 0)} ha</td></tr>
     <tr><td>współczynnik kalibracji</td>
         <td><b>×{pl(kal['wspolczynniki']['rzepak ozimy'])}</b></td></tr>
   </tbody>
@@ -338,8 +359,8 @@ dziewięciokrotnie za obficie.</p>
 
 <p><b>Sprawdzenie:</b> porównanie sumy wykrytego areału z zadeklarowanym
 w roku wzorcowym, a potem <b>kontrola na innym roku i innym źródle</b> —
-EUCROPMAP 2022 podaje {kal['kontrola_eucropmap']['2022']['eucropmap_ha']:,.0f} ha,
-model po korekcie {kal['kontrola_eucropmap']['2022']['model_ha']:,.0f} ha,
+EUCROPMAP 2022 podaje {pl(kal['kontrola_eucropmap']['2022']['eucropmap_ha'], 0)} ha,
+model po korekcie {pl(kal['kontrola_eucropmap']['2022']['model_ha'], 0)} ha,
 różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
 Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
 
@@ -398,10 +419,8 @@ oblatuje kilometr. Miarą sensowną jest zgodność <b>zagęszczeń rejonu</b>,
 nie pojedynczych pól.</p>
 
 <h3>Dowód pierwszy: niezależna mapa EUCROPMAP</h3>
-<p>EUCROPMAP to warstwa upraw dla całej Unii, robiona przez Wspólne Centrum
-Badawcze Komisji Europejskiej z zupełnie innego potoku przetwarzania.
-Istnieje dla 2018 i 2022 — czyli dla lat, w których <b>nie ma żadnych
-deklaracji ARiMR</b>.</p>
+<p>EUCROPMAP istnieje dla 2018 i 2022 — czyli dla lat, w których <b>nie ma
+żadnych deklaracji ARiMR</b>, więc nie ma też jak podejrzeć odpowiedzi.</p>
 <table>
   <thead><tr><th>porównanie</th><th>korelacja</th><th>co to znaczy</th></tr></thead>
   <tbody>
@@ -419,8 +438,8 @@ To jest miara utraty jakości przy cofaniu się w czasie — i jest mała.</p>
 
 <h3>Dowód drugi: uczenie na 2025, sprawdzanie na 2026</h3>
 <p>Osobny test: model nauczony wyłącznie na deklaracjach
-{tran['trening']} ({tran['n_2025']:,} działek), sprawdzony na całkowicie
-osobnym roczniku {tran['test']} ({tran['n_2026']:,} działek).</p>
+{tran['trening']} ({pl(tran['n_2025'], 0)} działek), sprawdzony na całkowicie
+osobnym roczniku {tran['test']} ({pl(tran['n_2026'], 0)} działek).</p>
 <table>
   <thead><tr><th>miara dla rzepaku</th><th>wynik</th></tr></thead>
   <tbody>
@@ -465,9 +484,9 @@ lotu i tak uśrednia po kilometrze.</p>
   <caption>Bez żadnych deklaracji — sama detekcja satelitarna</caption>
   <thead><tr><th>rok</th>{"".join(f"<th>{r}</th>" for r in sorted(ar))}</tr></thead>
   <tbody><tr><td>rzepak, ha</td>
-    {"".join(f"<td>{ar[r]:,.0f}</td>" for r in sorted(ar))}</tr></tbody>
+    {"".join(f"<td>{pl(ar[r], 0)}</td>" for r in sorted(ar))}</tr></tbody>
 </table>
-<p class="mniej">Zmienność {min(ar.values()):,.0f}–{max(ar.values()):,.0f} ha
+<p class="mniej">Zmienność {pl(min(ar.values()), 0)}–{pl(max(ar.values()), 0)} ha
 to około ±16% wokół średniej. Wahania między latami są realne —
 rzepak reaguje na ceny i na przezimowanie — ale mieszczą się w skali, którą
 znamy z danych ARiMR między 2025 a 2026.</p>
@@ -657,7 +676,7 @@ malejącą wraz z odległością.</p>
 <div class="wzor">P(x) = Σ_y  C(y) · K( d(x,y) )        K(d) = exp( −d / λ )</div>
 <p>gdzie C(y) to cukier na pikselu y, a d odległość między pikselami. To jest
 <b>splot</b>, liczony przez FFT na całej siatce
-{woj['siatka'][0]:,} × {woj['siatka'][1]:,} przy rozdzielczości
+{pl(woj['siatka'][0], 0)} × {pl(woj['siatka'][1], 0)} przy rozdzielczości
 {woj['piksel_m']} m — jeden piksel to jeden hektar.</p>
 
 <h3>Jądro kalibrowane na zmierzonych lotach pszczół</h3>
@@ -669,15 +688,15 @@ z tańca pszczelego</b> — około 5 tys. tańców odczytanych przez Couvillon i
   <thead><tr><th>pora</th><th>zmierzony średni lot</th><th>λ</th>
     <th>zasięg efektywny (4λ)</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>{k}</td><td>{jad['dystanse_zmierzone_m'][k]:,.0f} m</td>"
-         f"<td>{v['lambda_m']:,.0f} m</td>"
-         f"<td>{v['zasieg_m']:,.0f} m</td></tr>"
+{"".join(f"    <tr><td>{k}</td><td>{pl(jad['dystanse_zmierzone_m'][k], 0)} m</td>"
+         f"<td>{pl(v['lambda_m'], 0)} m</td>"
+         f"<td>{pl(v['zasieg_m'], 0)} m</td></tr>"
          for k, v in jad['jadra'].items())}
   </tbody>
 </table>
 <p><b>Rzepak używa jądra wiosennego</b> — jego pełnia wypada przed 152. dniem
-roku, więc zasięg to {wios['zasieg_m']:,.0f} m, a nie letnie
-{jad['jadra']['lato']['zasieg_m']:,.0f} m. Pszczoły latają dalej latem, kiedy
+roku, więc zasięg to {pl(wios['zasieg_m'], 0)} m, a nie letnie
+{pl(jad['jadra']['lato']['zasieg_m'], 0)} m. Pszczoły latają dalej latem, kiedy
 pożytku jest mniej; w majowym łanie rzepaku nie muszą.</p>
 
 <div class="uwaga"><b>Jądra są normalizowane do stałej masy.</b> Każde jest
