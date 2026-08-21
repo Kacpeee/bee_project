@@ -64,6 +64,18 @@ BARWY = {
 }
 SZARY = "#d8d8d4"
 
+# nazwy angielskie - raport rzepakowy i README sa po angielsku, wiec mapy
+# musza byc tez, inaczej paczka jest dwujezyczna w polowie
+EN = {
+    "rzepak ozimy": "winter rapeseed", "gorczyca": "mustard",
+    "gryka zwyczajna": "buckwheat", "malina": "raspberry",
+    "porzeczka": "currant", "Sad": "orchard",
+    "TUZ": "permanent grassland", "słonecznik": "sunflower",
+    "fasola wielokwiatowa": "runner bean",
+    "motylkowe pastewne": "fodder legumes", "bobik": "field bean",
+    "inne": "other (mostly cereals)",
+}
+
 
 def model():
     """Las losowy uczony na blokach treningowych - ten sam, co w ocenie."""
@@ -84,7 +96,7 @@ def model():
     return las, kol
 
 
-def rysuj(g, cx, cy, prom, nr, podsum):
+def rysuj(g, cx, cy, prom, nr, podsum, ang=False, tylko_rzepak=False):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -95,13 +107,20 @@ def rysuj(g, cx, cy, prom, nr, podsum):
     fig.patch.set_facecolor(MW.TLO)
     ax.set_facecolor(MW.TLO)
     for _, r in g.iterrows():
-        kol = BARWY.get(r.pred, SZARY)
         rz = r.pred == "rzepak ozimy"
+        # TRYB RZEPAKOWY: wszystko poza rzepakiem jest neutralne.
+        # Kolorowanie 16 klas naraz rozpraszalo uwage i sugerowalo, ze
+        # pozostale gatunki sa rozpoznawane rownie pewnie - a nie sa
+        # (F1 0,56-0,72 wobec 0,940 rzepaku).
+        if tylko_rzepak:
+            kol = "#e8b81e" if rz else "#e9ece9"
+        else:
+            kol = BARWY.get(r.pred, SZARY)
         geoms = ([r.geometry] if r.geometry.geom_type == "Polygon"
                  else list(r.geometry.geoms))
         for gm in geoms:
             ax.fill(*gm.exterior.xy, facecolor=kol, edgecolor="#5a6862",
-                    lw=1.1 if rz else .35, alpha=.95 if rz else .8, zorder=2)
+                    lw=1.2 if rz else .3, alpha=.97 if rz else .55, zorder=3 if rz else 2)
 
     for p, st in ((1000, ":"), (3000, "--")):
         if p <= prom * 1.05:
@@ -118,11 +137,13 @@ def rysuj(g, cx, cy, prom, nr, podsum):
     # W kadrze 3 km miesci sie ~9 tys. dzialek; legenda w rogu zaslaniala
     # ich znaczna czesc, a to wlasnie uklad pol jest tu trescia.
     # Kolejnosc wg powierzchni - czytelnik chce wiedziec, czego jest duzo.
-    obecne = sorted([k for k in BARWY if (g.pred == k).any()],
-                    key=lambda k: -podsum["ha"].get(k, 0))
+    obecne = (["rzepak ozimy"] if tylko_rzepak else
+              sorted([k for k in BARWY if (g.pred == k).any()],
+                     key=lambda k: -podsum["ha"].get(k, 0)))
     ax.legend(handles=[Line2D([], [], marker="s", ls="", ms=10,
                               mfc=BARWY[k], mec="#5a6862",
-                              label=f"{k} — {podsum['ha'].get(k, 0):,.0f} ha")
+                              label=f"{EN[k] if ang else k} — "
+                                    f"{podsum['ha'].get(k, 0):,.0f} ha")
                        for k in obecne],
               loc="upper center", bbox_to_anchor=(.5, -.02), ncol=4,
               frameon=False, fontsize=9.5, handletextpad=.5,
@@ -132,20 +153,32 @@ def rysuj(g, cx, cy, prom, nr, podsum):
     ax.set_ylim(cy - prom, cy + prom)
     ax.set_aspect("equal")
     ax.axis("off")
-    ax.set_title(f"Pola wokół miejsca nr {nr} — co rozpoznał model\n"
-                 f"rzepak w promieniu {prom/1000:.0f} km: "
-                 f"{podsum['ha'].get('rzepak ozimy', 0):,.0f} ha "
-                 f"na {podsum['dzialek_rzepaku']} działkach",
-                 fontsize=14, weight="bold", color=MW.ATRAMENT, pad=16)
-    fig.text(.5, -.055,
-             "działki ARiMR pokolorowane uprawą rozpoznaną z Sentinel-1+2 "
-             "(głosowanie 3 pikseli na działkę, F1 rzepaku 0,910)\n"
-             "granice działek z deklaracji 2025; klasyfikacja jest wynikiem "
-             "modelu, nie odczytem deklaracji",
-             ha="center", fontsize=9, color=MW.MUTED)
+    ha_rz = podsum["ha"].get("rzepak ozimy", 0)
+    n_rz = podsum["dzialek_rzepaku"]
+    km = prom / 1000
+    if ang:
+        tyt = (f"Winter rapeseed detected around site {nr}\n"
+               f"{ha_rz:,.0f} ha across {n_rz} parcels within {km:.0f} km")
+        stopka = ("yellow = parcels the model classified as winter rapeseed "
+                  "from Sentinel-1+2 imagery\n"
+                  "grey = every other parcel, shown only for context; parcel "
+                  "outlines from ARiMR 2025 declarations\n"
+                  "one colour per parcel: majority vote of 3 pixels, "
+                  "rapeseed F1 0.910 at this level")
+    else:
+        tyt = (f"Rzepak wokół miejsca nr {nr}\n"
+               f"{ha_rz:,.0f} ha na {n_rz} działkach w promieniu {km:.0f} km")
+        stopka = ("żółte = działki rozpoznane przez model jako rzepak ozimy\n"
+                  "szare = pozostałe, wyłącznie jako tło; granice z "
+                  "deklaracji ARiMR 2025\n"
+                  "jeden kolor na działkę: głosowanie 3 pikseli, F1 0,910")
+    ax.set_title(tyt, fontsize=14, weight="bold", color=MW.ATRAMENT, pad=16)
+    fig.text(.5, -.055, stopka, ha="center", fontsize=9, color=MW.MUTED)
 
     MAPY.mkdir(exist_ok=True)
-    out = MAPY / f"pola_wokol_{nr}.png"
+    out = MAPY / ((f"rapeseed_site_{nr}.png" if tylko_rzepak
+               else f"fields_site_{nr}.png") if ang
+              else f"pola_wokol_{nr}.png")
     fig.savefig(out, dpi=150, bbox_inches="tight", facecolor=MW.TLO)
     plt.close(fig)
     return out
@@ -154,6 +187,8 @@ def rysuj(g, cx, cy, prom, nr, podsum):
 if __name__ == "__main__":
     nr = int(sys.argv[1]) if len(sys.argv) > 1 else 1
     prom = int(sys.argv[2]) if len(sys.argv) > 2 else 3000
+    ang = "--en" in sys.argv
+    tylko = "--rzepak" in sys.argv
 
     miejsca = json.loads((WYNIKI / "json" / "najlepsze_punkty.json")
                          .read_text(encoding="utf-8"))["miejsca"]
@@ -175,7 +210,7 @@ if __name__ == "__main__":
         ha = g.groupby("pred")["ha"].sum().to_dict()
         podsum = {"ha": ha,
                   "dzialek_rzepaku": int((g.pred == "rzepak ozimy").sum())}
-        print("zapisano " + str(rysuj(g, cx, cy, prom, nr, podsum)))
+        print("zapisano " + str(rysuj(g, cx, cy, prom, nr, podsum, ang, tylko)))
         raise SystemExit
 
     K.start()
@@ -235,5 +270,5 @@ if __name__ == "__main__":
     for k, v in sorted(ha.items(), key=lambda x: -x[1])[:8]:
         print(f"   {k:24s} {v:8,.0f} ha")
 
-    out = rysuj(g, cx, cy, prom, nr, podsum)
+    out = rysuj(g, cx, cy, prom, nr, podsum, ang, tylko)
     print(f"\nzapisano {out}")
