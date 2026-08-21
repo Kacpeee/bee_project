@@ -590,11 +590,51 @@ podania średniej wieloletniej; pytany 1 maja trafia z dokładnością
 {pl(hs[str(dni[-1])]['rmse'],1)} dnia.</p>
 
 <h3>Czy sama pogoda jest wiarygodna</h3>
-<p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, nie ze stacji.
-Sprawdzone wobec stacji IMGW {imgw['stacja']}: <b>RMSE {pl(imgw['rmse_K'],2)} K,
-r = {pl(imgw['r'],3)}</b>, obciążenie {pl(imgw['bias_K'],2)} K. Przy około
-5 GDD nagromadzonych na wiosenny dzień błąd 1 K przesuwa przewidywaną datę
-o znacznie mniej niż dzień.</p>
+<p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, a nie z termometru
+w polu. Reanaliza to model atmosfery — wartość dla punktu jest wyliczana,
+nie mierzona. Trzeba więc wiedzieć, ile z błędu terminu pochodzi z samej
+pogody.</p>
+<p>Porównanie z rzeczywistą stacją naziemną IMGW {imgw['stacja']} na
+{pl(imgw['n_dni'], 0)} dniach z {len(imgw['lata'])} sezonów:</p>
+<table>
+  <thead><tr><th>miara</th><th>wartość</th><th>co opisuje</th></tr></thead>
+  <tbody>
+    <tr><td>RMSE temperatury</td><td>{pl(imgw['rmse_K'],2)} K</td>
+        <td>typowa różnica dobowa</td></tr>
+    <tr><td>obciążenie</td><td>{pl(imgw['bias_K'],2)} K</td>
+        <td>czy ERA5 systematycznie zawyża</td></tr>
+    <tr><td>korelacja</td><td>{pl(imgw['r'],3)}</td>
+        <td>czy nadąża za przebiegiem</td></tr>
+  </tbody>
+</table>
+
+<p><b>Ale to nie są jeszcze dni.</b> Błąd temperatury przekłada się na błąd
+terminu przez sumowanie: żeby wiedzieć ile, trzeba policzyć datę kwitnienia
+<i>dwa razy</i> — raz z ERA5, raz z pomiarów stacji — i porównać wyniki.</p>
+<table>
+  <caption>Ta sama procedura GDD, dwa źródła temperatur</caption>
+  <thead><tr><th>sezon</th>{"".join(f"<th>{r}</th>" for r in sorted(imgw['terminy']))}</tr></thead>
+  <tbody>
+    <tr><td>ze stacji IMGW</td>
+      {"".join(f"<td>{imgw['terminy'][r]['stacja']:.0f}</td>" for r in sorted(imgw['terminy']))}</tr>
+    <tr><td>z ERA5</td>
+      {"".join(f"<td>{imgw['terminy'][r]['era5']:.0f}</td>" for r in sorted(imgw['terminy']))}</tr>
+    <tr><td><b>różnica (dni)</b></td>
+      {"".join(f"<td><b>{imgw['terminy'][r]['era5'] - imgw['terminy'][r]['stacja']:+.0f}</b></td>" for r in sorted(imgw['terminy']))}</tr>
+  </tbody>
+</table>
+<p>Podmiana ERA5 na prawdziwą stację przesuwa przewidywany termin średnio
+o {pl(imgw['roznica_srednia_d'], 1)} dnia, typowo o <b>1,9 dnia</b>
+(RMSE różnic), a w najgorszym sezonie — 2020 — o
+{pl(imgw['roznica_maks_d'], 0)} dni.</p>
+
+<div class="uwaga"><b>To nie jest wielkość pomijalna.</b> Przy całkowitym
+błędzie modelu {pl(m['rmse'],2)} dnia sama jakość danych pogodowych odpowiada
+za około <b>jedną trzecią wariancji</b>. Innymi słowy: gdyby ERA5 zastąpić
+gęstą siecią stacji, model mógłby być zauważalnie dokładniejszy — reszta
+błędu siedzi w samym modelu termicznym i w odczycie daty z NDYI.
+Wcześniejsza wersja tego raportu twierdziła, że wpływ pogody jest
+„znacznie mniejszy niż dzień"; to było oszacowanie na oko i było zaniżone.</div>
 
 <!-- ============================================================ PROG -->
 <h2 id="prog"><span class="nr">4</span>Skąd wzięły się próg GDD i temperatura bazowa</h2>

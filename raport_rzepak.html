@@ -492,11 +492,51 @@ podania średniej wieloletniej; pytany 1 maja trafia z dokładnością
 3,4 dnia.</p>
 
 <h3>Czy sama pogoda jest wiarygodna</h3>
-<p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, nie ze stacji.
-Sprawdzone wobec stacji IMGW Zamosc 595: <b>RMSE 1,13 K,
-r = 0,986</b>, obciążenie 0,10 K. Przy około
-5 GDD nagromadzonych na wiosenny dzień błąd 1 K przesuwa przewidywaną datę
-o znacznie mniej niż dzień.</p>
+<p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, a nie z termometru
+w polu. Reanaliza to model atmosfery — wartość dla punktu jest wyliczana,
+nie mierzona. Trzeba więc wiedzieć, ile z błędu terminu pochodzi z samej
+pogody.</p>
+<p>Porównanie z rzeczywistą stacją naziemną IMGW Zamosc 595 na
+962 dniach z 8 sezonów:</p>
+<table>
+  <thead><tr><th>miara</th><th>wartość</th><th>co opisuje</th></tr></thead>
+  <tbody>
+    <tr><td>RMSE temperatury</td><td>1,13 K</td>
+        <td>typowa różnica dobowa</td></tr>
+    <tr><td>obciążenie</td><td>0,10 K</td>
+        <td>czy ERA5 systematycznie zawyża</td></tr>
+    <tr><td>korelacja</td><td>0,986</td>
+        <td>czy nadąża za przebiegiem</td></tr>
+  </tbody>
+</table>
+
+<p><b>Ale to nie są jeszcze dni.</b> Błąd temperatury przekłada się na błąd
+terminu przez sumowanie: żeby wiedzieć ile, trzeba policzyć datę kwitnienia
+<i>dwa razy</i> — raz z ERA5, raz z pomiarów stacji — i porównać wyniki.</p>
+<table>
+  <caption>Ta sama procedura GDD, dwa źródła temperatur</caption>
+  <thead><tr><th>sezon</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th></tr></thead>
+  <tbody>
+    <tr><td>ze stacji IMGW</td>
+      <td>128</td><td>132</td><td>138</td><td>146</td><td>142</td><td>139</td><td>118</td><td>132</td></tr>
+    <tr><td>z ERA5</td>
+      <td>127</td><td>132</td><td>133</td><td>147</td><td>143</td><td>140</td><td>118</td><td>131</td></tr>
+    <tr><td><b>różnica (dni)</b></td>
+      <td><b>-1</b></td><td><b>+0</b></td><td><b>-5</b></td><td><b>+1</b></td><td><b>+1</b></td><td><b>+1</b></td><td><b>+0</b></td><td><b>-1</b></td></tr>
+  </tbody>
+</table>
+<p>Podmiana ERA5 na prawdziwą stację przesuwa przewidywany termin średnio
+o -0,5 dnia, typowo o <b>1,9 dnia</b>
+(RMSE różnic), a w najgorszym sezonie — 2020 — o
+5 dni.</p>
+
+<div class="uwaga"><b>To nie jest wielkość pomijalna.</b> Przy całkowitym
+błędzie modelu 3,21 dnia sama jakość danych pogodowych odpowiada
+za około <b>jedną trzecią wariancji</b>. Innymi słowy: gdyby ERA5 zastąpić
+gęstą siecią stacji, model mógłby być zauważalnie dokładniejszy — reszta
+błędu siedzi w samym modelu termicznym i w odczycie daty z NDYI.
+Wcześniejsza wersja tego raportu twierdziła, że wpływ pogody jest
+„znacznie mniejszy niż dzień"; to było oszacowanie na oko i było zaniżone.</div>
 
 <!-- ============================================================ PROG -->
 <h2 id="prog"><span class="nr">4</span>Skąd wzięły się próg GDD i temperatura bazowa</h2>
