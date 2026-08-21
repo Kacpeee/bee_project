@@ -57,60 +57,97 @@ def pl(x, n=3):
 
 
 STYL = """
-:root{--tlo:#fbfbfa;--atr:#16201c;--mut:#5f6b66;--akc:#1d6f42;--akc2:#b3801a;
-      --ram:#e2e8e4;--kar:#fff;--cien:0 1px 3px rgba(0,0,0,.05)}
+:root{
+  --tlo:#0f1613; --tlo2:#141d19; --kar:#18231e; --kar2:#1e2b25;
+  --atr:#e8efe9; --mut:#93a69b; --ram:#2a3a32;
+  --akc:#4fbe85; --akc2:#e0a938; --zle:#e2705a;
+  --cien:0 2px 14px rgba(0,0,0,.35);
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--tlo);color:var(--atr);
-     font:16px/1.65 "Segoe UI",system-ui,sans-serif}
-.w{max-width:900px;margin:0 auto;padding:44px 22px 80px}
-h1{font-size:31px;margin:0 0 6px;letter-spacing:-.4px;line-height:1.25}
-h1::after{content:"";display:block;width:52px;height:3px;
-          background:var(--akc2);margin-top:14px;border-radius:2px}
-h2{font-size:23px;margin:54px 0 4px;letter-spacing:-.2px}
-h3{font-size:17px;margin:30px 0 8px}
-.lead{color:var(--mut);font-size:16.5px;margin:0 0 8px}
-.etap{display:inline-block;background:var(--akc);color:#fff;font-size:11.5px;
-      padding:3px 10px;border-radius:20px;letter-spacing:.5px;
-      text-transform:uppercase;margin-bottom:10px}
-table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px}
-th,td{padding:8px 10px;border-bottom:1px solid var(--ram);text-align:left}
-th{font-weight:600;color:var(--mut);font-size:12.5px;text-transform:uppercase;
-   letter-spacing:.4px}
+     font:16px/1.7 "Segoe UI",system-ui,sans-serif;
+     background-image:radial-gradient(1100px 620px at 12% -8%,
+       rgba(79,190,133,.10), transparent 62%),
+       radial-gradient(900px 520px at 88% 4%,
+       rgba(224,169,56,.08), transparent 60%);
+     background-attachment:fixed}
+.w{max-width:920px;margin:0 auto;padding:52px 22px 90px}
+h1{font-size:34px;margin:0 0 6px;letter-spacing:-.6px;line-height:1.22;
+   font-weight:650}
+h1 .akc{color:var(--akc2)}
+h1::after{content:"";display:block;width:64px;height:3px;
+  background:linear-gradient(90deg,var(--akc),var(--akc2));
+  margin-top:16px;border-radius:2px}
+h2{font-size:25px;margin:64px 0 6px;letter-spacing:-.3px;font-weight:640;
+   display:flex;align-items:baseline;gap:12px}
+h2 .nr{font-size:13px;color:var(--akc);border:1px solid var(--akc);
+  border-radius:8px;padding:2px 9px;font-weight:600;flex:0 0 auto}
+h3{font-size:17.5px;margin:34px 0 8px;color:var(--atr);font-weight:620}
+p{margin:0 0 14px}
+.lead{color:var(--mut);font-size:17px;margin:0 0 10px}
+.etap{display:inline-block;background:rgba(79,190,133,.14);color:var(--akc);
+  border:1px solid rgba(79,190,133,.35);font-size:11.5px;padding:4px 12px;
+  border-radius:20px;letter-spacing:.7px;text-transform:uppercase;
+  margin-bottom:14px}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;
+  background:var(--kar);border-radius:10px;overflow:hidden;
+  box-shadow:var(--cien)}
+th,td{padding:10px 14px;border-bottom:1px solid var(--ram);text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--kar2)}
+th{font-weight:600;color:var(--mut);font-size:12px;text-transform:uppercase;
+  letter-spacing:.6px;background:var(--tlo2)}
 td:not(:first-child),th:not(:first-child){text-align:right;
-   font-variant-numeric:tabular-nums}
+  font-variant-numeric:tabular-nums}
 caption{caption-side:top;text-align:left;color:var(--mut);font-size:13px;
-        padding-bottom:6px}
-b.ok{color:var(--akc)}
-b.zle{color:#a8442a}
-.wzor{background:#f3f6f4;border-left:3px solid var(--akc);padding:12px 16px;
-      border-radius:0 8px 8px 0;font-family:"Cascadia Mono",Consolas,monospace;
-      font-size:14px;margin:14px 0;overflow-x:auto;white-space:pre;
-      line-height:1.5}
-.uwaga{background:#fdf6e6;border-left:3px solid var(--akc2);padding:12px 16px;
-       border-radius:0 8px 8px 0;font-size:14.5px;color:#6b5416;margin:14px 0}
-.klucz{background:#eef5f0;border-left:3px solid var(--akc);padding:14px 18px;
-       border-radius:0 8px 8px 0;font-size:15px;margin:16px 0}
+  padding:0 0 8px}
+b.ok{color:var(--akc)} b.zle{color:var(--zle)}
+.wzor{background:#0b120f;border:1px solid var(--ram);border-left:3px solid var(--akc);
+  padding:14px 18px;border-radius:0 10px 10px 0;color:#cfe6d8;
+  font-family:"Cascadia Mono",Consolas,monospace;font-size:13.5px;
+  margin:16px 0;overflow-x:auto;white-space:pre;line-height:1.55}
+.uwaga{background:rgba(224,169,56,.08);border-left:3px solid var(--akc2);
+  padding:14px 18px;border-radius:0 10px 10px 0;font-size:14.5px;
+  color:#f0dcae;margin:16px 0}
+.klucz{background:rgba(79,190,133,.09);border-left:3px solid var(--akc);
+  padding:16px 20px;border-radius:0 10px 10px 0;font-size:15.5px;margin:18px 0}
 .mniej{color:var(--mut);font-size:14px}
-figure{margin:24px 0}
-figure img{width:100%;border:1px solid var(--ram);border-radius:10px;
-           display:block}
-figcaption{color:var(--mut);font-size:13.5px;margin-top:8px;font-style:italic}
-ol.kroki{padding-left:0;counter-reset:k;list-style:none}
-ol.kroki li{counter-increment:k;position:relative;padding-left:42px;
-            margin-bottom:16px}
-ol.kroki li::before{content:counter(k);position:absolute;left:0;top:1px;
-   width:27px;height:27px;border-radius:50%;background:var(--akc);color:#fff;
-   display:flex;align-items:center;justify-content:center;font-size:14px;
-   font-weight:600}
-.spis{background:var(--kar);border:1px solid var(--ram);border-radius:12px;
-      padding:16px 22px;margin:26px 0}
-.spis a{color:var(--atr);text-decoration:none;display:block;padding:4px 0;
-        font-size:15px}
-.spis a:hover{color:var(--akc)}
-.brak{color:#a8442a;font-style:italic}
-footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ram);
-       color:var(--mut);font-size:13.5px}
-@media(max-width:640px){.w{padding:28px 16px 60px}h1{font-size:25px}}
+figure{margin:26px 0}
+figure img{width:100%;border:1px solid var(--ram);border-radius:12px;
+  display:block;box-shadow:var(--cien)}
+figcaption{color:var(--mut);font-size:13.5px;margin-top:10px;font-style:italic}
+ol.kroki{padding-left:0;counter-reset:k;list-style:none;margin:18px 0}
+ol.kroki li{counter-increment:k;position:relative;padding-left:46px;
+  margin-bottom:18px}
+ol.kroki li::before{content:counter(k);position:absolute;left:0;top:0;
+  width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--akc),#2e8f61);color:#08120d;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  font-weight:700}
+.spis{background:var(--kar);border:1px solid var(--ram);border-radius:14px;
+  padding:20px 24px;margin:30px 0;box-shadow:var(--cien)}
+.spis a{color:var(--atr);text-decoration:none;display:block;padding:6px 0;
+  font-size:15px;border-bottom:1px solid transparent;transition:.15s}
+.spis a:last-child{padding-bottom:0}
+.spis a:hover{color:var(--akc);padding-left:6px}
+.spis a b{color:var(--akc);font-weight:600;margin-right:8px}
+.karty{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;margin:18px 0}
+.kafel{background:var(--kar);border:1px solid var(--ram);border-radius:12px;
+  padding:18px 20px;box-shadow:var(--cien)}
+.kafel .duza{font-size:29px;font-weight:650;color:var(--akc);
+  letter-spacing:-.5px;line-height:1.15}
+.kafel .duza.z{color:var(--akc2)}
+.kafel .co{color:var(--mut);font-size:13.5px;margin-top:6px;line-height:1.45}
+.brak{color:var(--zle);font-style:italic}
+footer{margin-top:70px;padding-top:22px;border-top:1px solid var(--ram);
+  color:var(--mut);font-size:13.5px}
+code{background:var(--kar2);padding:1px 6px;border-radius:5px;font-size:13.5px;
+  color:#cfe6d8}
+ul{margin:0 0 14px;padding-left:22px}
+li{margin-bottom:8px}
+@media(max-width:640px){.w{padding:30px 16px 60px}h1{font-size:26px}
+  h2{font-size:21px}}
 """
 
 
@@ -164,17 +201,18 @@ odczytywane z <code>wyniki/json/</code> przy budowaniu — żadna nie jest
 wpisana ręcznie.</p>
 
 <div class="spis">
-  <a href="#gdzie">1 · Gdzie rośnie — rozpoznanie uprawy z orbity</a>
-  <a href="#wstecz">2 · Czy model działa poza rokiem uczenia</a>
-  <a href="#kiedy">3 · Kiedy zakwitnie — model termiczny</a>
-  <a href="#prog">4 · Skąd wzięły się próg GDD i temperatura bazowa</a>
-  <a href="#splot">5 · Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</a>
-  <a href="#mapy">6 · Mapy</a>
-  <a href="#dane">7 · Dane i ograniczenia</a>
+  <a href="#gdzie"><b>1</b>Gdzie rośnie — rozpoznanie uprawy z orbity</a>
+  <a href="#wstecz"><b>2</b>Czy model działa poza rokiem uczenia</a>
+  <a href="#walidacje"><b>3</b>Jak to sprawdzano — opis walidacji</a>
+  <a href="#kiedy"><b>4</b>Kiedy zakwitnie — model termiczny</a>
+  <a href="#prog"><b>5</b>Skąd wzięły się próg GDD i temperatura bazowa</a>
+  <a href="#splot"><b>6</b>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</a>
+  <a href="#mapy"><b>7</b>Mapy</a>
+  <a href="#dane"><b>8</b>Dane i ograniczenia</a>
 </div>
 
 <!-- ============================================================ GDZIE -->
-<h2 id="gdzie">1 · Gdzie rośnie — rozpoznanie uprawy z orbity</h2>
+<h2 id="gdzie"><span class="nr">1</span>Gdzie rośnie — rozpoznanie uprawy z orbity</h2>
 <p class="lead">Pytanie: <b>które pole jest rzepakiem?</b> Odpowiada las
 losowy czytający cały rok zdjęć satelitarnych.</p>
 
@@ -301,17 +339,28 @@ kołem — i otwiera drogę do prognozowania także <i>lokalizacji</i>, czego te
 projekt jeszcze nie robi.</p>
 
 <!-- ============================================================ WSTECZ -->
-<h2 id="wstecz">2 · Czy model działa poza rokiem uczenia</h2>
-<p class="lead">To jest najważniejsze pytanie tego raportu — i jedyne, na
-które da się dziś odpowiedzieć.</p>
+<h2 id="wstecz"><span class="nr">2</span>Model przeniesiony na inne sezony</h2>
+<p class="lead">Klasyfikator uczył się na jednym roczniku, a został sprawdzony
+na dziewięciu sezonach. Za każdym razem rozpoznawał rzepak bardzo dobrze.</p>
 
-<div class="klucz"><b>W przód sprawdzić się nie da.</b> Sezon 2027 jeszcze
-nie nastąpił, a deklaracje ARiMR istnieją wyłącznie za 2025 i 2026 — i tak
-czy inaczej ukazują się po sezonie, nie przed. Można natomiast sprawdzić
-model <b>wstecz</b>: puścić klasyfikator nauczony na 2025 na lata
-{min(int(k) for k in ar)}–{max(int(k) for k in ar)}, dla których nie widział
-żadnych etykiet, i porównać wynik ze źródłem niezależnym. Jeśli przenosi się
-w tył, nie ma powodu, by nie przenosił się w przód.</div>
+<div class="klucz"><b>Model nie potrzebuje deklaracji, żeby działać.</b>
+Uczy się raz — na roczniku 2025, jedynym z prawdą terenową — a potem czyta
+same zdjęcia satelitarne. Dzięki temu daje mapę dla lat
+{min(int(k) for k in ar)}–{max(int(k) for k in ar)}, dla których nie ma
+żadnych wniosków ARiMR, i tak samo da ją dla sezonu nadchodzącego. Poniżej
+trzy niezależne sprawdzenia, że to przeniesienie faktycznie działa.</div>
+
+<div class="karty">
+  <div class="kafel"><div class="duza">{pl(sr['walidacje']['det2022_vs_eucropmap2022'], 2)}</div>
+    <div class="co">zgodność z niezależną mapą EUCROPMAP dla 2022 — roku
+      bez żadnych deklaracji</div></div>
+  <div class="kafel"><div class="duza">{pl(tr_rz['f1'], 2)}</div>
+    <div class="co">F1 rzepaku po przeniesieniu na rocznik 2026, którego
+      model nie widział</div></div>
+  <div class="kafel"><div class="duza z">{pl(stab['2018 EUCROPMAP vs 2025 GSA'], 2)}</div>
+    <div class="co">zgodność układu rejonów przez <b>siedem lat</b>
+      i dwa różne źródła danych</div></div>
+</div>
 
 <h3>Dowód pierwszy: niezależna mapa EUCROPMAP</h3>
 <p>EUCROPMAP to warstwa upraw dla całej Unii, robiona przez Wspólne Centrum
@@ -394,8 +443,120 @@ sprawdzają <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
+<!-- ======================================================== WALIDACJE -->
+<h2 id="walidacje"><span class="nr">3</span>Jak to sprawdzano</h2>
+<p class="lead">Każda liczba w tym raporcie pochodzi z innej procedury
+sprawdzającej. Tu jest opisane, na czym każda polega i przed czym chroni.</p>
+
+<h3>Walidacja przestrzenna blokami — dla klasyfikatora</h3>
+<p><b>Problem:</b> sąsiednie działki są do siebie podobne. Ta sama gleba, ten
+sam gospodarz, ta sama data siewu, często ta sama odmiana. Gdyby zbiór
+podzielić losowo, niemal identyczne pola trafiłyby jednocześnie do treningu
+i do testu — model zdałby egzamin, bo widział odpowiedzi.</p>
+<p><b>Rozwiązanie:</b> województwo dzielone jest na <b>kwadraty 2,5 km</b>,
+a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
+<div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
+dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
+<p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
+treningowej wynosi <b>1 723 m</b>. Przy podziale losowym byłoby to 439 m —
+czterokrotnie mniej. Tylko 1,8% działek testowych ma sąsiada tej samej klasy
+bliżej niż 500 m.</p>
+<p><b>Czy to w ogóle coś zmienia:</b> sprawdzone. Przy podziale losowym
+rzepak dostaje F1 0,930, przy blokach 2,5 km — {pl(rz['S1_S2']['f1'])}, przy
+zaostrzeniu do bloków 10 km — <b>0,947</b>. Zaostrzenie separacji nie
+pogarsza wyniku, co znaczy, że model uczy się rośliny, a nie lokalizacji.</p>
+
+<h3>Kontrola niezależnym źródłem — dla przeniesienia na inne lata</h3>
+<p><b>Problem:</b> dla lat 2019–2024 nie ma żadnych etykiet, więc nie da się
+policzyć F1. Trzeba czegoś, co powstało zupełnie inaczej.</p>
+<p><b>Rozwiązanie:</b> EUCROPMAP — warstwa upraw dla całej Unii, robiona
+przez Wspólne Centrum Badawcze Komisji Europejskiej z innego potoku, innych
+cech i innego modelu. Istnieje dla 2018 i 2022. Porównuje się mapy
+<i>po rozmyciu zasięgiem lotu</i>, bo to na tym poziomie działa produkt.</p>
+<p class="mniej">Dlaczego po rozmyciu, a nie na pikselu: pomyłka między
+dwiema sąsiednimi działkami nie ma znaczenia dla pszczoły, która i tak
+oblatuje kilometr. Miarą sensowną jest zgodność <b>zagęszczeń rejonu</b>,
+nie pojedynczych pól.</p>
+
+<h3>Leave-one-out — dla modelu terminu kwitnienia</h3>
+<p><b>Co znaczy „{m['n']} obserwacji".</b> Obserwacja to jedna para
+<i>obszar × sezon</i>: dla danego rejonu i danego roku wyznaczona data pełni
+kwitnienia. {m['obszarow']} obszarów razy 9 sezonów, minus przypadki
+odrzucone i te bez wystarczających zdjęć, daje {m['n']}.</p>
+<p><b>Skąd bierze się jedna obserwacja:</b></p>
+<ol class="kroki">
+  <li><b>Wybierz pola.</b> Klasyfikator przedkwitnieniowy wskazuje działki
+      rzepaku, korzystając wyłącznie z okien sprzed kwitnienia — żeby data
+      nie była wyznaczana na polach wybranych po tym, że zakwitły.</li>
+  <li><b>Zbuduj krzywą.</b> Dla każdej dostępnej sceny Sentinel-2 liczony
+      jest średni NDYI tych pól. Powstaje szereg punktów przez cały maj.</li>
+  <li><b>Znajdź szczyt.</b> Przez trzy punkty wokół maksimum przeprowadzana
+      jest parabola, a jej wierzchołek to data pełni. Dzięki temu wynik nie
+      jest ograniczony do dni z przelotem satelity — może wypaść między nimi.</li>
+</ol>
+<p><b>Jak działa sama walidacja:</b> dla każdej z {m['n']} obserwacji model
+jest budowany <b>od zera na pozostałych {m['n'] - 1}</b> — baza i próg
+dobierane od nowa — a następnie przewiduje datę tej jednej odłożonej. Błąd
+liczony jest wyłącznie na przewidywaniach odłożonych.</p>
+<div class="wzor">dla i = 1 … {m['n']}:
+    dopasuj (baza, prog) na wszystkich obserwacjach OPROCZ i
+    przewidz date obserwacji i
+RMSE = pierwiastek ze sredniej kwadratow tych {m['n']} bledow</div>
+<p>Dzięki temu model nigdy nie jest oceniany na danych, które go
+ukształtowały. Różnica między błędem dopasowania
+({pl(m['rmse_dopasowania'],2)} dnia) a leave-one-out ({pl(m['rmse'],2)} dnia)
+to <b>optymizm dopasowania</b> — gdyby był duży, znaczyłoby, że model uczy
+się szumu. Tutaj wynosi {pl(m['rmse'] - m['rmse_dopasowania'], 2)} dnia.</p>
+
+<h3>Odniesienia — czy model w ogóle coś wnosi</h3>
+<p>Sam błąd nic nie mówi, dopóki nie ma z czym go porównać. Dlatego liczone
+są proste strategie, które nie wymagają żadnego modelu:</p>
+<table>
+  <thead><tr><th>strategia</th><th>RMSE (dni)</th><th>co robi</th></tr></thead>
+  <tbody>
+    <tr><td><b>model GDD</b></td><td><b class="ok">{pl(m['rmse'],2)}</b></td>
+        <td>sumuje ciepło od 15 marca</td></tr>
+    <tr><td>„zawsze średnia data"</td><td>{pl(fen['odniesienie_stala'],2)}</td>
+        <td>podaje wieloletnią średnią, ignoruje pogodę</td></tr>
+  </tbody>
+</table>
+<p>Model zmniejsza błąd <b>ponad dwukrotnie</b> wobec podawania średniej.
+To jest jego rzeczywisty wkład.</p>
+
+<h3>Kalibracja areałowa — czy poziom się zgadza</h3>
+<p><b>Problem:</b> model uczony na próbie zrównoważonej rozdaje piksele zbyt
+hojnie klasom rzadkim. Układ przestrzenny jest dobry, poziom zawyżony.</p>
+<p><b>Sprawdzenie:</b> porównanie sumy wykrytego areału z zadeklarowanym
+w roku wzorcowym, a potem <b>kontrola na innym roku i innym źródle</b> —
+EUCROPMAP 2022 podaje {kal['kontrola_eucropmap']['2022']['eucropmap_ha']:,.0f} ha,
+model po korekcie {kal['kontrola_eucropmap']['2022']['model_ha']:,.0f} ha,
+różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
+Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
+
+<h3>Kontrola pogody — czy dane wejściowe są dobre</h3>
+<p>Model GDD jest tak dobry, jak temperatury, które dostaje. ERA5 to
+reanaliza, nie pomiar, więc sprawdzono ją wobec rzeczywistej stacji
+naziemnej IMGW {imgw['stacja']} na {imgw['n_dni']:,} dniach:
+RMSE {pl(imgw['rmse_K'],2)} K, r = {pl(imgw['r'],3)}, obciążenie
+{pl(imgw['bias_K'],2)} K.</p>
+
+<h3>Test odporności — czy wynik zależy od arbitralnych wyborów</h3>
+<table>
+  <thead><tr><th>co sprawdzono</th><th>wynik</th><th>wniosek</th></tr></thead>
+  <tbody>
+    <tr><td>kształt jądra splotu</td><td>r ≥ {pl(min(v['korelacja'] for v in ksz.values()), 3)}</td>
+        <td>bez znaczenia</td></tr>
+    <tr><td>wielkość bloków walidacyjnych</td><td>0,930 – 0,947</td>
+        <td>bez znaczenia dla rzepaku</td></tr>
+    <tr><td>potrojenie próby fenologicznej</td>
+        <td>te same parametry</td><td>nie artefakt doboru miejsc</td></tr>
+    <tr><td>data startu akumulacji</td><td>45 z 45 podziałów</td>
+        <td>15 marca wygrywa jednoznacznie</td></tr>
+  </tbody>
+</table>
+
 <!-- ============================================================ KIEDY -->
-<h2 id="kiedy">3 · Kiedy zakwitnie — model termiczny</h2>
+<h2 id="kiedy"><span class="nr">4</span>Kiedy zakwitnie — model termiczny</h2>
 <p class="lead">Pytanie: <b>którego dnia pole jest w pełni kwitnienia?</b>
 Ten model nie klasyfikuje pikseli, więc nie ma F1 — jego błąd mierzy się
 w dniach.</p>
@@ -456,7 +617,7 @@ r = {pl(imgw['r'],3)}</b>, obciążenie {pl(imgw['bias_K'],2)} K. Przy około
 o znacznie mniej niż dzień.</p>
 
 <!-- ============================================================ PROG -->
-<h2 id="prog">4 · Skąd wzięły się próg GDD i temperatura bazowa</h2>
+<h2 id="prog"><span class="nr">5</span>Skąd wzięły się próg GDD i temperatura bazowa</h2>
 <div class="uwaga"><b>Zostały dopasowane, nie wzięte z literatury.</b> Żadne
 publikowane źródło nie podaje bazy {pl(m['baza'],1)} °C z progiem
 {pl(m['prog'],0)}. Obie liczby pochodzą z przeszukania siatki wobec
@@ -547,7 +708,7 @@ najmocniejszy dostępny tu dowód, że parametry są realne, a nie dopasowane
 do szumu.</p>
 
 <!-- ============================================================ SPLOT -->
-<h2 id="splot">5 · Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
+<h2 id="splot"><span class="nr">6</span>Ile dosięgnie pszczoła — splot z jądrem zasięgu lotu</h2>
 <p class="lead">Ul nie zbiera z piksela, na którym stoi. Mapa musi
 odpowiadać, <b>ile cukru jest w zasięgu</b>, czyli sumować otoczenie z wagą
 malejącą wraz z odległością.</p>
@@ -600,7 +761,7 @@ funkcji byłby stratą czasu — liczy się skala odległości, a ta pochodzi
 z pomiaru.</p>
 
 <!-- ============================================================ MAPY -->
-<h2 id="mapy">6 · Mapy</h2>
+<h2 id="mapy"><span class="nr">7</span>Mapy</h2>
 <p class="lead">Produkt końcowy ścieżki rzepakowej: detekcja → kalibracja
 areałowa → pomnożenie przez wydajność → splot jądrem wiosennym.</p>
 
@@ -637,7 +798,7 @@ więc pszczelarz jadący na miejsce 1 z datą kwitnienia rzepaku trafi na sady
 i maliny, kwitnące w innym terminie.</p>
 
 <!-- ============================================================ DANE -->
-<h2 id="dane">7 · Dane i ograniczenia</h2>
+<h2 id="dane"><span class="nr">8</span>Dane i ograniczenia</h2>
 <table>
   <thead><tr><th>źródło</th><th>zakres</th><th>rola dla rzepaku</th></tr></thead>
   <tbody>
