@@ -171,7 +171,7 @@ i do testu — model zdałby egzamin, bo widział odpowiedzi.</p>
 <p><b>Rozwiązanie:</b> województwo dzielone jest na <b>kwadraty 2,5 km</b>,
 a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
 <div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
-dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
+dzialka trafia do testu, gdy  (bx + by) mod 10 &lt; 3</div>
 <p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
 treningowej rośnie z <b>439 m</b> przy podziale losowym do <b>1 723 m</b> przy
 blokach. Tylko 1,8% działek testowych ma sąsiada tej samej klasy bliżej niż
@@ -229,10 +229,10 @@ zmienia i zmienić nie może, bo nie zależy od częstości występowania.</p>
   <thead><tr><th>odległość</th><th>pikseli</th><th>precyzja</th>
     <th>czułość</th><th>F1</th></tr></thead>
   <tbody>
-    <tr><td><b>0–10 m</b></td><td>12 152</td><td>0 718</td><td>0 812</td><td><b>0 762</b></td></tr>
-    <tr><td>10–20 m</td><td>4 410</td><td>0 884</td><td>0 953</td><td><b>0 917</b></td></tr>
-    <tr><td>20–40 m</td><td>1 651</td><td>0 959</td><td>0 991</td><td><b>0 975</b></td></tr>
-    <tr><td>&gt; 40 m</td><td>276</td><td>1 000</td><td>1 000</td><td><b>1 000</b></td></tr>
+    <tr><td><b>0–10 m</b></td><td>12 152</td><td>0,718</td><td>0,812</td><td><b>0,762</b></td></tr>
+    <tr><td>10–20 m</td><td>4 410</td><td>0,884</td><td>0,953</td><td><b>0,917</b></td></tr>
+    <tr><td>20–40 m</td><td>1 651</td><td>0,959</td><td>0,991</td><td><b>0,975</b></td></tr>
+    <tr><td>&gt; 40 m</td><td>276</td><td>1,000</td><td>1,000</td><td><b>1,000</b></td></tr>
   </tbody>
 </table>
 <div class="uwaga"><b>66% pikseli leży
@@ -307,15 +307,17 @@ projekt jeszcze nie robi.</p>
 
 <!-- ============================================================ WSTECZ -->
 <h2 id="wstecz"><span class="nr">2</span>Model przeniesiony na inne sezony</h2>
-<p class="lead">Klasyfikator uczył się na jednym roczniku, a został sprawdzony
-na dziewięciu sezonach. Za każdym razem rozpoznawał rzepak bardzo dobrze.</p>
+<p class="lead">Klasyfikator uczył się na jednym roczniku, a rysuje mapy dla
+siedmiu. Dwa z nich dało się sprawdzić niezależnie — i w obu rozpoznawał
+rzepak bardzo dobrze.</p>
 
 <div class="klucz"><b>Model nie potrzebuje deklaracji, żeby działać.</b>
 Uczy się raz — na roczniku 2025, jedynym z prawdą terenową — a potem czyta
 same zdjęcia satelitarne. Dzięki temu daje mapę dla lat
 2019–2024, dla których nie ma
 żadnych wniosków ARiMR, i tak samo da ją dla sezonu nadchodzącego. Poniżej
-trzy niezależne sprawdzenia, że to przeniesienie faktycznie działa.</div>
+dwa niezależne sprawdzenia, że to przeniesienie działa, i przesłanka,
+dlaczego ma prawo działać.</div>
 
 <div class="karty">
   <div class="kafel"><div class="duza">0,92</div>
@@ -378,10 +380,13 @@ o 0,065 — tyle kosztuje przeniesienie na
 rok, którego model nie widział. Po rozmyciu zasięgiem lotu, czyli tam, gdzie
 mapa faktycznie działa, zostaje 0,918.</p>
 
-<h3>Dowód trzeci: rzepak wędruje, a rejony zostają</h3>
-<p>Rzepak jest w płodozmianie, więc pojedyncze pole zmienia się z roku na rok.
-Gdyby model tylko zapamiętał lokalizacje, korelacje między odległymi latami
-runęłyby. Nie runęły:</p>
+<h3>Dlaczego przeniesienie w ogóle ma prawo działać</h3>
+<p><b>Uwaga: poniższa tabela nie ocenia naszego modelu.</b> Wszystkie cztery
+porównania są między <i>źródłami zewnętrznymi</i> — EUCROPMAP i deklaracjami
+ARiMR. Pokazują one, że samo zjawisko jest stabilne: rzepak jest
+w płodozmianie, więc pojedyncze pole zmienia się z roku na rok, ale
+<b>rejon rzepakowy zostaje</b>. To jest przesłanka, dla której przeniesienie
+modelu w czasie ma prawo działać — dowody są dwa powyższe.</p>
 <table>
   <caption>Korelacje układu przestrzennego między źródłami i latami</caption>
   <thead><tr><th>para</th><th>odstęp</th><th>korelacja</th></tr></thead>
@@ -404,18 +409,31 @@ lotu i tak uśrednia po kilometrze.</p>
 
 <h3>Areał wykryty rok po roku</h3>
 <table>
-  <caption>Bez żadnych deklaracji — sama detekcja satelitarna</caption>
+  <caption>Klasyfikator 8-cechowy z wcześniejszego etapu, bez deklaracji</caption>
   <thead><tr><th>rok</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th></tr></thead>
   <tbody><tr><td>rzepak, ha</td>
     <td>128 597</td><td>126 594</td><td>107 429</td><td>103 078</td><td>136 364</td><td>98 124</td></tr></tbody>
 </table>
+<div class="uwaga"><b>Te liczby pochodzą z innego modelu niż reszta raportu
+i nie należy ich zestawiać z powyższymi.</b> Szereg wieloletni policzono
+starszym klasyfikatorem <b>binarnym, 8-cechowym</b>, bo tylko dla niego
+istnieje komplet lat. Klasyfikator wielogatunkowy S1+S2, którym mierzone są
+wszystkie pozostałe wyniki w tym raporcie, daje dla 2022
+<b>138 518 ha</b>, a nie
+103 078 ha — <b>o 34% więcej</b>.
+Starszy model systematycznie zaniża; wobec EUCROPMAP 2022
+(147 701 ha) myli się
+o około 30%, podczas gdy wielogatunkowy o
+6,2%.
+Szereg zostawiono, bo pokazuje <i>zmienność między latami</i>, ale jego
+poziom bezwzględny jest zaniżony.</div>
 <p class="mniej">Zmienność 98 124–136 364 ha
-to około ±16% wokół średniej. Wahania między latami są realne —
-rzepak reaguje na ceny i na przezimowanie — ale mieszczą się w skali, którą
-znamy z danych ARiMR między 2025 a 2026.</p>
+to około ±16% wokół średniej. Wahania między latami są realne — rzepak reaguje
+na ceny i na przezimowanie — ale mieszczą się w skali, którą znamy z danych
+ARiMR między 2025 a 2026.</p>
 
-<div class="klucz"><b>Czego to nie dowodzi.</b> Wszystkie trzy dowody
-sprawdzają <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
+<div class="klucz"><b>Czego to nie dowodzi.</b> Powyższe sprawdza
+wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
@@ -487,16 +505,23 @@ Prognozą staje się dopiero w miarę, jak realna pogoda się nagromadzi:</p>
     <tr><td>46. dzień roku</td><td>6,81</td></tr>    <tr><td>60. dzień roku</td><td>6,81</td></tr>    <tr><td>74. dzień roku</td><td>6,87</td></tr>    <tr><td>91. dzień roku</td><td>7,33</td></tr>    <tr><td>105. dzień roku</td><td>4,54</td></tr>    <tr><td>121. dzień roku</td><td>3,40</td></tr>
   </tbody>
 </table>
-<p>O terminie decyduje kwiecień. Pytany w lutym model nie jest lepszy od
-podania średniej wieloletniej; pytany 1 maja trafia z dokładnością
-3,4 dnia.</p>
+<p>O terminie decyduje kwiecień. Do początku kwietnia model praktycznie nie
+bije odniesienia „zawsze średnia data" (7,29 dnia) —
+a 91. dnia roku jest od niego wręcz <b class="zle">minimalnie gorszy</b>
+(7,33). Dopiero gdy zbierze się kwietniowe ciepło, błąd
+spada: 4,54 dnia w połowie kwietnia i
+3,40 dnia 1 maja.</p>
+<p class="mniej">Wzrost błędu między 74. a 91. dniem nie jest przypadkiem:
+akumulacja rusza 15 marca, więc na początku kwietnia model ma już <i>trochę</i>
+realnej pogody, ale za mało, żeby cokolwiek rozstrzygnąć — a ta odrobina
+wypiera średnią wieloletnią, która sama w sobie jest lepszym zgadywaniem.</p>
 
 <h3>Czy sama pogoda jest wiarygodna</h3>
 <p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, a nie z termometru
 w polu. Reanaliza to model atmosfery — wartość dla punktu jest wyliczana,
 nie mierzona. Trzeba więc wiedzieć, ile z błędu terminu pochodzi z samej
 pogody.</p>
-<p>Porównanie z rzeczywistą stacją naziemną IMGW Zamosc 595 na
+<p>Porównanie z rzeczywistą stacją naziemną IMGW Zamość 595 na
 962 dniach z 8 sezonów:</p>
 <table>
   <thead><tr><th>miara</th><th>wartość</th><th>co opisuje</th></tr></thead>
@@ -571,6 +596,9 @@ kandydaty walidowano tak samo:</p>
     <tr><td>1 II  (obecny)</td><td>1,0 °C</td><td>555</td><td>3,89</td><td><b>4,17</b></td><td>11,7</td></tr>    <tr><td>15 III (kandydat)</td><td>1,5 °C</td><td>430</td><td>3,13</td><td><b>3,19</b></td><td>9,2</td></tr>
   </tbody>
 </table>
+<p class="mniej">Wartość 3,19 w tej tabeli różni się
+od 3,21 podanej wyżej, bo tamten test dobierał także datę startu
+wewnątrz pętli walidacyjnej — czyli sprawdzał trudniejsze zadanie.</p>
 <p>Start 15 marca wygrał <b>45 z 45 podziałów</b>, gdy sama data startu była
 wybierana wewnątrz pętli walidacyjnej. Powód jest fizyczny: w lutym dzienne
 przyrosty są bliskie zeru, więc te tygodnie dokładają szumu, nie różnicując
@@ -617,8 +645,10 @@ dnia, z odrzucaniem 3,21. Odrzucono 7
 obserwacji z 152.</p>
 
 <h3>Czy próba była dość duża</h3>
-<p>Pierwsze dopasowanie szło na 59
-obserwacjach z 7 obszarów. Żeby
+<p>Pierwsze dopasowanie szło na 52 obserwacjach
+z 7 obszarów (z
+59 zebranych,
+7 odrzucono tą samą regułą). Żeby
 sprawdzić, czy wynik nie jest artefaktem doboru miejsc, próbę potrojono do
 145 obserwacji z 19 obszarów. Przeszukanie siatki trafiło
 w <b>tę samą bazę i ten sam próg</b>, a błąd przesunął się z
@@ -647,7 +677,7 @@ z tańca pszczelego</b> — około 5 tys. tańców odczytanych przez Couvillon i
   <thead><tr><th>pora</th><th>zmierzony średni lot</th><th>λ</th>
     <th>zasięg efektywny (4λ)</th></tr></thead>
   <tbody>
-    <tr><td>wiosna</td><td>493 m</td><td>294 m</td><td>1 178 m</td></tr>    <tr><td>lato</td><td>2 156 m</td><td>1 285 m</td><td>5 142 m</td></tr>    <tr><td>jesien</td><td>1 275 m</td><td>760 m</td><td>3 041 m</td></tr>
+    <tr><td>wiosna</td><td>493 m</td><td>294 m</td><td>1 178 m</td></tr>    <tr><td>lato</td><td>2 156 m</td><td>1 285 m</td><td>5 142 m</td></tr>    <tr><td>jesień</td><td>1 275 m</td><td>760 m</td><td>3 041 m</td></tr>
   </tbody>
 </table>
 <p><b>Rzepak używa jądra wiosennego</b> — jego pełnia wypada przed 152. dniem
@@ -657,7 +687,7 @@ pożytku jest mniej; w majowym łanie rzepaku nie muszą.</p>
 
 <div class="uwaga"><b>Jądra są normalizowane do stałej masy.</b> Każde jest
 przeskalowane tak, by wszystkie pory sumowały się do tej samej wartości przed
-splotem. Bez tego jądro letnie — rozłożone na 25 razy większą powierzchnię —
+splotem. Bez tego jądro letnie — rozłożone na 19 razy większą powierzchnię —
 po prostu dodawałoby więcej cukru każdemu pikselowi, a mapa stawiałaby
 gatunki późne wyżej z powodu czysto arytmetycznego.</div>
 

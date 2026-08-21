@@ -199,7 +199,7 @@ def buduj() -> str:
         d = odl.get(k, {})
         return (f"<td>{pl(d.get('n', 0), 0)}</td><td>{pl(d.get('precyzja', 0))}</td>"
                 f"<td>{pl(d.get('czulosc', 0))}</td>"
-                f"<td><b>{pl(d.get('f1', 0))}</b></td>").replace(",", " ")
+                f"<td><b>{pl(d.get('f1', 0))}</b></td>")
 
     hs = hind["statystyki"]
     dni = sorted(int(k) for k in hs)
@@ -267,7 +267,7 @@ i do testu — model zdałby egzamin, bo widział odpowiedzi.</p>
 <p><b>Rozwiązanie:</b> województwo dzielone jest na <b>kwadraty 2,5 km</b>,
 a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
 <div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
-dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
+dzialka trafia do testu, gdy  (bx + by) mod 10 &lt; 3</div>
 <p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
 treningowej rośnie z <b>439 m</b> przy podziale losowym do <b>1 723 m</b> przy
 blokach. Tylko 1,8% działek testowych ma sąsiada tej samej klasy bliżej niż
@@ -404,15 +404,17 @@ projekt jeszcze nie robi.</p>
 
 <!-- ============================================================ WSTECZ -->
 <h2 id="wstecz"><span class="nr">2</span>Model przeniesiony na inne sezony</h2>
-<p class="lead">Klasyfikator uczył się na jednym roczniku, a został sprawdzony
-na dziewięciu sezonach. Za każdym razem rozpoznawał rzepak bardzo dobrze.</p>
+<p class="lead">Klasyfikator uczył się na jednym roczniku, a rysuje mapy dla
+siedmiu. Dwa z nich dało się sprawdzić niezależnie — i w obu rozpoznawał
+rzepak bardzo dobrze.</p>
 
 <div class="klucz"><b>Model nie potrzebuje deklaracji, żeby działać.</b>
 Uczy się raz — na roczniku 2025, jedynym z prawdą terenową — a potem czyta
 same zdjęcia satelitarne. Dzięki temu daje mapę dla lat
 {min(int(k) for k in ar)}–{max(int(k) for k in ar)}, dla których nie ma
 żadnych wniosków ARiMR, i tak samo da ją dla sezonu nadchodzącego. Poniżej
-trzy niezależne sprawdzenia, że to przeniesienie faktycznie działa.</div>
+dwa niezależne sprawdzenia, że to przeniesienie działa, i przesłanka,
+dlaczego ma prawo działać.</div>
 
 <div class="karty">
   <div class="kafel"><div class="duza">{pl(sr['walidacje']['det2022_vs_eucropmap2022'], 2)}</div>
@@ -475,10 +477,13 @@ o {pl(rz['S1_S2']['f1'] - tr_rz['f1'], 3)} — tyle kosztuje przeniesienie na
 rok, którego model nie widział. Po rozmyciu zasięgiem lotu, czyli tam, gdzie
 mapa faktycznie działa, zostaje {pl(tr_rz['r_splot'])}.</p>
 
-<h3>Dowód trzeci: rzepak wędruje, a rejony zostają</h3>
-<p>Rzepak jest w płodozmianie, więc pojedyncze pole zmienia się z roku na rok.
-Gdyby model tylko zapamiętał lokalizacje, korelacje między odległymi latami
-runęłyby. Nie runęły:</p>
+<h3>Dlaczego przeniesienie w ogóle ma prawo działać</h3>
+<p><b>Uwaga: poniższa tabela nie ocenia naszego modelu.</b> Wszystkie cztery
+porównania są między <i>źródłami zewnętrznymi</i> — EUCROPMAP i deklaracjami
+ARiMR. Pokazują one, że samo zjawisko jest stabilne: rzepak jest
+w płodozmianie, więc pojedyncze pole zmienia się z roku na rok, ale
+<b>rejon rzepakowy zostaje</b>. To jest przesłanka, dla której przeniesienie
+modelu w czasie ma prawo działać — dowody są dwa powyższe.</p>
 <table>
   <caption>Korelacje układu przestrzennego między źródłami i latami</caption>
   <thead><tr><th>para</th><th>odstęp</th><th>korelacja</th></tr></thead>
@@ -501,18 +506,31 @@ lotu i tak uśrednia po kilometrze.</p>
 
 <h3>Areał wykryty rok po roku</h3>
 <table>
-  <caption>Bez żadnych deklaracji — sama detekcja satelitarna</caption>
+  <caption>Klasyfikator 8-cechowy z wcześniejszego etapu, bez deklaracji</caption>
   <thead><tr><th>rok</th>{"".join(f"<th>{r}</th>" for r in sorted(ar))}</tr></thead>
   <tbody><tr><td>rzepak, ha</td>
     {"".join(f"<td>{pl(ar[r], 0)}</td>" for r in sorted(ar))}</tr></tbody>
 </table>
+<div class="uwaga"><b>Te liczby pochodzą z innego modelu niż reszta raportu
+i nie należy ich zestawiać z powyższymi.</b> Szereg wieloletni policzono
+starszym klasyfikatorem <b>binarnym, 8-cechowym</b>, bo tylko dla niego
+istnieje komplet lat. Klasyfikator wielogatunkowy S1+S2, którym mierzone są
+wszystkie pozostałe wyniki w tym raporcie, daje dla 2022
+<b>{pl(kal['kontrola_eucropmap']['2022']['model_ha'], 0)} ha</b>, a nie
+{pl(ar['2022'], 0)} ha — <b>o {pl((kal['kontrola_eucropmap']['2022']['model_ha'] / ar['2022'] - 1) * 100, 0)}% więcej</b>.
+Starszy model systematycznie zaniża; wobec EUCROPMAP 2022
+({pl(kal['kontrola_eucropmap']['2022']['eucropmap_ha'], 0)} ha) myli się
+o około 30%, podczas gdy wielogatunkowy o
+{pl(abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']), 1)}%.
+Szereg zostawiono, bo pokazuje <i>zmienność między latami</i>, ale jego
+poziom bezwzględny jest zaniżony.</div>
 <p class="mniej">Zmienność {pl(min(ar.values()), 0)}–{pl(max(ar.values()), 0)} ha
-to około ±16% wokół średniej. Wahania między latami są realne —
-rzepak reaguje na ceny i na przezimowanie — ale mieszczą się w skali, którą
-znamy z danych ARiMR między 2025 a 2026.</p>
+to około ±16% wokół średniej. Wahania między latami są realne — rzepak reaguje
+na ceny i na przezimowanie — ale mieszczą się w skali, którą znamy z danych
+ARiMR między 2025 a 2026.</p>
 
-<div class="klucz"><b>Czego to nie dowodzi.</b> Wszystkie trzy dowody
-sprawdzają <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
+<div class="klucz"><b>Czego to nie dowodzi.</b> Powyższe sprawdza
+wyłącznie <i>rozpoznawanie uprawy</i>. Nie mówią nic o tym, czy mapa
 potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
@@ -585,16 +603,23 @@ Prognozą staje się dopiero w miarę, jak realna pogoda się nagromadzi:</p>
          for d in dni)}
   </tbody>
 </table>
-<p>O terminie decyduje kwiecień. Pytany w lutym model nie jest lepszy od
-podania średniej wieloletniej; pytany 1 maja trafia z dokładnością
-{pl(hs[str(dni[-1])]['rmse'],1)} dnia.</p>
+<p>O terminie decyduje kwiecień. Do początku kwietnia model praktycznie nie
+bije odniesienia „zawsze średnia data" ({pl(fen['odniesienie_stala'],2)} dnia) —
+a 91. dnia roku jest od niego wręcz <b class="zle">minimalnie gorszy</b>
+({pl(hs['91']['rmse'],2)}). Dopiero gdy zbierze się kwietniowe ciepło, błąd
+spada: {pl(hs['105']['rmse'],2)} dnia w połowie kwietnia i
+{pl(hs[str(dni[-1])]['rmse'],2)} dnia 1 maja.</p>
+<p class="mniej">Wzrost błędu między 74. a 91. dniem nie jest przypadkiem:
+akumulacja rusza 15 marca, więc na początku kwietnia model ma już <i>trochę</i>
+realnej pogody, ale za mało, żeby cokolwiek rozstrzygnąć — a ta odrobina
+wypiera średnią wieloletnią, która sama w sobie jest lepszym zgadywaniem.</p>
 
 <h3>Czy sama pogoda jest wiarygodna</h3>
 <p>Temperatury pochodzą z reanalizy ERA5 przez Open-Meteo, a nie z termometru
 w polu. Reanaliza to model atmosfery — wartość dla punktu jest wyliczana,
 nie mierzona. Trzeba więc wiedzieć, ile z błędu terminu pochodzi z samej
 pogody.</p>
-<p>Porównanie z rzeczywistą stacją naziemną IMGW {imgw['stacja']} na
+<p>Porównanie z rzeczywistą stacją naziemną IMGW {imgw['stacja'].replace('Zamosc', 'Zamość')} na
 {pl(imgw['n_dni'], 0)} dniach z {len(imgw['lata'])} sezonów:</p>
 <table>
   <thead><tr><th>miara</th><th>wartość</th><th>co opisuje</th></tr></thead>
@@ -672,6 +697,9 @@ kandydaty walidowano tak samo:</p>
          f"<td>{pl(v['najgorszy'],1)}</td></tr>" for v in star.values())}
   </tbody>
 </table>
+<p class="mniej">Wartość {pl(star['74']['rmse_loo'],2)} w tej tabeli różni się
+od {pl(m['rmse'],2)} podanej wyżej, bo tamten test dobierał także datę startu
+wewnątrz pętli walidacyjnej — czyli sprawdzał trudniejsze zadanie.</p>
 <p>Start 15 marca wygrał <b>45 z 45 podziałów</b>, gdy sama data startu była
 wybierana wewnątrz pętli walidacyjnej. Powód jest fizyczny: w lutym dzienne
 przyrosty są bliskie zeru, więc te tygodnie dokładają szumu, nie różnicując
@@ -718,8 +746,10 @@ dnia, z odrzucaniem {pl(m['rmse'],2)}. Odrzucono {len(fen['odrzucone'])}
 obserwacji z {m['n'] + len(fen['odrzucone'])}.</p>
 
 <h3>Czy próba była dość duża</h3>
-<p>Pierwsze dopasowanie szło na {fen['obserwacje_poprzednie']['n']}
-obserwacjach z {fen['obserwacje_poprzednie']['obszarow']} obszarów. Żeby
+<p>Pierwsze dopasowanie szło na {fen['model_poprzedni']['n']} obserwacjach
+z {fen['obserwacje_poprzednie']['obszarow']} obszarów (z
+{fen['obserwacje_poprzednie']['n']} zebranych,
+{fen['model_poprzedni']['n_odrzuconych']} odrzucono tą samą regułą). Żeby
 sprawdzić, czy wynik nie jest artefaktem doboru miejsc, próbę potrojono do
 {m['n']} obserwacji z {m['obszarow']} obszarów. Przeszukanie siatki trafiło
 w <b>tę samą bazę i ten sam próg</b>, a błąd przesunął się z
@@ -748,7 +778,8 @@ z tańca pszczelego</b> — około 5 tys. tańców odczytanych przez Couvillon i
   <thead><tr><th>pora</th><th>zmierzony średni lot</th><th>λ</th>
     <th>zasięg efektywny (4λ)</th></tr></thead>
   <tbody>
-{"".join(f"    <tr><td>{k}</td><td>{pl(jad['dystanse_zmierzone_m'][k], 0)} m</td>"
+{"".join(f"    <tr><td>{ {'wiosna':'wiosna','lato':'lato','jesien':'jesień'}[k] }</td>"
+         f"<td>{pl(jad['dystanse_zmierzone_m'][k], 0)} m</td>"
          f"<td>{pl(v['lambda_m'], 0)} m</td>"
          f"<td>{pl(v['zasieg_m'], 0)} m</td></tr>"
          for k, v in jad['jadra'].items())}
@@ -761,7 +792,7 @@ pożytku jest mniej; w majowym łanie rzepaku nie muszą.</p>
 
 <div class="uwaga"><b>Jądra są normalizowane do stałej masy.</b> Każde jest
 przeskalowane tak, by wszystkie pory sumowały się do tej samej wartości przed
-splotem. Bez tego jądro letnie — rozłożone na 25 razy większą powierzchnię —
+splotem. Bez tego jądro letnie — rozłożone na {pl((jad['jadra']['lato']['zasieg_m'] / wios['zasieg_m'])**2, 0)} razy większą powierzchnię —
 po prostu dodawałoby więcej cukru każdemu pikselowi, a mapa stawiałaby
 gatunki późne wyżej z powodu czysto arytmetycznego.</div>
 
