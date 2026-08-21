@@ -1,0 +1,53 @@
+{
+ "rok": 2025,
+ "opis": "trafnosc na pikselu vs w srodku dzialki; model uczony wylacznie na blokach treningowych",
+ "pikseli": 14091,
+ "dzialek": 3113,
+ "pikseli_na_dzialke": 4,
+ "f1_makro_piksel": 0.5805791467452507,
+ "rzepak_piksel": {
+  "precyzja": 0.8443616029822927,
+  "czulosc": 0.8719923002887392,
+  "f1": 0.8579545454545454,
+  "n": 1039
+ },
+ "rzepak_wg_odleglosci": {
+  "0-10": {
+   "precyzja": 0.7843137254901961,
+   "czulosc": 0.8125,
+   "f1": 0.7981580966999232,
+   "n": 640
+  },
+  "10-20": {
+   "precyzja": 0.9242424242424242,
+   "czulosc": 0.953125,
+   "f1": 0.9384615384615385,
+   "n": 256
+  },
+  "20-40": {
+   "precyzja": 0.9666666666666667,
+   "czulosc": 0.9914529914529915,
+   "f1": 0.9789029535864979,
+   "n": 117
+  },
+  "40-80": {
+   "precyzja": 1.0,
+   "czulosc": 1.0,
+   "f1": 1.0,
+   "n": 20
+  },
+  "80-10000": {
+   "precyzja": 1.0,
+   "czulosc": 1.0,
+   "f1": 1.0,
+   "n": 6
+  }
+ },
+ "rzepak_po_agregacji": {
+  "precyzja": 0.8840579710144928,
+  "czulosc": 0.9384615384615385,
+  "f1": 0.9104477611940298,
+  "n": 260
+ },
+ "f1_makro_po_agregacji": 0.6113967113773524
+}

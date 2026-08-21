@@ -75,6 +75,38 @@ of January, 100% of points have no cloud-free scene at all.
 | sunflower | 0.605 | spring-sown |
 | buckwheat | 0.583 | spring-sown; looks like any fresh field for months |
 
+### Parcel centre or pixel?
+
+The F1 above is measured at **one representative point inside each parcel**.
+Deployment classifies **every** pixel, edges included. Measured on 18,489
+held-out pixels (model trained only on training blocks, cereals included):
+
+| level | precision | recall | F1 |
+|---|---|---|---|
+| parcel centre | 0.938 | 0.942 | **0.940** |
+| single pixel, balanced sample | 0.790 | 0.872 | 0.829 |
+| single pixel, **real crop proportions** | 0.528 | 0.872 | **0.658** |
+
+At real prevalence roughly **every second pixel called rapeseed is not
+rapeseed** — 87% of farmland is something else, mostly cereals, so even a low
+per-pixel error rate produces many false positives. Recall is unaffected, as
+it should be.
+
+Almost all of that error sits at the field boundary:
+
+| distance from parcel edge | pixels | F1 |
+|---|---|---|
+| **0–10 m** | 12,152 | **0.762** |
+| 10–20 m | 4,410 | 0.917 |
+| 20–40 m | 1,651 | 0.975 |
+| > 40 m | 276 | 1.000 |
+
+**66% of pixels lie within 10 m of a boundary** — parcels here are narrow
+strips, and a 10 m Sentinel pixel on a boundary physically contains two crops.
+This is why the maps never use raw pixels: everything is blurred by flight
+range and area-calibrated first, and after blurring the density agreement is
+r = 0.940.
+
 ### When it blooms
 
 Growing-degree days above **1.5 °C**, accumulated from **15 March**, bloom at
@@ -211,6 +243,30 @@ Earth Engine project id goes in `.ee_projekt`.
 
 ## What is missing
 
-Validation against a real honey harvest — by far the biggest gap — plus
+**Validation against a real honey harvest** — by far the biggest gap — plus
 competition from existing apiaries, and a bloom model for species other than
 rapeseed.
+
+**Nectar crops not yet in the map.** The declarations cover 1,513,132 parcels
+and 513 distinct crops, so per-pixel ground truth exists for all of them; the
+map uses 16. A scan of the rest found **25 nectar-relevant crops with at least
+300 parcels**, enough to train on:
+
+| crop | parcels |
+|---|---|
+| **phacelia** | 3,712 |
+| pumpkin (oil + common) | 9,644 |
+| strawberry | 9,580 |
+| chokeberry | 7,749 |
+| highbush blueberry | 2,025 |
+
+Phacelia is the clearest omission — it is sown deliberately *for bees*, has a
+well-documented yield, and appears nowhere in `ZRODLA.md`, so it was never
+weighed and rejected, just missed. Some of the others (apple, cherry, plum,
+pear) are probably already inside the single `Sad` orchard class.
+
+Adding them is limited by the project rule that a species enters the map only
+with a documented kg-of-sugar-per-hectare figure — not by data availability.
+More classes would also not raise detection quality: buckwheat and sunflower
+already sit at F1 0.58–0.61 with 1,400 training parcels each, because
+spring-sown crops look like bare soil for half the season.
