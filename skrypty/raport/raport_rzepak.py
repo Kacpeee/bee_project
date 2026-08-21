@@ -523,7 +523,14 @@ Starszy model systematycznie zaniża; wobec EUCROPMAP 2022
 o około 30%, podczas gdy wielogatunkowy o
 {pl(abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']), 1)}%.
 Szereg zostawiono, bo pokazuje <i>zmienność między latami</i>, ale jego
-poziom bezwzględny jest zaniżony.</div>
+poziom bezwzględny jest zaniżony.
+<p style="margin:12px 0 0"><b>„Wielogatunkowy" nie znaczy „dobry dla
+wszystkich gatunków".</b> Ten klasyfikator rozpoznaje 12 klas naraz, ale
+z sensowną jakością tylko rzepak: F1 {pl(rz['S1_S2']['f1'])} wobec
+0,583 dla gryki, 0,605 dla słonecznika i 0,560 dla porzeczki. Uczenie
+wszystkich klas razem pomaga rzepakowi — model ma gdzie odłożyć to, co nim
+nie jest — ale liczby z tego raportu dotyczą <b>wyłącznie rzepaku</b>
+i nie przenoszą się na pozostałe gatunki.</p></div>
 <p class="mniej">Zmienność {pl(min(ar.values()), 0)}–{pl(max(ar.values()), 0)} ha
 to około ±16% wokół średniej. Wahania między latami są realne — rzepak reaguje
 na ceny i na przezimowanie — ale mieszczą się w skali, którą znamy z danych
