@@ -185,9 +185,9 @@ async function prognozuj(lat, lon, rokWym){
   return {
     lat: lat, lon: lon, sezon: rok, rodzaj: rodzaj, naglowek: naglowek, uwaga: uwaga,
     pelnia: {doy: pelnia, data: isoM(pelnia,rok), opis: dzM(pelnia,rok)},
-    poczatek: {data: isoM(pelnia-10,rok), opis: dzM(pelnia-10,rok)},
-    koniec: {data: isoM(pelnia+12,rok), opis: dzM(pelnia+12,rok)},
-    ustaw_ul: {data: isoM(pelnia-12,rok), opis: dzM(pelnia-12,rok)},
+    poczatek: {data: isoM(pelnia-M.przed_pelnia,rok), opis: dzM(pelnia-M.przed_pelnia,rok)},
+    koniec: {data: isoM(pelnia+M.po_pelni,rok), opis: dzM(pelnia+M.po_pelni,rok)},
+    ustaw_ul: {data: isoM(pelnia-M.przed_pelnia,rok), opis: dzM(pelnia-M.przed_pelnia,rok)},
     niepewnosc_dni: Math.round(blad*10)/10,
     przedzial: {od: isoM(pelnia-blad,rok), do: isoM(pelnia+blad,rok)},
     podstawa_bledu: opis, pogoda_realna_pct: pct,

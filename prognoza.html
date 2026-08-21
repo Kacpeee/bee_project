@@ -201,7 +201,7 @@ const WARSTWA = {"nx":150,"ny":186,"px_km":1.2000000000000002,"maska":"AAAAAAAAA
 // /prognoza_obszar, zeby kod rysujacy wynik w serwis.py STRONA dzialal
 // bez zmian.
 
-const M = {"baza": 1.5, "prog": 430.0, "start_doy": 74, "rmse_modelu": 3.21, "n_obserwacji": 145, "bledy_prognozy": {"46": 6.813660792195725, "60": 6.813660792195725, "74": 6.87074186645054, "91": 7.329572978383179, "105": 4.544664496243189, "121": 3.400162592959158}, "sredni_termin": 133.7187765583293};
+const M = {"baza": 1.5, "prog": 430.0, "start_doy": 74, "rmse_modelu": 3.21, "n_obserwacji": 145, "bledy_prognozy": {"46": 6.813660792195725, "60": 6.813660792195725, "74": 6.87074186645054, "91": 7.329572978383179, "105": 4.544664496243189, "121": 3.400162592959158}, "sredni_termin": 133.7187765583293, "przed_pelnia": 12, "po_pelni": 11};
 const MIES = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
 
 function odDoy(doy, rok){ const d = new Date(Date.UTC(rok,0,1));
@@ -375,9 +375,9 @@ async function prognozuj(lat, lon, rokWym){
   return {
     lat: lat, lon: lon, sezon: rok, rodzaj: rodzaj, naglowek: naglowek, uwaga: uwaga,
     pelnia: {doy: pelnia, data: isoM(pelnia,rok), opis: dzM(pelnia,rok)},
-    poczatek: {data: isoM(pelnia-10,rok), opis: dzM(pelnia-10,rok)},
-    koniec: {data: isoM(pelnia+12,rok), opis: dzM(pelnia+12,rok)},
-    ustaw_ul: {data: isoM(pelnia-12,rok), opis: dzM(pelnia-12,rok)},
+    poczatek: {data: isoM(pelnia-M.przed_pelnia,rok), opis: dzM(pelnia-M.przed_pelnia,rok)},
+    koniec: {data: isoM(pelnia+M.po_pelni,rok), opis: dzM(pelnia+M.po_pelni,rok)},
+    ustaw_ul: {data: isoM(pelnia-M.przed_pelnia,rok), opis: dzM(pelnia-M.przed_pelnia,rok)},
     niepewnosc_dni: Math.round(blad*10)/10,
     przedzial: {od: isoM(pelnia-blad,rok), do: isoM(pelnia+blad,rok)},
     podstawa_bledu: opis, pogoda_realna_pct: pct,

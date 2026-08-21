@@ -82,6 +82,7 @@ def model_js() -> str:
         "n_obserwacji": p["n_obserwacji"],
         "bledy_prognozy": p["bledy_prognozy"],
         "sredni_termin": p["sredni_termin"],
+        "przed_pelnia": p["przed_pelnia"], "po_pelni": p["po_pelni"],
     }, ensure_ascii=False)
     js = (Path(__file__).parent / "model_prognozy.js").read_text(encoding="utf-8")
     return js.replace("__MODEL__", m).replace("__START__", dz(p["start_doy"], 2026))

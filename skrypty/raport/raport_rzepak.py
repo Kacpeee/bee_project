@@ -194,6 +194,7 @@ def buduj() -> str:
     woj = czytaj("wojewodztwo.json")
     wios = jad["jadra"]["wiosna"]
     najl = czytaj("najlepsze_punkty.json")
+    okno = czytaj("fenologia.json")["ksztalt_kwitnienia"]
     ar = sr["areal_det_ha"]
 
     def w_odl(k):
@@ -629,6 +630,46 @@ się szumu zamiast zjawiska. Obie są w tabeli poniżej.</p>
 ocenianej obserwacji, więc model nigdy nie jest sprawdzany na danych, które go
 ukształtowały. Odstęp między {pl(m['rmse'],2)} a {pl(m['rmse_dopasowania'],2)}
 dnia to optymizm dopasowania — tutaj mały, i tak być powinno.</p>
+
+<h3>Kwitnienie trwa, a nie zdarza się jednego dnia</h3>
+<p>Model przewiduje <b>datę pełni</b> — dzień, w którym pole jest najżółtsze.
+Pszczelarza interesuje jednak całe okno: kiedy zacząć i jak długo potrwa.
+Ramiona okna są <b>zmierzone</b>, nie założone.</p>
+<p><b>Metoda:</b> na krzywej NDYI szuka się <b>połowy wysokości szczytu</b>
+po obu stronach maksimum. Odległość od pełni do tych dwóch punktów to
+długość ramion. Interpolacja tylko wtedy, gdy przerwa między scenami nie
+przekracza {okno['max_luka_dni']} dni — inaczej rok jest pomijany, bo
+ramienia nie da się odczytać.</p>
+<table>
+  <caption>Ramiona okna kwitnienia, mediana lat z pomiarem</caption>
+  <thead><tr><th>ramię</th><th>mediana</th><th>przyjęte</th>
+    <th>rozrzut między latami</th><th>lat z pomiarem</th></tr></thead>
+  <tbody>
+    <tr><td>przed pełnią</td><td>{pl(okno['mediany_dni']['przed'],1)} d</td>
+        <td><b>{okno['przed_pelnia']} d</b></td>
+        <td>{pl(okno['zakres_dni']['przed'][0],1)} – {pl(okno['zakres_dni']['przed'][1],1)} d</td>
+        <td>{okno['n_przed']}</td></tr>
+    <tr><td>po pełni</td><td>{pl(okno['mediany_dni']['po'],1)} d</td>
+        <td><b>{okno['po_pelni']} d</b></td>
+        <td>{pl(okno['zakres_dni']['po'][0],1)} – {pl(okno['zakres_dni']['po'][1],1)} d</td>
+        <td>{okno['n_po']}</td></tr>
+  </tbody>
+</table>
+<p>Całe okno to <b>{okno['przed_pelnia'] + okno['po_pelni']} dni</b>. Zgadza
+się to z badaniem terenowym spod Puław, które podaje około 20 dni. Tabele
+literaturowe wymieniają dla rzepaku 20 IV – 28 V, czyli 38 dni, ale to jest
+<b>obwiednia zmienności między latami</b>, a nie długość kwitnienia jednego
+łanu — dwie różne rzeczy, łatwe do pomylenia.</p>
+
+<div class="uwaga"><b>Rozrzut ramion jest większy niż błąd samej daty.</b>
+Model trafia w pełnię z dokładnością {pl(m['rmse'],2)} dnia, ale ramię przed
+pełnią waha się między latami od {pl(okno['zakres_dni']['przed'][0],1)} do
+{pl(okno['zakres_dni']['przed'][1],1)} dnia, a po pełni od
+{pl(okno['zakres_dni']['po'][0],1)} do {pl(okno['zakres_dni']['po'][1],1)}.
+Dla pszczelarza praktyczna niepewność bierze się więc <b>nie z terminu, tylko
+z długości kwitnienia</b> — i tej model nie przewiduje, podaje medianę.
+Podstawa jest cienka: {okno['n_przed']} lat z pomiarem ramienia przed pełnią
+i {okno['n_po']} po, bo w pozostałych brakowało bezchmurnych scen.</div>
 
 <h3>Prognoza w trakcie sezonu</h3>
 <p>Przed sezonem model nie ma pogody danego roku i zwraca średnią wieloletnią.

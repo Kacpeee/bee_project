@@ -532,6 +532,46 @@ ocenianej obserwacji, więc model nigdy nie jest sprawdzany na danych, które go
 ukształtowały. Odstęp między 3,21 a 3,15
 dnia to optymizm dopasowania — tutaj mały, i tak być powinno.</p>
 
+<h3>Kwitnienie trwa, a nie zdarza się jednego dnia</h3>
+<p>Model przewiduje <b>datę pełni</b> — dzień, w którym pole jest najżółtsze.
+Pszczelarza interesuje jednak całe okno: kiedy zacząć i jak długo potrwa.
+Ramiona okna są <b>zmierzone</b>, nie założone.</p>
+<p><b>Metoda:</b> na krzywej NDYI szuka się <b>połowy wysokości szczytu</b>
+po obu stronach maksimum. Odległość od pełni do tych dwóch punktów to
+długość ramion. Interpolacja tylko wtedy, gdy przerwa między scenami nie
+przekracza 12 dni — inaczej rok jest pomijany, bo
+ramienia nie da się odczytać.</p>
+<table>
+  <caption>Ramiona okna kwitnienia, mediana lat z pomiarem</caption>
+  <thead><tr><th>ramię</th><th>mediana</th><th>przyjęte</th>
+    <th>rozrzut między latami</th><th>lat z pomiarem</th></tr></thead>
+  <tbody>
+    <tr><td>przed pełnią</td><td>11,6 d</td>
+        <td><b>12 d</b></td>
+        <td>8,2 – 16,4 d</td>
+        <td>7</td></tr>
+    <tr><td>po pełni</td><td>11,2 d</td>
+        <td><b>11 d</b></td>
+        <td>6,0 – 19,9 d</td>
+        <td>5</td></tr>
+  </tbody>
+</table>
+<p>Całe okno to <b>23 dni</b>. Zgadza
+się to z badaniem terenowym spod Puław, które podaje około 20 dni. Tabele
+literaturowe wymieniają dla rzepaku 20 IV – 28 V, czyli 38 dni, ale to jest
+<b>obwiednia zmienności między latami</b>, a nie długość kwitnienia jednego
+łanu — dwie różne rzeczy, łatwe do pomylenia.</p>
+
+<div class="uwaga"><b>Rozrzut ramion jest większy niż błąd samej daty.</b>
+Model trafia w pełnię z dokładnością 3,21 dnia, ale ramię przed
+pełnią waha się między latami od 8,2 do
+16,4 dnia, a po pełni od
+6,0 do 19,9.
+Dla pszczelarza praktyczna niepewność bierze się więc <b>nie z terminu, tylko
+z długości kwitnienia</b> — i tej model nie przewiduje, podaje medianę.
+Podstawa jest cienka: 7 lat z pomiarem ramienia przed pełnią
+i 5 po, bo w pozostałych brakowało bezchmurnych scen.</div>
+
 <h3>Prognoza w trakcie sezonu</h3>
 <p>Przed sezonem model nie ma pogody danego roku i zwraca średnią wieloletnią.
 Prognozą staje się dopiero w miarę, jak realna pogoda się nagromadzi:</p>

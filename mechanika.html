@@ -59,7 +59,27 @@
    .wzor, .wyjasn { background:#1e2823; }
    figure img { background:#e8ece9; }
  }
-</style>
+</style><style>
+ .appnav{background:#fff;border-bottom:1px solid #dbe3df;position:sticky;
+   top:0;z-index:9999;font:15px/1.4 "Segoe UI",system-ui,sans-serif;
+   color:#16201c}
+ .appnav .in{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;
+   align-items:center;gap:4px;height:54px}
+ .appnav .logo{font-weight:600;margin-right:auto;font-size:15px;
+   display:flex;align-items:center;gap:9px;color:#16201c}
+ .appnav .kropka{width:9px;height:9px;border-radius:50%;background:#b3801a;
+   display:inline-block}
+ .appnav a{padding:7px 13px;border-radius:7px;text-decoration:none;
+   color:#5f6b66;font-size:14.5px;background:transparent;border:0}
+ .appnav a:hover{background:#f4f6f5;color:#16201c}
+ .appnav a.akt{background:#1d6f42;color:#fff}
+ @media(prefers-color-scheme:dark){
+  .appnav{background:#18211d;border-bottom-color:#27332d;color:#e3eae6}
+  .appnav .logo{color:#e3eae6}
+  .appnav a{color:#8d9a94}
+  .appnav a:hover{background:#101613;color:#e3eae6}
+  .appnav a.akt{background:#54b37c;color:#0d1512}}
+</style><!--paczka-nawigacja--><nav class="appnav"><div class="in"><span class="logo"><span class="kropka"></span>Model pożytkowy · Lubelskie</span><a href="prognoza.html">Prognoza</a><a href="kalendarz.html">Kalendarz</a><a href="raport.html">Raport</a><a href="mechanika.html" class='akt'>Jak to działa</a></div></nav>
 <div class="w">
 <h1>Jak działa model</h1>
 <p class="pod">Od zdjęcia satelitarnego do współrzędnych, gdzie postawić ul.<br>

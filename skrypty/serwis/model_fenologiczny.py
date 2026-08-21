@@ -76,7 +76,13 @@ def parametry() -> dict:
                      .read_text(encoding="utf-8"))["model"]
     hind = json.loads((WYNIKI / "json" / "prognoza_w_sezonie.json")
                       .read_text(encoding="utf-8"))
+    # OKNO KWITNIENIA - zmierzone, nie wpisane.
+    # Wczesniej ramiona byly zaszyte jako -10/+12, co nie zgadzalo sie
+    # z pomiarem (-12/+11 z polowy szczytu nadwyzki NDYI, mediana lat).
+    ksz = json.loads((WYNIKI / "json" / "fenologia.json")
+                     .read_text(encoding="utf-8"))["ksztalt_kwitnienia"]
     return {
+        "przed_pelnia": ksz["przed_pelnia"], "po_pelni": ksz["po_pelni"],
         "baza": fin["baza"], "prog": fin["prog"],
         "start_doy": fin.get("start_doy", 74),
         "rmse_modelu": fin["rmse"],
@@ -263,9 +269,14 @@ def prognozuj(lat: float, lon: float, rok: int | None = None) -> dict:
         "rodzaj": rodzaj, "naglowek": naglowek, "uwaga": uwaga,
         "pelnia": {"doy": pelnia, "data": iso(pelnia, rok),
                    "opis": dz(pelnia, rok)},
-        "poczatek": {"data": iso(pelnia - 10, rok), "opis": dz(pelnia - 10, rok)},
-        "koniec": {"data": iso(pelnia + 12, rok), "opis": dz(pelnia + 12, rok)},
-        "ustaw_ul": {"data": iso(pelnia - 12, rok), "opis": dz(pelnia - 12, rok)},
+        "poczatek": {"data": iso(pelnia - p["przed_pelnia"], rok),
+                     "opis": dz(pelnia - p["przed_pelnia"], rok)},
+        "koniec": {"data": iso(pelnia + p["po_pelni"], rok),
+                   "opis": dz(pelnia + p["po_pelni"], rok)},
+        # ul stawia sie na poczatek kwitnienia, zeby rodzina zdazyla sie
+        # rozejrzec - stad ta sama liczba, co poczatek
+        "ustaw_ul": {"data": iso(pelnia - p["przed_pelnia"], rok),
+                     "opis": dz(pelnia - p["przed_pelnia"], rok)},
         "niepewnosc_dni": round(blad, 1),
         "przedzial": {"od": iso(pelnia - blad, rok), "do": iso(pelnia + blad, rok)},
         "podstawa_bledu": opis,
