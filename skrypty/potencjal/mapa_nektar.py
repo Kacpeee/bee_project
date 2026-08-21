@@ -6,9 +6,9 @@ Raster woj_rzepak.tif powstaje z rasteryzacji wnioskow ARiMR, wiec pokazuje,
 co rolnicy ZADEKLAROWALI. To nie jest dowod, ze model dziala - deklaracje sa
 tylko za 2025 i 2026, a produkt ma dzialac takze tam, gdzie ich nie ma.
 
-Ta mapa bierze warstwe detekcyjna: woj_prawd_{rok}.npy, czyli
-prawdopodobienstwo rzepaku w pikselu wprost z klasyfikatora Sentinel-1+2.
-Zaden wniosek rolnika w to nie wchodzi.
+Ta mapa bierze warstwe detekcyjna: wielo_klasy_{rok}.npz, czyli wynik
+klasyfikatora wielogatunkowego Sentinel-1+2 - tego samego, o ktorym mowi
+raport. Zaden wniosek rolnika w to nie wchodzi.
 
 DOMYSLNY ROK: 2022
 Bo dla niego istnieje NIEZALEZNA kontrola - EUCROPMAP (JRC) tez ma warstwe
@@ -85,21 +85,35 @@ def maska_woj(T, ksztalt):
 
 
 def warstwa(rok: int):
-    """Cukier rzepaku w tonach, wylacznie z detekcji satelitarnej."""
-    f = WYNIKI / "cache" / f"woj_prawd_{rok}.npy"
+    """Cukier rzepaku w tonach, wylacznie z detekcji satelitarnej.
+
+    ZRODLO: wielo_klasy_{rok}.npz - klasyfikator WIELOGATUNKOWY S1+S2, ten
+    sam, ktory opisuje raport (F1 rzepaku 0,940).
+
+    Pierwsza wersja tej mapy siegala po woj_prawd_{rok}.npy. To jest starszy,
+    BINARNY klasyfikator 8-cechowy z wczesniejszego etapu projektu - inny
+    model, inne cechy, gorszy wynik. Dla 2022 dawal 103 tys. ha wobec
+    138 tys. z modelu wielogatunkowego i 148 tys. z EUCROPMAP, czyli
+    zanizal o okolo 30%. Mapa ilustrowala wiec model, o ktorym raport
+    nie mowi.
+
+    Kalibracja arealowa mnozona jest w locie, tak samo jak w kalendarzu -
+    osobne pliki *_skalibrowane sa zbedne.
+    """
+    f = WYNIKI / "cache" / f"wielo_klasy_{rok}.npz"
     if not f.exists():
         raise SystemExit(f"brak {f.name} - detekcja dla {rok} nie policzona")
     with rasterio.open(WYNIKI / "rastry" / "woj_sezon.tif") as r:
         T = r.transform
-    prog = json.loads((WYNIKI / "json" / "sredni_rok.json")
-                      .read_text(encoding="utf-8"))["prog"]
-    p = np.nan_to_num(np.load(f))
-    binarna = (p > prog).astype("float32")             # ha rzepaku na piksel
+    wsp = json.loads((WYNIKI / "json" / "kalibracja_arealowa.json")
+                     .read_text(encoding="utf-8"))["wspolczynniki"]
+    with np.load(f) as z:
+        udzial = np.nan_to_num(z["rzepak ozimy"]) * wsp.get("rzepak ozimy", 1.0)
     Kj = W.jadro_dla("rzepak ozimy")                   # jadro WIOSENNE
-    v = fftconvolve(binarna, Kj, mode="same") * KG / 1000.0    # -> tony
+    v = fftconvolve(udzial, Kj, mode="same") * KG / 1000.0     # -> tony
     w = maska_woj(T, v.shape)
-    print(f"rok {rok}: {binarna[w].sum():,.0f} ha rzepaku wg detekcji, "
-          f"maks {v[w].max():.1f} t w zasiegu lotu")
+    print(f"rok {rok}: {udzial[w].sum():,.0f} ha rzepaku wg detekcji "
+          f"(po kalibracji), maks {v[w].max():.1f} t w zasiegu lotu")
     return np.where(w, v, np.nan), T
 
 

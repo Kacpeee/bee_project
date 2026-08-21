@@ -353,16 +353,36 @@ klasom rzadkim. Poprawka: jeden współczynnik na gatunek z roku wzorcowego.</p>
         <td><b>×{pl(kal['wspolczynniki']['rzepak ozimy'])}</b></td></tr>
   </tbody>
 </table>
-<p class="mniej">Rzepak potrzebuje korekty zaledwie 6%, więc zrównoważona
-próba prawie go nie zniekształca — inaczej niż słonecznika, wykrywanego
-dziewięciokrotnie za obficie.</p>
+<p class="mniej">Rzepak jest wykrywany o
+<b>+{pl((kal['areal_wykryty']['rzepak ozimy'] / kal['areal_gsa']['rzepak ozimy'] - 1) * 100, 1)}%</b>
+za obficie, więc zrównoważona próba prawie go nie zniekształca — inaczej niż
+słonecznika, wykrywanego dziewięciokrotnie za obficie. Współczynnik
+{pl(kal['wspolczynniki']['rzepak ozimy'])} sprowadza rok wzorcowy do zgodności
+z definicji, bo właśnie z niego został policzony.</p>
 
-<p><b>Sprawdzenie:</b> porównanie sumy wykrytego areału z zadeklarowanym
-w roku wzorcowym, a potem <b>kontrola na innym roku i innym źródle</b> —
-EUCROPMAP 2022 podaje {pl(kal['kontrola_eucropmap']['2022']['eucropmap_ha'], 0)} ha,
-model po korekcie {pl(kal['kontrola_eucropmap']['2022']['model_ha'], 0)} ha,
-różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
-Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
+<p><b>Prawdziwe sprawdzenie jest na innym roku.</b> Ten sam współczynnik
+zastosowany do 2022:</p>
+<table>
+  <thead><tr><th>2022 — rok bez deklaracji</th><th>areał</th></tr></thead>
+  <tbody>
+    <tr><td>EUCROPMAP (JRC)</td>
+        <td>{pl(kal['kontrola_eucropmap']['2022']['eucropmap_ha'], 0)} ha</td></tr>
+    <tr><td>nasz model po korekcie</td>
+        <td>{pl(kal['kontrola_eucropmap']['2022']['model_ha'], 0)} ha</td></tr>
+    <tr><td>odchylenie</td>
+        <td><b>{pl(kal['kontrola_eucropmap']['2022']['odchylenie_pct'], 1)}%</b></td></tr>
+  </tbody>
+</table>
+<div class="uwaga"><b>Znaki są przeciwne i to nie przypadek.</b> W roku
+wzorcowym model wykrywa
++{pl((kal['areal_wykryty']['rzepak ozimy'] / kal['areal_gsa']['rzepak ozimy'] - 1) * 100, 1)}%
+<i>za dużo</i>, a po korekcie w 2022 —
+{pl(abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']), 1)}% <i>za mało</i>.
+Współczynnik z 2025 lekko przestrzeliwuje w drugą stronę; to nie jest ta sama
+liczba dwa razy. Do tego <b>EUCROPMAP sam jest modelem</b>, nie pomiarem
+w polu — te kilka procent to rozbieżność dwóch szacunków, a nie błąd naszego
+wobec prawdy. Ostrożny wniosek: współczynnik przenosi się na inne lata
+<i>z dokładnością do kilku procent</i>, i tyle da się z tego powiedzieć.</div>
 
 <h3>Znaleźć pola, zanim zakwitną</h3>
 <p>Datę kwitnienia mierzy się z NDYI, czyli z sygnału żółci. Gdyby te same
