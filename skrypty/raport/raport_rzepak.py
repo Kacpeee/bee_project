@@ -58,18 +58,18 @@ def pl(x, n=3):
 
 STYL = """
 :root{
-  --tlo:#0f1613; --tlo2:#141d19; --kar:#18231e; --kar2:#1e2b25;
-  --atr:#e8efe9; --mut:#93a69b; --ram:#2a3a32;
+  --tlo:#1b2621; --tlo2:#212e28; --kar:#26332d; --kar2:#2c3b34;
+  --atr:#eef4ef; --mut:#a3b5aa; --ram:#3a4b43;
   --akc:#4fbe85; --akc2:#e0a938; --zle:#e2705a;
-  --cien:0 2px 14px rgba(0,0,0,.35);
+  --cien:0 2px 12px rgba(0,0,0,.22);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--tlo);color:var(--atr);
      font:16px/1.7 "Segoe UI",system-ui,sans-serif;
      background-image:radial-gradient(1100px 620px at 12% -8%,
-       rgba(79,190,133,.10), transparent 62%),
+       rgba(79,190,133,.07), transparent 62%),
        radial-gradient(900px 520px at 88% 4%,
-       rgba(224,169,56,.08), transparent 60%);
+       rgba(224,169,56,.05), transparent 60%);
      background-attachment:fixed}
 .w{max-width:920px;margin:0 auto;padding:52px 22px 90px}
 h1{font-size:34px;margin:0 0 6px;letter-spacing:-.6px;line-height:1.22;
@@ -94,7 +94,6 @@ table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14.5px;
   box-shadow:var(--cien)}
 th,td{padding:10px 14px;border-bottom:1px solid var(--ram);text-align:left}
 tbody tr:last-child td{border-bottom:none}
-tbody tr:hover{background:var(--kar2)}
 th{font-weight:600;color:var(--mut);font-size:12px;text-transform:uppercase;
   letter-spacing:.6px;background:var(--tlo2)}
 td:not(:first-child),th:not(:first-child){text-align:right;
@@ -102,7 +101,7 @@ td:not(:first-child),th:not(:first-child){text-align:right;
 caption{caption-side:top;text-align:left;color:var(--mut);font-size:13px;
   padding:0 0 8px}
 b.ok{color:var(--akc)} b.zle{color:var(--zle)}
-.wzor{background:#0b120f;border:1px solid var(--ram);border-left:3px solid var(--akc);
+.wzor{background:#161f1a;border:1px solid var(--ram);border-left:3px solid var(--akc);
   padding:14px 18px;border-radius:0 10px 10px 0;color:#cfe6d8;
   font-family:"Cascadia Mono",Consolas,monospace;font-size:13.5px;
   margin:16px 0;overflow-x:auto;white-space:pre;line-height:1.55}
@@ -202,7 +201,7 @@ wpisana ręcznie.</p>
 
 <div class="spis">
   <a href="#gdzie"><b>1</b>Gdzie rośnie — rozpoznanie uprawy z orbity</a>
-  <a href="#wstecz"><b>2</b>Czy model działa poza rokiem uczenia</a>
+  <a href="#wstecz"><b>2</b>Model przeniesiony na inne sezony</a>
   <a href="#walidacje"><b>3</b>Jak to sprawdzano — opis walidacji</a>
   <a href="#kiedy"><b>4</b>Kiedy zakwitnie — model termiczny</a>
   <a href="#prog"><b>5</b>Skąd wzięły się próg GDD i temperatura bazowa</a>
@@ -433,8 +432,7 @@ lotu i tak uśrednia po kilometrze.</p>
     {"".join(f"<td>{ar[r]:,.0f}</td>" for r in sorted(ar))}</tr></tbody>
 </table>
 <p class="mniej">Zmienność {min(ar.values()):,.0f}–{max(ar.values()):,.0f} ha
-to około ±16% wokół średniej. Dla porównania areał zadeklarowany w 2025 to
-{kal['areal_gsa']['rzepak ozimy']:,.0f} ha. Wahania między latami są realne —
+to około ±16% wokół średniej. Wahania między latami są realne —
 rzepak reaguje na ceny i na przezimowanie — ale mieszczą się w skali, którą
 znamy z danych ARiMR między 2025 a 2026.</p>
 
@@ -444,7 +442,7 @@ potencjału przekłada się na zbiór miodu — tego nie sprawdziliśmy nigdy
 i pozostaje to największą luką projektu.</div>
 
 <!-- ======================================================== WALIDACJE -->
-<h2 id="walidacje"><span class="nr">3</span>Jak to sprawdzano</h2>
+<h2 id="walidacje"><span class="nr">3</span>Jak to sprawdzano — opis walidacji</h2>
 <p class="lead">Każda liczba w tym raporcie pochodzi z innej procedury
 sprawdzającej. Tu jest opisane, na czym każda polega i przed czym chroni.</p>
 
@@ -458,21 +456,21 @@ a do zbioru testowego trafiają całe bloki, nie pojedyncze działki.</p>
 <div class="wzor">bx = ⌊x / 2500⌋ ,  by = ⌊y / 2500⌋
 dzialka trafia do testu, gdy  (bx + by) mod 10 < 3</div>
 <p><b>Ile to daje:</b> mediana odległości działki testowej do najbliższej
-treningowej wynosi <b>1 723 m</b>. Przy podziale losowym byłoby to 439 m —
-czterokrotnie mniej. Tylko 1,8% działek testowych ma sąsiada tej samej klasy
-bliżej niż 500 m.</p>
-<p><b>Czy to w ogóle coś zmienia:</b> sprawdzone. Przy podziale losowym
-rzepak dostaje F1 0,930, przy blokach 2,5 km — {pl(rz['S1_S2']['f1'])}, przy
-zaostrzeniu do bloków 10 km — <b>0,947</b>. Zaostrzenie separacji nie
-pogarsza wyniku, co znaczy, że model uczy się rośliny, a nie lokalizacji.</p>
+treningowej rośnie z <b>439 m</b> przy podziale losowym do <b>1 723 m</b> przy
+blokach. Tylko 1,8% działek testowych ma sąsiada tej samej klasy bliżej niż
+500 m.</p>
+<p><b>Czy to zmienia wynik:</b> sprawdzone przez zaostrzenie. Przy blokach
+10 km, czyli separacji czterokrotnie ostrzejszej, rzepak dostaje
+<b class="ok">0,947</b> — czyli <i>więcej</i>, nie mniej. Model uczy się
+rośliny, nie lokalizacji.</p>
 
 <h3>Kontrola niezależnym źródłem — dla przeniesienia na inne lata</h3>
 <p><b>Problem:</b> dla lat 2019–2024 nie ma żadnych etykiet, więc nie da się
 policzyć F1. Trzeba czegoś, co powstało zupełnie inaczej.</p>
 <p><b>Rozwiązanie:</b> EUCROPMAP — warstwa upraw dla całej Unii, robiona
 przez Wspólne Centrum Badawcze Komisji Europejskiej z innego potoku, innych
-cech i innego modelu. Istnieje dla 2018 i 2022. Porównuje się mapy
-<i>po rozmyciu zasięgiem lotu</i>, bo to na tym poziomie działa produkt.</p>
+cech i innego modelu. Porównuje się mapy <i>po rozmyciu zasięgiem lotu</i>,
+bo to na tym poziomie działa produkt. Wyniki tego porównania są w sekcji 2.</p>
 <p class="mniej">Dlaczego po rozmyciu, a nie na pikselu: pomyłka między
 dwiema sąsiednimi działkami nie ma znaczenia dla pszczoły, która i tak
 oblatuje kilometr. Miarą sensowną jest zgodność <b>zagęszczeń rejonu</b>,
@@ -503,25 +501,9 @@ liczony jest wyłącznie na przewidywaniach odłożonych.</p>
     przewidz date obserwacji i
 RMSE = pierwiastek ze sredniej kwadratow tych {m['n']} bledow</div>
 <p>Dzięki temu model nigdy nie jest oceniany na danych, które go
-ukształtowały. Różnica między błędem dopasowania
-({pl(m['rmse_dopasowania'],2)} dnia) a leave-one-out ({pl(m['rmse'],2)} dnia)
-to <b>optymizm dopasowania</b> — gdyby był duży, znaczyłoby, że model uczy
-się szumu. Tutaj wynosi {pl(m['rmse'] - m['rmse_dopasowania'], 2)} dnia.</p>
-
-<h3>Odniesienia — czy model w ogóle coś wnosi</h3>
-<p>Sam błąd nic nie mówi, dopóki nie ma z czym go porównać. Dlatego liczone
-są proste strategie, które nie wymagają żadnego modelu:</p>
-<table>
-  <thead><tr><th>strategia</th><th>RMSE (dni)</th><th>co robi</th></tr></thead>
-  <tbody>
-    <tr><td><b>model GDD</b></td><td><b class="ok">{pl(m['rmse'],2)}</b></td>
-        <td>sumuje ciepło od 15 marca</td></tr>
-    <tr><td>„zawsze średnia data"</td><td>{pl(fen['odniesienie_stala'],2)}</td>
-        <td>podaje wieloletnią średnią, ignoruje pogodę</td></tr>
-  </tbody>
-</table>
-<p>Model zmniejsza błąd <b>ponad dwukrotnie</b> wobec podawania średniej.
-To jest jego rzeczywisty wkład.</p>
+ukształtowały. Różnica między błędem dopasowania a leave-one-out nazywa się
+<b>optymizmem dopasowania</b>: gdyby była duża, znaczyłoby to, że model uczy
+się szumu zamiast zjawiska. Obie liczby są w sekcji 4.</p>
 
 <h3>Kalibracja areałowa — czy poziom się zgadza</h3>
 <p><b>Problem:</b> model uczony na próbie zrównoważonej rozdaje piksele zbyt
@@ -532,28 +514,6 @@ EUCROPMAP 2022 podaje {kal['kontrola_eucropmap']['2022']['eucropmap_ha']:,.0f} h
 model po korekcie {kal['kontrola_eucropmap']['2022']['model_ha']:,.0f} ha,
 różnica {abs(kal['kontrola_eucropmap']['2022']['odchylenie_pct']):.0f}%.
 Współczynnik wyznaczony na 2025 przenosi się więc na inne lata.</p>
-
-<h3>Kontrola pogody — czy dane wejściowe są dobre</h3>
-<p>Model GDD jest tak dobry, jak temperatury, które dostaje. ERA5 to
-reanaliza, nie pomiar, więc sprawdzono ją wobec rzeczywistej stacji
-naziemnej IMGW {imgw['stacja']} na {imgw['n_dni']:,} dniach:
-RMSE {pl(imgw['rmse_K'],2)} K, r = {pl(imgw['r'],3)}, obciążenie
-{pl(imgw['bias_K'],2)} K.</p>
-
-<h3>Test odporności — czy wynik zależy od arbitralnych wyborów</h3>
-<table>
-  <thead><tr><th>co sprawdzono</th><th>wynik</th><th>wniosek</th></tr></thead>
-  <tbody>
-    <tr><td>kształt jądra splotu</td><td>r ≥ {pl(min(v['korelacja'] for v in ksz.values()), 3)}</td>
-        <td>bez znaczenia</td></tr>
-    <tr><td>wielkość bloków walidacyjnych</td><td>0,930 – 0,947</td>
-        <td>bez znaczenia dla rzepaku</td></tr>
-    <tr><td>potrojenie próby fenologicznej</td>
-        <td>te same parametry</td><td>nie artefakt doboru miejsc</td></tr>
-    <tr><td>data startu akumulacji</td><td>45 z 45 podziałów</td>
-        <td>15 marca wygrywa jednoznacznie</td></tr>
-  </tbody>
-</table>
 
 <!-- ============================================================ KIEDY -->
 <h2 id="kiedy"><span class="nr">4</span>Kiedy zakwitnie — model termiczny</h2>
@@ -586,8 +546,6 @@ z obserwacjami BBCH w terenie.</p>
         <td>{pl(m['rmse_dopasowania'],2)}</td></tr>
     <tr><td>odniesienie „zawsze średnia data"</td>
         <td>{pl(fen['odniesienie_stala'],2)}</td></tr>
-    <tr><td>bez odrzucania obserwacji odstających</td>
-        <td>{pl(fen['rmse_bez_odrzucania'],2)}</td></tr>
   </tbody>
 </table>
 <p><b>Leave-one-out</b> znaczy, że baza i próg są dobierane od nowa bez
@@ -768,8 +726,7 @@ areałowa → pomnożenie przez wydajność → splot jądrem wiosennym.</p>
 <div class="klucz">Mapa wojewódzka jest policzona dla <b>2022</b> —
 z rozmysłem. Dla tego roku <b>nie istnieją żadne deklaracje ARiMR</b>, więc
 wszystko na niej pochodzi wyłącznie z klasyfikacji zdjęć satelitarnych.
-Niezależnym potwierdzeniem jest EUCROPMAP 2022, zgodny w r =
-{pl(sr['walidacje']['det2022_vs_eucropmap2022'])}.</div>
+Niezależne potwierdzenie dla tego rocznika jest w sekcji 2.</div>
 
 {obraz("nectar_voivodeship_2022.png",
        "Reachable rapeseed nectar sugar across the voivodeship, 2022 — "
